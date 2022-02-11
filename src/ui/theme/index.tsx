@@ -15,23 +15,24 @@ type BaseThemeType = typeof BaseTheme & {
 
 const createTheme = <T extends BaseThemeType>(themeObject: T): T => themeObject;
 
-const BaseTheme = {
+export const BaseTheme = {
   colors: {
-    text: '#202124',
+    text: '#181935',
     background: '#fff',
-    primary: '#151522',
-    secondary: '#9c27b0',
+    primary: '#46BA79',
+    secondary: 'white',
     muted: '#f1f3f4',
 
-    // from figma file
-
-    black: '#151522',
+    black: '#000',
     grey1: '#333333',
     grey2: '#666666',
     grey3: '#C3C3C3',
     grey4: '#E4E4E4',
     white: 'white',
     red: '#EB5757',
+    neutral900: '#2d2d2d',
+    neutral300: '#ababab',
+    neutral800: '#424242',
   },
   spacing: {
     s: 8,
@@ -51,8 +52,8 @@ export const theme = createTheme({
   navigation: {
     dark: false,
     colors: {
-      primary: 'rgb(0, 122, 255)',
-      background: '#f8f8fa',
+      primary: '#16904C',
+      background: 'white',
       card: '#f8f8fa',
       text: '#0c1245',
       border: 'rgb(199, 199, 204)',
@@ -73,20 +74,23 @@ export const theme = createTheme({
     },
   },
   textVariants: {
-    defaults: {},
+    defaults: {
+      fontWeight: '400',
+      fontFamily: 'Nunito',
+      fontSize: 14,
+    },
     header: {
-      fontFamily: 'Inter',
+      fontFamily: 'Nunito',
       fontWeight: 'bold',
-      fontSize: 22,
-      lineHeight: 42.5,
-      color: 'black',
+      fontSize: 24,
+      lineHeight: 40,
+      color: 'neutral900',
     },
     subheader: {
-      fontFamily: 'Inter',
-      fontWeight: '600',
-      fontSize: 28,
-      lineHeight: 36,
-      color: 'grey1',
+      fontWeight: '400',
+      fontSize: 18,
+      lineHeight: 32,
+      color: 'neutral800',
     },
     body: {
       fontFamily: 'Inter',
@@ -95,16 +99,19 @@ export const theme = createTheme({
       color: 'grey2',
     },
     button_primary: {
-      fontFamily: 'Inter',
-      fontSize: 16,
+      fontFamily: 'Nunito',
+      fontSize: 14,
       lineHeight: 22,
       color: 'white',
+      fontWeight: '700',
     },
     button_secondary: {
-      fontFamily: 'Inter',
-      fontSize: 16,
+      fontFamily: 'Nunito',
+      fontSize: 14,
       lineHeight: 22,
-      color: 'white',
+      color: 'primary',
+      fontWeight: '700',
+      borderColor: 'primary',
     },
     button_outline: {
       fontFamily: 'Inter',

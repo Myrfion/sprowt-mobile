@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   useRestyle,
   spacing,
@@ -40,6 +40,12 @@ type Props = SpacingProps<Theme> &
     loading?: boolean;
   };
 
+const styles = StyleSheet.create({
+  touchableOpacity: {
+    width: 100 + '%',
+  },
+});
+
 export const Button = ({
   onPress,
   label,
@@ -48,20 +54,23 @@ export const Button = ({
   ...rest
 }: Props) => {
   const props = useRestyle(restyleFunctions, {...rest, variant});
+
   const textVariant = 'button_' + variant;
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={styles.touchableOpacity}>
       <ButtonContainer
-        borderRadius={44}
+        borderWidth={1}
+        borderColor={'primary'}
+        borderRadius={30}
         flexDirection="row"
-        paddingVertical="m"
         paddingHorizontal="xl"
         marginVertical="s"
         justifyContent="center"
+        paddingVertical="s"
         {...props}>
         {loading ? (
-          <ActivityIndicator size="small" />
+          <ActivityIndicator size="small" color={'white'} />
         ) : (
           <Text variant={textVariant as Partial<keyof Theme['textVariants']>}>
             {label}

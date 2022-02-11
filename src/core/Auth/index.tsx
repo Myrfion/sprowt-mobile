@@ -1,25 +1,91 @@
-/// Auth.tsx
 import create from 'zustand';
-import {getToken, setToken, removeToken, TokenType} from './utils';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {getToken} from './utils';
+import {SingInFormData} from 'screens';
+import {client} from 'api/client';
+import {showErrorMessage} from 'ui';
+import {showMessage} from 'react-native-flash-message';
 
 interface AuthState {
-  token: TokenType | null;
-  status: 'idle' | 'signOut' | 'signIn';
-  signIn: (data: TokenType) => void;
+  token: string | null | undefined;
+  user: FirebaseAuthTypes.User | null;
+  loginErrors: {
+    login: string | null;
+    password: string | null;
+  };
+  resetPassowordErrors: {
+    email: string | null;
+  };
+  signIn: (user: SingInFormData) => void;
   signOut: () => void;
+  signUp: (newUser) => void;
   hydrate: () => void;
+  getUser: () => void;
+  resetPassword: (email: string) => void;
+  updateUser: () => void;
 }
 
 export const useAuth = create<AuthState>((set, get) => ({
-  status: 'idle',
   token: null,
-  signIn: token => {
-    setToken(token);
-    set({status: 'signIn', token});
+  user: null,
+  loginErrors: {
+    password: null,
+    login: null,
   },
-  signOut: () => {
-    removeToken();
-    set({status: 'signOut', token: null});
+  resetPassowordErrors: {
+    email: null,
+  },
+  signUp: async newUser => {
+    try {
+      const {user} = await auth().createUserWithEmailAndPassword(
+        newUser.email,
+        newUser.password,
+      );
+
+      await user.updateProfile({
+        displayName: `${newUser.firstName} ${newUser.lastName}`,
+      });
+
+      await user.sendEmailVerification();
+
+      set({user: auth().currentUser});
+    } catch (error: any) {
+      showErrorMessage(error.message);
+    }
+  },
+  updateUser: () => {
+    const user = auth().currentUser;
+
+    set({user});
+  },
+  getUser: () => {
+    return auth().currentUser;
+  },
+  signIn: async (user: SingInFormData) => {
+    try {
+      await auth().signInWithEmailAndPassword(user.email, user.password);
+    } catch (error: any) {
+      if (error.code === 'auth/wrong-password') {
+        set({loginErrors: {password: 'Wrong password', login: null}});
+        showErrorMessage(error.code);
+      }
+    }
+  },
+  signOut: async () => {
+    await auth().signOut();
+    set({token: null, user: null});
+  },
+  resetPassword: async email => {
+    try {
+      await auth().sendPasswordResetEmail(email);
+
+      showMessage({
+        message: 'Instructions are sent to your email',
+        type: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+    }
   },
   hydrate: () => {
     try {
@@ -39,3 +105,25 @@ export const useAuth = create<AuthState>((set, get) => ({
 
 export const signOut = () => useAuth.getState().signOut();
 export const hydrateAuth = () => useAuth.getState().hydrate();
+
+auth().onUserChanged(async user => {
+  useAuth.setState(prev => ({...prev, user}));
+});
+
+auth().onAuthStateChanged(async user => {
+  try {
+    if (user) {
+      const token = await user.getIdToken();
+
+      useAuth.setState(prev => ({...prev, token, user}));
+      client.interceptors.request.use(config => {
+        return {
+          ...config,
+          headers: {...config.headers, Authorization: `Bearer ${token}`},
+        };
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
