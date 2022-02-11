@@ -22,29 +22,32 @@ export type InputControllerType<T> = {
 interface Props<T> extends TextInputProps, InputControllerType<T> {
   disabled?: boolean;
   label?: string;
+  error?: string | null;
 }
 
 export function Input<T>(props: Props<T>) {
-  const {label, name, control, rules, ...inputProps} = props;
+  const {label, name, control, rules, error, ...inputProps} = props;
   const {colors} = useTheme();
   const {field, fieldState} = useController({control, name, rules});
   const [isFocussed, setIsFocussed] = React.useState(false);
   const onBlur = () => setIsFocussed(false);
   const onFocus = () => setIsFocussed(true);
 
-  const borderColor = fieldState.invalid
+  const hasError = error || fieldState.invalid;
+
+  const borderColor = hasError
     ? colors.red
     : isFocussed
-    ? colors.secondary
-    : colors.grey2;
+    ? colors.neutral900
+    : colors.neutral300;
+
   return (
     <View key={`input-${name}`} marginBottom="m">
       {label && (
         <Text
           variant="label"
-          color={
-            fieldState.invalid ? 'red' : isFocussed ? 'secondary' : 'grey1'
-          }>
+          color={hasError ? 'red' : 'neutral900'}
+          style={styles.label}>
           {label}
         </Text>
       )}
@@ -68,6 +71,11 @@ export function Input<T>(props: Props<T>) {
           {fieldState.error.message}
         </Text>
       )}
+      {error && (
+        <Text fontSize={12} color="red">
+          {error}
+        </Text>
+      )}
     </View>
   );
 }
@@ -77,9 +85,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3F3',
   },
   input: {
-    borderBottomWidth: 1,
+    borderWidth: 1,
     marginBottom: 4,
-    padding: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 30,
     fontSize: 16,
+  },
+  label: {
+    marginLeft: 16,
   },
 });

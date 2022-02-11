@@ -10,13 +10,11 @@ import {AuthNavigator} from './AuthNavigator';
 const Stack = createStackNavigator();
 
 export const Root = () => {
-  const {status} = useAuth();
+  const {user} = useAuth();
 
   useEffect(() => {
-    if (status !== 'idle') {
-      RNBootSplash.hide({fade: true});
-    }
-  }, [status]);
+    RNBootSplash.hide({fade: true});
+  }, []);
 
   return (
     <Stack.Navigator
@@ -24,9 +22,9 @@ export const Root = () => {
         cardOverlayEnabled: false,
         headerShown: false,
         gestureEnabled: false,
-        animationTypeForReplace: status === 'signIn' ? 'push' : 'pop',
+        animationTypeForReplace: user ? 'push' : 'pop',
       }}>
-      {status === 'signIn' ? (
+      {user && user.emailVerified ? (
         <Stack.Screen name="App" component={TabNavigator} />
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
