@@ -4,7 +4,6 @@ import {getToken} from './utils';
 import {SingInFormData} from 'screens';
 import {client} from 'api/client';
 import {showErrorMessage} from 'ui';
-import {showMessage} from 'react-native-flash-message';
 
 type Status = 'success' | 'loading' | 'error' | 'idle';
 

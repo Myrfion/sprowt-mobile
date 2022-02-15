@@ -44,6 +44,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
     "react-native-svg": "^12.1.1",
+    "react-native-swiper": "^1.6.0",
     "react-query": "^3.34.12",
     "yup": "^0.32.9",
     "zustand": "^3.6.9"

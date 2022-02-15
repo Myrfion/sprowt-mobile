@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {useAuth} from 'core';
 import {NavigationContainer} from './NavigationContainer';
-import {TabNavigator} from './TabNavigator';
+import {HomeNavigator} from './TabNavigator';
 import {AuthNavigator} from './AuthNavigator';
 
 const Stack = createStackNavigator();
@@ -25,7 +25,7 @@ export const Root = () => {
         animationTypeForReplace: user ? 'push' : 'pop',
       }}>
       {user && user.emailVerified ? (
-        <Stack.Screen name="App" component={TabNavigator} />
+        <Stack.Screen name="App" component={HomeNavigator} />
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
       )}
