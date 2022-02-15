@@ -42,7 +42,7 @@ export function Input<T>(props: Props<T>) {
     : colors.neutral300;
 
   return (
-    <View key={`input-${name}`} marginBottom="m">
+    <View key={`input-${name}`} marginBottom="m" width="100%">
       {label && (
         <Text
           variant="label"

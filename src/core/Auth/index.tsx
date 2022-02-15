@@ -6,6 +6,8 @@ import {client} from 'api/client';
 import {showErrorMessage} from 'ui';
 import {showMessage} from 'react-native-flash-message';
 
+type Status = 'success' | 'loading' | 'error' | 'idle';
+
 interface AuthState {
   token: string | null | undefined;
   user: FirebaseAuthTypes.User | null;
@@ -16,6 +18,7 @@ interface AuthState {
   resetPassowordErrors: {
     email: string | null;
   };
+  resetPasswordStatus: Status;
   signIn: (user: SingInFormData) => void;
   signOut: () => void;
   signUp: (newUser) => void;
@@ -35,6 +38,7 @@ export const useAuth = create<AuthState>((set, get) => ({
   resetPassowordErrors: {
     email: null,
   },
+  resetPasswordStatus: 'idle',
   signUp: async newUser => {
     try {
       const {user} = await auth().createUserWithEmailAndPassword(
@@ -77,14 +81,21 @@ export const useAuth = create<AuthState>((set, get) => ({
   },
   resetPassword: async email => {
     try {
+      set({
+        resetPasswordStatus: 'loading',
+      });
       await auth().sendPasswordResetEmail(email);
 
-      showMessage({
-        message: 'Instructions are sent to your email',
-        type: 'success',
+      set({
+        resetPasswordStatus: 'success',
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      set({
+        resetPasswordStatus: 'error',
+        resetPassowordErrors: {
+          email: error.code,
+        },
+      });
     }
   },
   hydrate: () => {

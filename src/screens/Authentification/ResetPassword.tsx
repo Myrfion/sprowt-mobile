@@ -1,11 +1,12 @@
 import React from 'react';
-import {Button, Input, Text} from 'ui';
+import {Button, EnvelopeIcon, Input, Text, View} from 'ui';
 import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {Image, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'ui/SafeAreaView';
+import {useNavigation} from '@react-navigation/native';
 
 export type ForgotPassowordFormData = {
   email: string;
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1,
     height: 100 + '%',
+    alignItems: 'center',
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -46,10 +48,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 20,
   },
+  iconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: '#EAF6EF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 28,
+  },
 });
 
 export const ResetPassword = () => {
-  const {resetPassowordErrors, resetPassword} = useAuth();
+  const navigation = useNavigation();
+  const {resetPassowordErrors, resetPassword, resetPasswordStatus} = useAuth();
 
   const {handleSubmit, control} = useForm<ForgotPassowordFormData>({
     resolver: yupResolver(schema),
@@ -61,25 +73,49 @@ export const ResetPassword = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+      <View width="100%">
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+      </View>
       <Text variant="header" textAlign="center">
-        Reset password
+        {resetPasswordStatus === 'success'
+          ? 'Check your email'
+          : 'Reset password'}
       </Text>
       <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!
+        {resetPasswordStatus === 'success'
+          ? 'Password recovery instructions sent to\n your email.'
+          : ' Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!'}
       </Text>
-      <Input
-        control={control}
-        name="email"
-        label="Email"
-        error={resetPassowordErrors.email}
-      />
-
-      <Button
-        label="Send instructions"
-        onPress={handleSubmit(onSubmit)}
-        variant="primary"
-      />
+      {resetPasswordStatus === 'success' ? (
+        <>
+          <View style={styles.iconContainer}>
+            <EnvelopeIcon />
+          </View>
+          <Button
+            label="Back to login"
+            onPress={() => navigation.navigate('Login')}
+            variant="primary"
+          />
+        </>
+      ) : (
+        <>
+          <Input
+            control={control}
+            name="email"
+            label="Email"
+            error={resetPassowordErrors.email}
+          />
+          <Button
+            label="Send instructions"
+            onPress={handleSubmit(onSubmit)}
+            variant="primary"
+            loading={resetPasswordStatus === 'loading'}
+          />
+        </>
+      )}
     </SafeAreaView>
   );
 };

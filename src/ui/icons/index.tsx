@@ -102,3 +102,27 @@ export const LockIcon = props => {
     </Svg>
   );
 };
+
+export const EnvelopeIcon = props => (
+  <Svg
+    width={43}
+    height={35}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M6.35 2.35h30.3a3.799 3.799 0 0 1 3.788 3.788v22.725a3.799 3.799 0 0 1-3.788 3.787H6.35a3.799 3.799 0 0 1-3.787-3.787V6.138A3.799 3.799 0 0 1 6.35 2.35Z"
+      stroke="#0B5641"
+      strokeWidth={3.788}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M40.438 6.138 21.5 19.394 2.562 6.138"
+      stroke="#0B5641"
+      strokeWidth={3.788}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
