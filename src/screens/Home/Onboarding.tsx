@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef, useState} from 'react';
+import useAsyncStorage from 'core/Storage';
+import React, {useRef, useState, useEffect} from 'react';
 import {Image, StyleSheet} from 'react-native';
-import {default as OnboardingSwiper} from 'react-native-onboarding-swiper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 
@@ -38,6 +38,13 @@ const styles = StyleSheet.create({
   image1: {width: 352, height: 313},
   image2: {width: 355, height: 278},
   image3: {width: 352, height: 404},
+  dotStyle: {width: 10, height: 10, borderRadius: 10},
+  dotStyleActive: {
+    width: 10,
+    height: 10,
+    borderRadius: 10,
+    backgroundColor: BaseTheme.colors.primary,
+  },
 });
 
 const sliderLength = 3;
@@ -46,11 +53,16 @@ const Onboarding = () => {
   const navigation = useNavigation();
   const swiperRef = useRef();
   const [index, setIndex] = useState(0);
-  console.log(index);
+
+  const {setValue} = useAsyncStorage();
+
+  useEffect(() => {
+    setValue('hadOnboarding', 'yes');
+  }, [setValue]);
 
   function onNext() {
     if (index + 1 === sliderLength) {
-      navigation.navigate('Home');
+      navigation.navigate('FeelingPicker');
     } else {
       swiperRef.current.scrollBy(1);
     }
@@ -64,13 +76,8 @@ const Onboarding = () => {
         ref={swiperRef}
         loop={false}
         bounces
-        dotStyle={{width: 10, height: 10, borderRadius: 10}}
-        activeDotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 10,
-          backgroundColor: BaseTheme.colors.primary,
-        }}>
+        dotStyle={styles.dotStyle}
+        activeDotStyle={styles.dotStyleActive}>
         <View style={styles.slide}>
           <Image
             source={require('../../../assets/illustrations/il_onboarding1.png')}

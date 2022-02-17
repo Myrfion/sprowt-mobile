@@ -3,6 +3,7 @@ import Svg, {G, Circle, Path, Defs, ClipPath} from 'react-native-svg';
 export * from './Settings';
 
 export * from './Home';
+export * from './FeelingsPicker';
 
 export const GoogleIcon = props => (
   <Svg
