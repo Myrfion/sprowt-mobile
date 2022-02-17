@@ -1,6 +1,6 @@
 import {useAuth} from 'core';
 import React, {useEffect} from 'react';
-import {Button, Screen, showErrorMessage, Text, View} from 'ui';
+import {Button, Screen, Text, View} from 'ui';
 
 export const Home = () => {
   const {signOut, user} = useAuth();
