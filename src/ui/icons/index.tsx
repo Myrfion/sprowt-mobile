@@ -127,3 +127,34 @@ export const EnvelopeIcon = props => (
     />
   </Svg>
 );
+
+export const HeadphoneIcon = props => (
+  <Svg
+    width={11}
+    height={10}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M5.055 0a5.1 5.1 0 0 0-5 5.185V7.5a2 2 0 1 0 2-2 1.955 1.955 0 0 0-1 .28v-.595a4.1 4.1 0 0 1 4-4.185 4.1 4.1 0 0 1 4 4.185v.595a1.955 1.955 0 0 0-1-.28 2 2 0 1 0 2 2V5.185a5.1 5.1 0 0 0-5-5.185Zm-3 6.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm6 2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
+      fill="#0B5641"
+    />
+  </Svg>
+);
+
+export const HeartIcon = props => (
+  <Svg
+    width={17}
+    height={16}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M15.05 2.457a4 4 0 0 0-1.299-.894 3.903 3.903 0 0 0-3.065 0 3.999 3.999 0 0 0-1.3.894l-.771.795-.772-.795A3.947 3.947 0 0 0 5.011 1.25c-1.062 0-2.081.435-2.832 1.208a4.19 4.19 0 0 0-1.173 2.918 4.19 4.19 0 0 0 1.173 2.917l.772.795 5.664 5.835 5.664-5.835.772-.795c.372-.383.667-.837.868-1.338a4.232 4.232 0 0 0 0-3.158 4.135 4.135 0 0 0-.868-1.339Z"
+      fill={props.fill}
+      stroke="#F8F8F8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
