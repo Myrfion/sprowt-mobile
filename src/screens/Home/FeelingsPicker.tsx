@@ -78,7 +78,10 @@ const FeelingPicker = () => {
             );
           })}
         </View>
-        <Button label="Let's go" onPress={() => navigation.navigate('Home')} />
+        <Button
+          label="Let's go"
+          onPress={() => navigation.navigate('Home', {feeling: pickedFeeling})}
+        />
       </SafeAreaView>
     </ScrollView>
   );
