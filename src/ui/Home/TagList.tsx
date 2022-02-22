@@ -9,9 +9,11 @@ type Props = {
 const TagsList: React.FC<Props> = props => {
   const {tags} = props;
 
+  const slicedTags = tags.slice(0, 3);
+
   return (
     <View flexDirection="row" mb="xs" flexWrap="wrap">
-      {tags.map((tag, index) => {
+      {slicedTags.map((tag, index) => {
         console.log(tag.id);
         return (
           <React.Fragment key={tag.id}>
@@ -19,7 +21,7 @@ const TagsList: React.FC<Props> = props => {
               {tag.name}
             </Text>
             <Text color="black" fontSize={12} style={{marginTop: -3}}>
-              {tags.length - 1 !== index && ' . '}
+              {slicedTags.length - 1 !== index && ' . '}
             </Text>
           </React.Fragment>
         );

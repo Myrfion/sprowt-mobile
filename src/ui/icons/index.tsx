@@ -78,31 +78,22 @@ export const AppleIcon = props => (
   </Svg>
 );
 
-export const LockIcon = props => {
-  return (
-    <Svg
-      width={47}
-      height={47}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}>
-      <Path
-        d="M36.755 21.606H10.243a3.788 3.788 0 0 0-3.788 3.788V38.65a3.787 3.787 0 0 0 3.788 3.788h26.512a3.787 3.787 0 0 0 3.788-3.788V25.394a3.788 3.788 0 0 0-3.788-3.788Z"
-        stroke="#0B5641"
-        strokeWidth={3.788}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M14.03 21.607v-7.575a9.469 9.469 0 1 1 18.938 0v7.575"
-        stroke="#0B5641"
-        strokeWidth={3.788}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-};
+export const LockIcon = props => (
+  <Svg
+    width={18}
+    height={18}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M14.25 8.25H3.75a1.5 1.5 0 0 0-1.5 1.5V15a1.5 1.5 0 0 0 1.5 1.5h10.5a1.5 1.5 0 0 0 1.5-1.5V9.75a1.5 1.5 0 0 0-1.5-1.5ZM5.25 8.25v-3a3.75 3.75 0 0 1 7.5 0v3"
+      stroke="#F8F8F8"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
 
 export const EnvelopeIcon = props => (
   <Svg

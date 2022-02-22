@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
     top: 12,
     right: 12,
   },
+  dotSeparator: {
+    marginTop: -3,
+  },
 });
 
 interface Props extends IPost {
@@ -77,8 +80,9 @@ const HorizontalCard: React.FC<Props> = props => {
       </View>
       <View p="s">
         <View flexDirection="row">
-          <Text>{title} </Text>
-          <Text color="neutral700">
+          <Text>{title}</Text>
+          <Text style={styles.dotSeparator}> . </Text>
+          <Text color="neutral700" fontWeight="500">
             {mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}
           </Text>
         </View>
