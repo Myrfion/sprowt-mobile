@@ -1,11 +1,14 @@
 import * as React from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import {TextInput, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
 import {SearchIcon} from './icons';
-import {View} from './View';
+import {Text} from './Text';
+import {BaseTheme} from './theme';
 
 type Props = {
   text: string;
   onChange: (newText: string) => void;
+  onPress?: () => void;
+  autoFocus?: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -17,10 +20,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     paddingHorizontal: 16,
+
     shadowOffset: {width: 0, height: 0},
     shadowColor: '#0F172A',
     shadowOpacity: 0.08,
     elevation: 3,
+    width: 100 + '%',
   },
   input: {
     paddingVertical: 12,
@@ -28,16 +33,30 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SearchInput: React.FC<Props> = ({text, onChange}) => {
+export const SearchInput: React.FC<Props> = ({
+  text,
+  onChange,
+  onPress,
+  autoFocus,
+}) => {
   return (
-    <View style={styles.inputContainer}>
+    <TouchableOpacity style={styles.inputContainer} onPress={onPress}>
       <SearchIcon />
-      <TextInput
-        value={text}
-        onChangeText={onChange}
-        placeholder="Topic, emotion, keyword"
-        style={styles.input}
-      />
-    </View>
+      {onPress ? (
+        <Text color="neutral300" py="s" ml="s">
+          Topic, emotion, keyword
+        </Text>
+      ) : (
+        <TextInput
+          value={text}
+          onChangeText={onChange}
+          placeholder="Topic, emotion, keyword"
+          style={styles.input}
+          placeholderTextColor={BaseTheme.colors.neutral300}
+          autoFocus={autoFocus}
+          returnKeyType="search"
+        />
+      )}
+    </TouchableOpacity>
   );
 };
