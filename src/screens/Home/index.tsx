@@ -2,7 +2,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {usePosts} from 'api/usePosts';
 import {useAuth} from 'core';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {RefreshControl, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Button, Screen, Text} from 'ui';
 import PhotoCard from 'ui/Home/PhotoCard';
@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
   safeAreaView: {
     paddingTop: 16,
   },
+  scrollView: {
+    paddingHorizontal: 16,
+  },
 });
 
 export const Home = () => {
@@ -21,14 +24,20 @@ export const Home = () => {
 
   const {signOut, user} = useAuth();
   const [search, setSearch] = useState('');
-  const {data, isLoading, error} = usePosts({tag: router.params?.feeling});
+  const {data, isLoading, error, refetch} = usePosts({
+    tag: router.params?.feeling,
+  });
   console.log(data?.length, isLoading, error);
   useEffect(() => {}, []);
 
   const firstName = user?.displayName?.split(' ')[0];
 
   return (
-    <Screen>
+    <ScrollView
+      style={styles.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+      }>
       <SafeAreaView style={styles.safeAreaView}>
         <Text
           variant="header"
@@ -75,6 +84,6 @@ export const Home = () => {
         </ScrollView>
         <Button label="LogOut" onPress={signOut} />
       </SafeAreaView>
-    </Screen>
+    </ScrollView>
   );
 };

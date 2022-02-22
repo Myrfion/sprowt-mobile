@@ -5,7 +5,7 @@ import {
   StyleSheetProperties,
   TouchableOpacity,
 } from 'react-native';
-import {View, Text, HeadphoneIcon, HeartIcon} from 'ui';
+import {View, Text, HeadphoneIcon, HeartIcon, LockIcon} from 'ui';
 import {IPost, MediaTypes} from '../../../types/index';
 
 const styles = StyleSheet.create({
@@ -49,13 +49,22 @@ interface Props extends IPost {
 }
 
 const PhotoCard: React.FC<Props> = props => {
-  const {rootStyles, isLiked, onPress, title, tags, thumbnail} = props;
+  const {rootStyles, isLiked, onPress, title, tags, thumbnail, isPremium} =
+    props;
+
+  const slicedTags = tags.slice(0, 3);
 
   return (
     <TouchableOpacity style={[styles.root, rootStyles || {}]} onPress={onPress}>
-      <TouchableOpacity style={styles.likeIcon}>
-        <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
-      </TouchableOpacity>
+      {isPremium ? (
+        <View style={styles.likeIcon}>
+          <LockIcon />
+        </View>
+      ) : (
+        <TouchableOpacity style={styles.likeIcon}>
+          <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
+        </TouchableOpacity>
+      )}
       <Image source={{uri: thumbnail}} style={styles.image} />
       <View style={styles.overlay} />
       <View padding="s" alignSelf="flex-end" width="100%">
@@ -63,7 +72,7 @@ const PhotoCard: React.FC<Props> = props => {
           {title}
         </Text>
         <View flexDirection="row" mb="xs" flexWrap="wrap">
-          {tags.map((tag, index) => {
+          {slicedTags.slice(0, 3).map((tag, index) => {
             console.log(tag.id);
             return (
               <React.Fragment key={tag.id}>
@@ -71,7 +80,7 @@ const PhotoCard: React.FC<Props> = props => {
                   {tag.name}
                 </Text>
                 <Text color="white" fontSize={12} style={{marginTop: -3}}>
-                  {tags.length - 1 !== index && ' . '}
+                  {slicedTags.length - 1 !== index && ' . '}
                 </Text>
               </React.Fragment>
             );

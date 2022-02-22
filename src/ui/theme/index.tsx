@@ -40,7 +40,7 @@ export const BaseTheme = {
   spacing: {
     xss: 2,
     xs: 4,
-    s: 8,
+    s: 12,
     m: 16,
     l: 24,
     xl: 40,
