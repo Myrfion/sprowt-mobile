@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {View, Text, HeadphoneIcon, HeartIcon} from 'ui';
-import {IPost, ITag} from '../../../types/index';
+import {IPost, MediaTypes} from '../../../types/index';
 
 const styles = StyleSheet.create({
   root: {

@@ -5,6 +5,7 @@ import {Home} from 'screens';
 import Onboarding from 'screens/Home/Onboarding';
 import FeelingPicker from 'screens/Home/FeelingsPicker';
 import useAsyncStorage from 'core/Storage';
+import Search from 'screens/Home/Search';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="FeelingPicker" component={FeelingPicker} />
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
 };

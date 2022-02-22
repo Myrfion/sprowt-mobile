@@ -1,4 +1,4 @@
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {usePosts} from 'api/usePosts';
 import {useAuth} from 'core';
 import React, {useEffect, useState} from 'react';
@@ -17,10 +17,11 @@ const styles = StyleSheet.create({
 
 export const Home = () => {
   const router = useRoute();
+  const navigation = useNavigation();
 
   const {signOut, user} = useAuth();
   const [search, setSearch] = useState('');
-  const {data, isLoading, error} = usePosts();
+  const {data, isLoading, error} = usePosts({tag: router.params?.feeling});
   console.log(data?.length, isLoading, error);
   useEffect(() => {}, []);
 
@@ -37,7 +38,11 @@ export const Home = () => {
           color="neutral900">
           Good morning, {firstName}
         </Text>
-        <SearchInput text={search} onChange={setSearch} />
+        <SearchInput
+          text={search}
+          onChange={setSearch}
+          onPress={() => navigation.navigate('Search')}
+        />
         <Text
           variant="header"
           textAlign="left"
@@ -48,7 +53,10 @@ export const Home = () => {
         </Text>
         <Text fontSize={14} mb="m">
           Recommended for{' '}
-          <Text color="primary" fontWeight="bold">
+          <Text
+            color="primary"
+            fontWeight="bold"
+            onPress={() => navigation.goBack()}>
             {router.params?.feeling}
           </Text>
         </Text>
