@@ -80,7 +80,12 @@ const FeelingPicker = () => {
         </View>
         <Button
           label="Let's go"
-          onPress={() => navigation.navigate('Home', {feeling: pickedFeeling})}
+          onPress={() =>
+            navigation.navigate('TabNavigation', {
+              screen: 'Home',
+              params: {feeling: pickedFeeling},
+            })
+          }
         />
       </SafeAreaView>
     </ScrollView>

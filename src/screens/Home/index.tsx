@@ -82,7 +82,6 @@ export const Home = () => {
             );
           })}
         </ScrollView>
-        <Button label="LogOut" onPress={signOut} />
       </SafeAreaView>
     </ScrollView>
   );
