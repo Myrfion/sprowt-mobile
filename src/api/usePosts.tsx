@@ -8,15 +8,18 @@ type PostFilters = {
 
 const getPosts = async ({queryKey}: any) => {
   const [_key, {tag}] = queryKey;
+  try {
+    console.log('tag: ', tag);
 
-  console.log('tag: ', tag);
-
-  const {data} = await client.get('/posts', {
-    params: {
-      tag,
-    },
-  });
-  return data;
+    const {data} = await client.get('/posts', {
+      params: {
+        tag,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export function usePosts(filters: PostFilters) {
