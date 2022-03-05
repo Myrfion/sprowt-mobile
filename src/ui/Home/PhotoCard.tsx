@@ -73,7 +73,6 @@ const PhotoCard: React.FC<Props> = props => {
         </Text>
         <View flexDirection="row" mb="xs" flexWrap="wrap">
           {slicedTags.slice(0, 3).map((tag, index) => {
-            console.log(tag.id);
             return (
               <React.Fragment key={tag.id}>
                 <Text color="white" fontSize={12} key={tag.id}>

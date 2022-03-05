@@ -14,7 +14,6 @@ const TagsList: React.FC<Props> = props => {
   return (
     <View flexDirection="row" mb="xs" flexWrap="wrap">
       {slicedTags.map((tag, index) => {
-        console.log(tag.id);
         return (
           <React.Fragment key={tag.id}>
             <Text color="neutral700" fontSize={12} key={tag.id}>
