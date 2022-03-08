@@ -1,3 +1,4 @@
+import {useLikeMutation, useLikes} from 'api/useLikes';
 import * as React from 'react';
 import {
   Image,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {View, Text, HeadphoneIcon, HeartIcon, LockIcon} from 'ui';
-import {IPost, MediaTypes} from '../../../types/index';
+import {IPost} from '../../../types/index';
 
 const styles = StyleSheet.create({
   root: {
@@ -49,8 +50,12 @@ interface Props extends IPost {
 }
 
 const PhotoCard: React.FC<Props> = props => {
-  const {rootStyles, isLiked, onPress, title, tags, thumbnail, isPremium} =
-    props;
+  const {rootStyles, onPress, title, tags, thumbnail, isPremium, id} = props;
+
+  const {data: likes} = useLikes();
+  const mutation = useLikeMutation();
+
+  const isLiked = likes?.includes(id);
 
   const slicedTags = tags.slice(0, 3);
 
@@ -61,7 +66,9 @@ const PhotoCard: React.FC<Props> = props => {
           <LockIcon />
         </View>
       ) : (
-        <TouchableOpacity style={styles.likeIcon}>
+        <TouchableOpacity
+          style={styles.likeIcon}
+          onPress={() => mutation.mutate(id)}>
           <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
         </TouchableOpacity>
       )}

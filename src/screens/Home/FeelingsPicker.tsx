@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import FEELINGS from 'constants/feelings';
+import {useFeeling} from 'core/Feeling';
 import React, {useState} from 'react';
 import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {Button, Text, View} from 'ui';
@@ -41,6 +42,14 @@ const styles = StyleSheet.create({
 const FeelingPicker = () => {
   const [pickedFeeling, setPickedFeeling] = useState(FEELINGS[0].name);
   const navigation = useNavigation();
+  const {setCurrent} = useFeeling();
+
+  function onNext() {
+    setCurrent(pickedFeeling);
+    navigation.navigate('TabNavigation', {
+      screen: 'Home',
+    });
+  }
 
   return (
     <ScrollView>
@@ -78,15 +87,7 @@ const FeelingPicker = () => {
             );
           })}
         </View>
-        <Button
-          label="Let's go"
-          onPress={() =>
-            navigation.navigate('TabNavigation', {
-              screen: 'Home',
-              params: {feeling: pickedFeeling},
-            })
-          }
-        />
+        <Button label="Let's go" onPress={onNext} />
       </SafeAreaView>
     </ScrollView>
   );

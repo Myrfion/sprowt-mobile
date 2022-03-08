@@ -1,15 +1,11 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {useLikes} from 'api/useLikes';
 import {usePosts} from 'api/usePosts';
 import {useTags} from 'api/useTags';
 import {useAuth} from 'core';
-import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  RefreshControl,
-  StyleSheet,
-  TouchableOpacity,
-  StyleProp,
-} from 'react-native';
+import {useFeeling} from 'core/Feeling';
+import React, {useState} from 'react';
+import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Text, View} from 'ui';
 import HorizontalCard from 'ui/Home/HorizontalCard';
@@ -21,11 +17,9 @@ import {IPost, ITag} from '../../../types';
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    paddingHorizontal: 16,
     paddingTop: 16,
     flex: 1,
   },
-  scrollView: {},
   tagButton: {
     borderRadius: 20,
     marginRight: 8,
@@ -34,38 +28,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  photoCard: {
+    marginRight: 16,
+  },
+  horizontalCard: {
+    marginBottom: 24,
+  },
 });
 
-//const exploreTags = ['Accaptance', 'Adaptability', 'Anger', 'Anxiety', 'Awe'];
-
 export const Home = () => {
-  const router = useRoute();
   const navigation = useNavigation();
+
+  const {current: currentFeeling} = useFeeling();
+
+  console.log('Feeling: ', currentFeeling);
 
   const {user} = useAuth();
   const [search, setSearch] = useState('');
   const {data: exploreTags} = useTags();
-  console.log(exploreTags);
   const [exploreTag, setExploreTag] = useState<ITag>();
   const {data, isLoading, refetch} = usePosts({
-    tag: router.params?.feeling,
+    tag: currentFeeling,
   });
   const {data: exploreData, isLoading: exploreLoading} = usePosts({
     tag: exploreTag?.name || '',
   });
-  console.log('Tags: ', exploreTags);
-  useEffect(() => {}, []);
 
   const firstName = user?.displayName?.split(' ')[0];
-
-  function onExploreTagPress(tag: ITag) {
-    setExploreTag(tag);
-  }
 
   return (
     <>
       <ScrollView
-        style={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }>
@@ -75,38 +68,44 @@ export const Home = () => {
             textAlign="left"
             fontSize={28}
             paddingBottom="l"
-            color="neutral900">
+            color="neutral900"
+            paddingHorizontal="m">
             Good morning, {firstName}
           </Text>
-          <SearchInput
-            text={search}
-            onChange={setSearch}
-            onPress={() => navigation.navigate('Search')}
-          />
+          <View marginHorizontal="m">
+            <SearchInput
+              text={search}
+              onChange={setSearch}
+              onPress={() => navigation.navigate('Search')}
+            />
+          </View>
           <Text
             variant="header"
             textAlign="left"
             fontSize={28}
             marginTop="m"
-            color="neutral900">
+            color="neutral900"
+            paddingHorizontal="m">
             Made for you
           </Text>
-          <Text fontSize={14} mb="m">
+          <Text fontSize={14} mb="m" paddingHorizontal="m">
             Recommended for{' '}
             <Text
               color="primary"
               fontWeight="bold"
-              onPress={() => navigation.goBack()}>
-              {router.params?.feeling}
+              onPress={() => navigation.navigate('FeelingPicker')}>
+              {currentFeeling}
             </Text>
           </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {data?.map(post => {
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{paddingHorizontal: 16}}>
+            {data?.map((post: IPost) => {
               return (
                 <PhotoCard
                   key={post.id}
-                  rootStyles={{marginRight: 16}}
-                  isLiked
+                  rootStyles={styles.photoCard}
                   onPress={() => console.log('photo-card')}
                   {...post}
                 />
@@ -119,7 +118,8 @@ export const Home = () => {
             fontSize={28}
             marginTop="m"
             color="neutral900"
-            marginBottom="m">
+            marginBottom="m"
+            marginHorizontal="m">
             Explore
           </Text>
           <HorizontalTags
@@ -128,13 +128,13 @@ export const Home = () => {
             onSelect={setExploreTag}
           />
 
-          <View>
+          <View marginHorizontal="m">
             {exploreLoading && <ActivityIndicator />}
             {exploreData?.map((post: IPost) => {
               return (
                 <HorizontalCard
                   key={post.id}
-                  rootStyles={{marginBottom: 24}}
+                  rootStyles={styles.horizontalCard}
                   {...post}
                 />
               );
