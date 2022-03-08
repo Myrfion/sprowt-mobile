@@ -1,11 +1,7 @@
+import {useLikeMutation, useLikes} from 'api/useLikes';
 import * as React from 'react';
-import {
-  Image,
-  StyleSheet,
-  StyleSheetProperties,
-  TouchableOpacity,
-} from 'react-native';
-import {View, Text, HeadphoneIcon, HeartIcon} from 'ui';
+import {Image, StyleProp, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, HeartIcon} from 'ui';
 import {IPost} from '../../../types/index';
 import TagsList from './TagList';
 
@@ -46,14 +42,18 @@ const styles = StyleSheet.create({
 });
 
 interface Props extends IPost {
-  rootStyles?: StyleSheetProperties;
+  rootStyles?: StyleProp<TouchableOpacity>;
   isLiked: boolean;
   onLike: () => void;
   onPress: () => void;
 }
 
 const HorizontalCard: React.FC<Props> = props => {
-  const {thumbnail, rootStyles, isLiked, title, mediaType, tags} = props;
+  const {thumbnail, rootStyles, title, mediaType, tags, id} = props;
+
+  const {data: likes} = useLikes();
+  const likeMutation = useLikeMutation();
+  const isLiked = likes?.includes(id);
 
   return (
     <TouchableOpacity style={[styles.root, rootStyles]}>
@@ -74,7 +74,9 @@ const HorizontalCard: React.FC<Props> = props => {
             10 mins
           </Text>
         </View>
-        <TouchableOpacity style={styles.likeIcon}>
+        <TouchableOpacity
+          style={styles.likeIcon}
+          onPress={() => likeMutation.mutate(id)}>
           <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
         </TouchableOpacity>
       </View>

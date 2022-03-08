@@ -8,7 +8,7 @@ type Props = {
 
 const styles = StyleSheet.create({
   root: {
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
   },
 });
 

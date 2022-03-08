@@ -6,6 +6,10 @@ import {Text} from 'ui';
 import {ITag} from '../../../types';
 
 const styles = StyleSheet.create({
+  scrollView: {
+    marginBottom: 20,
+    marginHorizontal: 16,
+  },
   tagButton: {
     borderRadius: 20,
     marginRight: 8,
@@ -27,7 +31,7 @@ const HorizontalTags: FC<Props> = ({tags, selectedTag, onSelect}) => {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{marginBottom: 20}}>
+      style={styles.scrollView}>
       {tags &&
         tags.map((tag: ITag) => {
           const isSelected = tag === selectedTag;
