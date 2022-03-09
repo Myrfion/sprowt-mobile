@@ -6,8 +6,16 @@ import {
   StyleSheetProperties,
   TouchableOpacity,
 } from 'react-native';
-import {View, Text, HeadphoneIcon, HeartIcon, LockIcon} from 'ui';
-import {IPost} from '../../../types/index';
+import {
+  View,
+  Text,
+  HeadphoneIcon,
+  HeartIcon,
+  LockIcon,
+  VideoIcon,
+  MicIcon,
+} from 'ui';
+import {IPost, MediaTypes} from '../../../types/index';
 
 const styles = StyleSheet.create({
   root: {
@@ -42,6 +50,18 @@ const styles = StyleSheet.create({
   },
 });
 
+function toTitleCase(str: string) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+export const ContentIcons = {
+  [MediaTypes.video]: <VideoIcon />,
+  [MediaTypes.podcast]: <MicIcon />,
+  [MediaTypes.meditation]: <HeadphoneIcon />,
+};
+
 interface Props extends IPost {
   rootStyles: StyleSheetProperties | null;
   isLiked: boolean;
@@ -50,7 +70,16 @@ interface Props extends IPost {
 }
 
 const PhotoCard: React.FC<Props> = props => {
-  const {rootStyles, onPress, title, tags, thumbnail, isPremium, id} = props;
+  const {
+    rootStyles,
+    onPress,
+    title,
+    tags,
+    thumbnail,
+    isPremium,
+    id,
+    mediaType,
+  } = props;
 
   const {data: likes} = useLikes();
   const mutation = useLikeMutation();
@@ -75,9 +104,22 @@ const PhotoCard: React.FC<Props> = props => {
       <Image source={{uri: thumbnail}} style={styles.image} />
       <View style={styles.overlay} />
       <View padding="s" alignSelf="flex-end" width="100%">
-        <Text color="white" fontWeight="bold" fontSize={18} marginBottom="xss">
-          {title}
-        </Text>
+        <View flexDirection="row" alignItems="center">
+          <Text
+            color="white"
+            fontWeight="bold"
+            fontSize={18}
+            marginBottom="xss">
+            {title}
+          </Text>
+          <Text color="white" style={{marginTop: -5}}>
+            {' '}
+            .{' '}
+          </Text>
+          <Text fontWeight="600" color="white">
+            {toTitleCase(mediaType)}
+          </Text>
+        </View>
         <View flexDirection="row" mb="xs" flexWrap="wrap">
           {slicedTags.slice(0, 3).map((tag, index) => {
             return (
@@ -112,7 +154,7 @@ const PhotoCard: React.FC<Props> = props => {
             borderRadius={20}
             alignItems="center"
             justifyContent="center">
-            <HeadphoneIcon />
+            {ContentIcons[mediaType]}
           </View>
         </View>
       </View>
