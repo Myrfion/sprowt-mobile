@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Image, StyleProp, StyleSheet, TouchableOpacity} from 'react-native';
 import {View, Text, HeartIcon} from 'ui';
 import {IPost} from '../../../types/index';
+import {ContentIcons} from './PhotoCard';
 import TagsList from './TagList';
 
 const styles = StyleSheet.create({
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
   dotSeparator: {
     marginTop: -3,
   },
+  contentType: {marginLeft: 'auto'},
 });
 
 interface Props extends IPost {
@@ -81,12 +83,22 @@ const HorizontalCard: React.FC<Props> = props => {
         </TouchableOpacity>
       </View>
       <View p="s">
-        <View flexDirection="row">
+        <View flexDirection="row" alignItems="center">
           <Text>{title}</Text>
           <Text style={styles.dotSeparator}> . </Text>
           <Text color="neutral700" fontWeight="500">
             {mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}
           </Text>
+          <View
+            backgroundColor="success100"
+            paddingVertical="xss"
+            paddingHorizontal="s"
+            borderRadius={20}
+            alignItems="center"
+            justifyContent="center"
+            style={styles.contentType}>
+            {ContentIcons[mediaType]}
+          </View>
         </View>
         <TagsList tags={tags} />
       </View>
