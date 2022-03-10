@@ -58,10 +58,10 @@ export const Button = ({
   const textVariant = 'button_' + variant;
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.touchableOpacity}>
+    <TouchableOpacity onPress={onPress} style={[styles.touchableOpacity]}>
       <ButtonContainer
         borderWidth={1}
-        borderColor={'primary'}
+        borderColor="primary"
         borderRadius={30}
         flexDirection="row"
         paddingHorizontal="xl"

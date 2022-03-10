@@ -3,7 +3,7 @@ import {usePosts} from 'api/usePosts';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from 'ui';
-import HorizontalCard from 'ui/Home/HorizontalCard';
+import MediumCard from 'ui/Home/MediumCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {ScrollView} from 'ui/ScrollView';
 import {IPost} from '../../../types';
@@ -35,7 +35,7 @@ const Favourites = () => {
             const isLiked = likes?.includes(post.id);
 
             return (
-              <HorizontalCard
+              <MediumCard
                 rootStyles={styles.horizontalCard}
                 key={post.id}
                 isLiked={isLiked}

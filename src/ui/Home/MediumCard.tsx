@@ -1,9 +1,10 @@
+import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
 import * as React from 'react';
 import {Image, StyleProp, StyleSheet, TouchableOpacity} from 'react-native';
 import {View, Text, HeartIcon} from 'ui';
 import {IPost} from '../../../types/index';
-import {ContentIcons} from './PhotoCard';
+import {ContentIcons} from './BigCard';
 import TagsList from './TagList';
 
 const styles = StyleSheet.create({
@@ -50,15 +51,21 @@ interface Props extends IPost {
   onPress: () => void;
 }
 
-const HorizontalCard: React.FC<Props> = props => {
+const MediumCard: React.FC<Props> = props => {
   const {thumbnail, rootStyles, title, mediaType, tags, id} = props;
+
+  const navigation = useNavigation();
 
   const {data: likes} = useLikes();
   const likeMutation = useLikeMutation();
   const isLiked = likes?.includes(id);
 
+  const post: IPost = props;
+
   return (
-    <TouchableOpacity style={[styles.root, rootStyles]}>
+    <TouchableOpacity
+      style={[styles.root, rootStyles]}
+      onPress={() => navigation.navigate('Content', {post})}>
       <View style={styles.imageContainer}>
         <Image source={{uri: thumbnail}} style={styles.image} />
         <View
@@ -106,4 +113,4 @@ const HorizontalCard: React.FC<Props> = props => {
   );
 };
 
-export default HorizontalCard;
+export default MediumCard;

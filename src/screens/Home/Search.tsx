@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {BackIcon, Text, View} from 'ui';
-import HorizontalCard from 'ui/Home/HorizontalCard';
+import MediumCard from 'ui/Home/MediumCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {SearchInput} from 'ui/SearchInput';
 import {useNavigation} from '@react-navigation/native';
@@ -58,7 +58,7 @@ const Search = () => {
         )}
         {data?.map(post => {
           return (
-            <HorizontalCard
+            <MediumCard
               isLiked
               onLike={() => console.log('like')}
               onPress={() => console.log('press')}
