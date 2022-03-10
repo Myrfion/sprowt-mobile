@@ -42,7 +42,7 @@ export const BaseTheme = {
     xs: 4,
     s: 12,
     m: 16,
-    l: 24,
+    l: 20,
     xl: 40,
   },
   breakpoints: {

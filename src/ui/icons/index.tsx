@@ -183,3 +183,49 @@ export const HeartIcon = props => (
     />
   </Svg>
 );
+
+export const BackIcon = props => (
+  <Svg
+    width={24}
+    height={24}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M19 12H5M12 19l-7-7 7-7"
+      stroke="#424242"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const ShareIcon = props => (
+  <Svg
+    width={18}
+    height={18}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      d="M3 9v6a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 15 15V9M12 4.5l-3-3-3 3M9 1.5v9.75"
+      stroke="#0B5641"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const BigHeartIcon = props => (
+  <Svg width={18} height={16} xmlns="http://www.w3.org/2000/svg" {...props}>
+    <Path
+      d="M15.63 2.457a4.125 4.125 0 0 0-5.834 0L9 3.252l-.795-.795A4.126 4.126 0 0 0 2.37 8.292l.795.795L9 14.922l5.835-5.835.795-.795a4.127 4.127 0 0 0 0-5.835v0Z"
+      stroke="#37493E"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);

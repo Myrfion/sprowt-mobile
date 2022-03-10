@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TextInput, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
+import {TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import {SearchIcon} from './icons';
 import {Text} from './Text';
 import {BaseTheme} from './theme';

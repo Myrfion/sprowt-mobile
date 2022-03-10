@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
 import * as React from 'react';
 import {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function toTitleCase(str: string) {
+export function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
@@ -65,21 +66,11 @@ export const ContentIcons = {
 interface Props extends IPost {
   rootStyles: StyleSheetProperties | null;
   isLiked: boolean;
-  onLike: () => void;
-  onPress: () => void;
 }
 
-const PhotoCard: React.FC<Props> = props => {
-  const {
-    rootStyles,
-    onPress,
-    title,
-    tags,
-    thumbnail,
-    isPremium,
-    id,
-    mediaType,
-  } = props;
+const BigCard: React.FC<Props> = props => {
+  const {rootStyles, title, tags, thumbnail, isPremium, id, mediaType} = props;
+  const navigation = useNavigation();
 
   const {data: likes} = useLikes();
   const mutation = useLikeMutation();
@@ -89,7 +80,9 @@ const PhotoCard: React.FC<Props> = props => {
   const slicedTags = tags.slice(0, 3);
 
   return (
-    <TouchableOpacity style={[styles.root, rootStyles || {}]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.root, rootStyles || {}]}
+      onPress={() => navigation.navigate('Content', {post: props})}>
       {isPremium ? (
         <View style={styles.likeIcon}>
           <LockIcon />
@@ -162,4 +155,4 @@ const PhotoCard: React.FC<Props> = props => {
   );
 };
 
-export default PhotoCard;
+export default BigCard;

@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {useLikes} from 'api/useLikes';
 import {usePosts} from 'api/usePosts';
 import {useTags} from 'api/useTags';
 import {useAuth} from 'core';
@@ -8,12 +7,12 @@ import React, {useState} from 'react';
 import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Text, View} from 'ui';
-import HorizontalCard from 'ui/Home/HorizontalCard';
+import MediumCard from 'ui/Home/MediumCard';
 import HorizontalTags from 'ui/Home/HorizontalTags';
-import PhotoCard from 'ui/Home/PhotoCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {SearchInput} from 'ui/SearchInput';
 import {IPost, ITag} from '../../../types';
+import BigCard from 'ui/Home/BigCard';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -103,10 +102,9 @@ export const Home = () => {
             style={{paddingHorizontal: 16}}>
             {data?.map((post: IPost) => {
               return (
-                <PhotoCard
+                <BigCard
                   key={post.id}
                   rootStyles={styles.photoCard}
-                  onPress={() => console.log('photo-card')}
                   {...post}
                 />
               );
@@ -132,7 +130,7 @@ export const Home = () => {
             {exploreLoading && <ActivityIndicator />}
             {exploreData?.map((post: IPost) => {
               return (
-                <HorizontalCard
+                <MediumCard
                   key={post.id}
                   rootStyles={styles.horizontalCard}
                   {...post}
