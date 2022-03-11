@@ -82,8 +82,9 @@ export const Content = () => {
   const {data: likes} = useLikes();
   const likeMutation = useLikeMutation();
 
-  const {mediaType, thumbnail, title, id, description, tags}: IPost =
-    route.params?.post;
+  const post: IPost = route.params?.post;
+
+  const {mediaType, thumbnail, title, id, description, tags} = post;
 
   const isLiked = likes.includes(id);
 
@@ -97,7 +98,7 @@ export const Content = () => {
           pb="m"
           pt="s">
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon />
+            <BackIcon color="#424242" />
           </TouchableOpacity>
           <Text fontWeight="600" fontSize={18}>
             {toTitleCase(mediaType)}
@@ -143,7 +144,9 @@ export const Content = () => {
               <BigHeartIcon fill={isLiked ? '#37493E' : 'none'} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.playButton}>
+          <TouchableOpacity
+            style={styles.playButton}
+            onPress={() => navigation.navigate('Player', {post})}>
             <PlayIcon />
           </TouchableOpacity>
         </View>

@@ -193,7 +193,7 @@ export const BackIcon = props => (
     {...props}>
     <Path
       d="M19 12H5M12 19l-7-7 7-7"
-      stroke="#424242"
+      stroke={props.color}
       strokeWidth={1.5}
       strokeLinecap="round"
       strokeLinejoin="round"

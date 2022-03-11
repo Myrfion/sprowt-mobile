@@ -13,6 +13,7 @@ import {BaseTheme, HeartTabIcon, LogoIcon, ProfileTabIcon} from 'ui';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Content} from 'screens/Home/Content';
+import {Player} from 'screens/Home/Player';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -115,6 +116,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="FeelingPicker" component={FeelingPicker} />
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Content" component={Content} />
+      <Stack.Screen name="Player" component={Player} />
     </Stack.Navigator>
   );
 };
