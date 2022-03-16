@@ -34,6 +34,7 @@ export const BaseTheme = {
     neutral300: '#ababab',
     neutral800: '#424242',
     neutral700: '#575757',
+    neutral200: '#C0C0C0',
     success300: '#0B5641',
     success100: '#F6FFFA',
   },
@@ -122,7 +123,7 @@ export const theme = createTheme({
       fontFamily: 'Inter',
       fontSize: 16,
       lineHeight: 22,
-      color: 'text',
+      color: 'neutral700',
     },
     label: {
       fontFamily: 'Inter',

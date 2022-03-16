@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TrackPlayer, {
+  Event,
   RepeatMode,
   State,
   usePlaybackState,
   useProgress,
+  useTrackPlayerEvents,
 } from 'react-native-track-player';
 import {BackIcon, BaseTheme, Text, View} from 'ui';
 import TagsList from 'ui/Home/TagList';
@@ -50,7 +52,40 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4EDDF',
     borderRadius: 72,
   },
+  image: {
+    width: 330,
+    height: 320,
+    borderRadius: 330,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
 });
+
+function convertHMS(value) {
+  const sec = parseInt(value, 10); // convert value to number if it's string
+  let hours = Math.floor(sec / 3600); // get hours
+  let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+  let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
+  // add 0 if value < 10; Example: 2 => 02
+  if (hours < 10) {
+    hours = '0' + hours;
+  }
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
+  return minutes + ':' + seconds; // Return is HH : MM : SS
+}
 
 export const Player = () => {
   const route = useRoute();
@@ -66,6 +101,18 @@ export const Player = () => {
   const [repeat, setRepeat] = useState(false);
 
   const post: IPost = route.params?.post;
+
+  useTrackPlayerEvents(
+    [Event.PlaybackTrackChanged, Event.PlaybackQueueEnded],
+    async event => {
+      console.log('STATE CHANGE: ', event.state);
+      if (event.nextTrack === undefined) {
+        console.log('STATE CHANGE: ', event.state);
+
+        navigation.navigate('Raiting', {post});
+      }
+    },
+  );
 
   const {thumbnail, title, tags, id, mediaPath} = post;
 
@@ -123,7 +170,7 @@ export const Player = () => {
       <ImageBackground
         source={{uri: thumbnail}}
         style={styles.imageBackground}
-        blurRadius={20}
+        blurRadius={3}
         resizeMode="cover">
         <View flex={1} width="100%" alignSelf="stretch" alignItems="center">
           <View
@@ -139,14 +186,14 @@ export const Player = () => {
               <BackIcon color="#fff" />
             </TouchableOpacity>
           </View>
-          <Image
-            source={{uri: thumbnail}}
-            style={{width: 352, height: 352, borderRadius: 352}}
-          />
+          <Image source={{uri: thumbnail}} style={styles.image} />
           <Text color="white" fontSize={32} fontWeight="bold" mt="xl" mb="s">
             {title}
           </Text>
           <TagsList tags={tags} textStyles={{color: 'white', fontSize: 14}} />
+          <Text color="white" mt="s">
+            {convertHMS(progress.position)} / {convertHMS(progress.duration)}
+          </Text>
           <View
             alignSelf="stretch"
             backgroundColor="white"
@@ -188,6 +235,12 @@ export const Player = () => {
                   repeat ? BaseTheme.colors.success300 : BaseTheme.colors.grey3
                 }
               />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () =>
+                await TrackPlayer.seekTo(progress.duration - 5)
+              }>
+              <Text>x</Text>
             </TouchableOpacity>
           </View>
         </View>
