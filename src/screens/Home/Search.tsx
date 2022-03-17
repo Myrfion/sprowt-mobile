@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {BackIcon, Text, View} from 'ui';
+import {BackIcon, BaseTheme, Text, View} from 'ui';
 import MediumCard from 'ui/Home/MediumCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {SearchInput} from 'ui/SearchInput';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSearch} from 'api/useSearch';
 
 const styles = StyleSheet.create({
@@ -27,15 +27,24 @@ const styles = StyleSheet.create({
   scrollView: {
     overflow: 'visible',
   },
+  mediumCard: {
+    marginTop: 16,
+  },
 });
 
 const Search = () => {
   const [query, setQuery] = React.useState('');
   const {data, isLoading, error} = useSearch({text: query});
+  const route = useRoute();
+  const text = route?.params?.text;
 
   const navigation = useNavigation();
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    if (text) {
+      setQuery(text);
+    }
+  }, [text]);
 
   console.log('Error: ', error);
 
@@ -45,9 +54,9 @@ const Search = () => {
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
-          <BackIcon />
+          <BackIcon color={BaseTheme.colors.neutral900} />
         </TouchableOpacity>
-        <View style={{flexDirection: 'row', flex: 1}}>
+        <View flexDirection="row" flex={1}>
           <SearchInput autoFocus text={query} onChange={setQuery} />
         </View>
       </View>
@@ -63,7 +72,7 @@ const Search = () => {
               onLike={() => console.log('like')}
               onPress={() => console.log('press')}
               key={post.id}
-              rootStyles={{marginTop: 16}}
+              rootStyles={styles.mediumCard}
               {...post}
             />
           );

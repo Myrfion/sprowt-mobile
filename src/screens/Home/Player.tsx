@@ -137,9 +137,11 @@ export const Player = () => {
       };
     })();
 
-    return async () => {
-      await TrackPlayer.stop();
-      await TrackPlayer.destroy();
+    return () => {
+      (async () => {
+        await TrackPlayer.stop();
+        await TrackPlayer.destroy();
+      })();
     };
   }, [id, mediaPath, title, thumbnail]);
 
@@ -235,12 +237,6 @@ export const Player = () => {
                   repeat ? BaseTheme.colors.success300 : BaseTheme.colors.grey3
                 }
               />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={async () =>
-                await TrackPlayer.seekTo(progress.duration - 5)
-              }>
-              <Text>x</Text>
             </TouchableOpacity>
           </View>
         </View>
