@@ -1,21 +1,11 @@
-import {useLikes} from 'api/useLikes';
 import {usePosts} from 'api/usePosts';
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {Text} from 'ui';
-import MediumCard from 'ui/Home/MediumCard';
+import MediumCardsList from 'ui/Home/MediumCardsList';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {ScrollView} from 'ui/ScrollView';
-import {IPost} from '../../../types';
-
-const styles = StyleSheet.create({
-  horizontalCard: {
-    marginBottom: 24,
-  },
-});
 
 const Favourites = () => {
-  const {data: likes} = useLikes();
   const {data: posts} = usePosts({tag: ''});
 
   return (
@@ -29,21 +19,7 @@ const Favourites = () => {
           color="neutral900">
           Favourites
         </Text>
-        {posts
-          ?.filter((post: IPost) => likes?.includes(post.id))
-          .map((post: IPost) => {
-            const isLiked = likes?.includes(post.id);
-
-            return (
-              <MediumCard
-                rootStyles={styles.horizontalCard}
-                key={post.id}
-                isLiked={isLiked}
-                onPress={() => console.log('photo-card')}
-                {...post}
-              />
-            );
-          })}
+        <MediumCardsList posts={posts} />
       </SafeAreaView>
     </ScrollView>
   );

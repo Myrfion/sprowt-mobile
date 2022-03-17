@@ -94,7 +94,7 @@ const MediumCard: React.FC<Props> = props => {
           <Text>{title}</Text>
           <Text style={styles.dotSeparator}> . </Text>
           <Text color="neutral700" fontWeight="500">
-            {mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}
+            {mediaType?.charAt(0).toUpperCase() + mediaType?.slice(1)}
           </Text>
           <View
             backgroundColor="success100"

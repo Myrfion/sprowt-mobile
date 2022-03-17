@@ -3,13 +3,23 @@ import {useLikeMutation, useLikes} from 'api/useLikes';
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Svg, {Path} from 'react-native-svg';
+
 import Share from 'react-native-share';
-import {BackIcon, BigHeartIcon, ShareIcon, Text, View, BaseTheme} from 'ui';
+import {
+  BackIcon,
+  BigHeartIcon,
+  ShareIcon,
+  Text,
+  View,
+  showErrorMessage,
+} from 'ui';
 import {ContentIcons, toTitleCase} from 'ui/Home/BigCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
-import {ScrollView} from 'ui/ScrollView';
+import {ScrollView} from 'react-native-gesture-handler';
 import {IPost} from '../../../types';
+import {PlayIcon, LockIcon} from 'ui/icons/Content';
+import {usePosts} from 'api/usePosts';
+import MediumCardsList from 'ui/Home/MediumCardsList';
 
 const styles = StyleSheet.create({
   image: {
@@ -51,29 +61,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   playButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    backgroundColor: BaseTheme.colors.primary,
+    width: 82,
+    height: 82,
+    borderRadius: 82,
+    backgroundColor: '#EDFCF8',
     marginLeft: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#2D2D2D50',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
-
-const PlayIcon = props => (
-  <Svg
-    width={21}
-    height={24}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}>
-    <Path
-      d="M.334 4.327C.334 1.162 3.835-.75 6.497.962l11.936 7.673c2.45 1.575 2.45 5.155 0 6.73L6.497 23.038c-2.662 1.711-6.163-.2-6.163-3.365V4.327Z"
-      fill="white"
-    />
-  </Svg>
-);
 
 export const Content = () => {
   const navigation = useNavigation();
@@ -84,12 +91,26 @@ export const Content = () => {
 
   const post: IPost = route.params?.post;
 
-  const {mediaType, thumbnail, title, id, description, tags} = post;
+  let {data: relatedPosts} = usePosts({tag: post.tags[0].name});
+
+  relatedPosts = relatedPosts?.filter(p => p.id !== post.id);
+
+  const {mediaType, thumbnail, title, id, description, tags, isPremium} = post;
 
   const isLiked = likes.includes(id);
 
+  function onPlay() {
+    if (isPremium) {
+      showErrorMessage('Buy premium to unlock this content');
+
+      return;
+    }
+
+    navigation.navigate('Player', {post});
+  }
+
   return (
-    <ScrollView>
+    <ScrollView style={{paddingHorizontal: 16}}>
       <SafeAreaView position="relative" height="100%" style={{flex: 1}}>
         <View
           flexDirection="row"
@@ -116,7 +137,14 @@ export const Content = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.imageContainer}>
-          <Image source={{uri: thumbnail}} style={styles.image} />
+          <View position="relative">
+            <Image source={{uri: thumbnail}} style={styles.image} />
+            <View style={styles.overlay}>
+              <TouchableOpacity style={styles.playButton} onPress={onPlay}>
+                <PlayIcon />
+              </TouchableOpacity>
+            </View>
+          </View>
           <View
             flexDirection="row"
             justifyContent="space-between"
@@ -140,30 +168,38 @@ export const Content = () => {
             <Text variant="header" mr="s">
               {title}
             </Text>
-            <TouchableOpacity onPress={() => likeMutation.mutate(id)}>
-              <BigHeartIcon fill={isLiked ? '#37493E' : 'none'} />
-            </TouchableOpacity>
+            {isPremium ? (
+              <LockIcon />
+            ) : (
+              <TouchableOpacity onPress={() => likeMutation.mutate(id)}>
+                <BigHeartIcon fill={isLiked ? '#37493E' : 'none'} />
+              </TouchableOpacity>
+            )}
           </View>
-          <TouchableOpacity
-            style={styles.playButton}
-            onPress={() => navigation.navigate('Player', {post})}>
-            <PlayIcon />
-          </TouchableOpacity>
         </View>
-        <View flexDirection="row" mb="l">
+        <ScrollView horizontal>
           {tags.map(tag => {
             return (
-              <View
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Search', {text: tag.name})}
                 style={[styles.infoContainer, {marginRight: 8}]}
                 key={tag.id}>
                 <Text color="success300" fontWeight="bold">
                   {tag.name}
                 </Text>
-              </View>
+              </TouchableOpacity>
             );
           })}
-        </View>
-        <Text>{description}</Text>
+        </ScrollView>
+        <Text my="l">{description}</Text>
+        <View width={100 + '%'} height={1} backgroundColor="neutral200" />
+        <Text my="l" fontSize={16}>
+          Related to{' '}
+          <Text fontSize={16} fontWeight="bold" color="primary">
+            {tags[0].name}
+          </Text>
+        </Text>
+        <MediumCardsList posts={relatedPosts} />
       </SafeAreaView>
     </ScrollView>
   );

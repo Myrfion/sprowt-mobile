@@ -11,7 +11,7 @@ type Props = {
 const TagsList: React.FC<Props> = props => {
   const {tags, textStyles} = props;
 
-  const slicedTags = tags.slice(0, 3);
+  const slicedTags = tags?.slice(0, 3);
 
   return (
     <View flexDirection="row" mb="xs" flexWrap="wrap">
