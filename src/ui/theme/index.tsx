@@ -35,6 +35,8 @@ export const BaseTheme = {
     neutral800: '#424242',
     neutral700: '#575757',
     neutral200: '#C0C0C0',
+    neutral100: '#EAEAEA',
+    neutral400: '#969696',
     success300: '#0B5641',
     success100: '#F6FFFA',
   },
