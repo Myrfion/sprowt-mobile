@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleProp, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {RightArrowIcon} from 'screens/Home/Profile';
+import {RightArrowIcon} from 'ui/icons/Profile';
 import {Text} from 'ui/Text';
-import {BaseTheme} from 'ui/theme';
 import {View} from 'ui/View';
 
 type Props = {
