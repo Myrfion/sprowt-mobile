@@ -14,12 +14,12 @@ import {
   showErrorMessage,
 } from 'ui';
 import {ContentIcons, toTitleCase} from 'ui/Home/BigCard';
-import {SafeAreaView} from 'ui/SafeAreaView';
 import {ScrollView} from 'react-native-gesture-handler';
 import {IPost} from '../../../types';
 import {PlayIcon, LockIcon} from 'ui/icons/Content';
 import {usePosts} from 'api/usePosts';
 import MediumCardsList from 'ui/Home/MediumCardsList';
+import {SafeAreaView} from 'react-native';
 
 const styles = StyleSheet.create({
   image: {
@@ -110,14 +110,15 @@ export const Content = () => {
   }
 
   return (
-    <ScrollView style={{paddingHorizontal: 16}}>
-      <SafeAreaView position="relative" height="100%" style={{flex: 1}}>
+    <View position="relative" height="100%" style={{flex: 1}}>
+      <SafeAreaView>
         <View
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between"
           pb="m"
-          pt="s">
+          pt="s"
+          px="m">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <BackIcon color="#424242" />
           </TouchableOpacity>
@@ -136,6 +137,8 @@ export const Content = () => {
             <ShareIcon />
           </TouchableOpacity>
         </View>
+      </SafeAreaView>
+      <ScrollView style={{paddingHorizontal: 16}}>
         <View style={styles.imageContainer}>
           <View position="relative">
             <Image source={{uri: thumbnail}} style={styles.image} />
@@ -200,7 +203,7 @@ export const Content = () => {
           </Text>
         </Text>
         <MediumCardsList posts={relatedPosts} />
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };

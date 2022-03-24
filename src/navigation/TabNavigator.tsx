@@ -15,6 +15,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Content} from 'screens/Home/Content';
 import {Player} from 'screens/Home/Player';
 import {Raiting} from 'screens/Home/Raiting';
+import {IPost} from '../../types';
+import {Account} from 'screens/Home/Profile/Account';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -35,6 +37,22 @@ const styles = StyleSheet.create({
     shadowRadius: 6.27,
   },
 });
+
+export type TabParamList = {
+  Favorites: undefined;
+  Home: undefined;
+  Profile: undefined;
+};
+
+export type HomeParamList = {
+  Onboarding: undefined;
+  FeelingPicker: undefined;
+  Search: {text?: string};
+  Content: {post: IPost};
+  Player: {post: IPost};
+  Raiting: {post: IPost};
+  Account: undefined;
+};
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -119,6 +137,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Content" component={Content} />
       <Stack.Screen name="Player" component={Player} />
       <Stack.Screen name="Raiting" component={Raiting} />
+      <Stack.Screen name="Account" component={Account} />
     </Stack.Navigator>
   );
 };

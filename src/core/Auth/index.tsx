@@ -4,6 +4,7 @@ import {getToken} from './utils';
 import {SingInFormData} from 'screens';
 import {client} from 'api/client';
 import {showErrorMessage} from 'ui';
+import {useProfileCreate} from 'api/useProfile';
 
 type Status = 'success' | 'loading' | 'error' | 'idle';
 
@@ -20,7 +21,7 @@ interface AuthState {
   resetPasswordStatus: Status;
   signIn: (user: SingInFormData) => void;
   signOut: () => void;
-  signUp: (newUser) => void;
+  signUp: (newUser, onCreateHandler: any) => void;
   hydrate: () => void;
   getUser: () => void;
   resetPassword: (email: string) => void;
@@ -38,7 +39,7 @@ export const useAuth = create<AuthState>((set, get) => ({
     email: null,
   },
   resetPasswordStatus: 'idle',
-  signUp: async newUser => {
+  signUp: async (newUser, onCreateHandler) => {
     try {
       const {user} = await auth().createUserWithEmailAndPassword(
         newUser.email,
@@ -52,6 +53,12 @@ export const useAuth = create<AuthState>((set, get) => ({
       await user.sendEmailVerification();
 
       set({user: auth().currentUser});
+
+      onCreateHandler({
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      });
     } catch (error: any) {
       showErrorMessage(error.message);
     }
@@ -117,10 +124,26 @@ export const signOut = () => useAuth.getState().signOut();
 export const hydrateAuth = () => useAuth.getState().hydrate();
 
 auth().onUserChanged(async user => {
-  useAuth.setState(prev => ({...prev, user}));
+  console.log('auth state changed');
+  try {
+    if (user) {
+      const token = await user.getIdToken();
+
+      useAuth.setState(prev => ({...prev, token, user}));
+      client.interceptors.request.use(config => {
+        return {
+          ...config,
+          headers: {...config.headers, Authorization: `Bearer ${token}`},
+        };
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 auth().onAuthStateChanged(async user => {
+  console.log('auth state changed');
   try {
     if (user) {
       const token = await user.getIdToken();

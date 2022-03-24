@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import {Image, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {useProfileCreate} from 'api/useProfile';
 
 export type PersonalInformationFormData = {
   firstName: string;
@@ -57,6 +58,10 @@ export const PersonalInformation = () => {
   const navigation = useNavigation();
   console.log(route.params);
 
+  const profileCreate = useProfileCreate({
+    onSuccess: () => console.log('user profile created!'),
+  });
+
   const {handleSubmit, control} = useForm<PersonalInformationFormData>({
     resolver: yupResolver(schema),
   });
@@ -65,7 +70,7 @@ export const PersonalInformation = () => {
     const {email, password} = route.params;
     const {firstName, lastName} = data;
 
-    signUp({email, password, firstName, lastName});
+    signUp({email, password, firstName, lastName}, profileCreate.mutate);
     navigation.navigate('EmailVerification');
   };
 

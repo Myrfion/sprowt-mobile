@@ -36,8 +36,8 @@ export interface IFeedback {
   id?: string;
   raiting: number;
   text?: string;
-  userId: string;
-  postId: string;
+  userId: string | undefined;
+  postId: string | undefined;
 }
 
 export interface IInvite {

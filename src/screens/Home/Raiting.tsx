@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {createFeedback, useFeedbackMutation} from 'api/useFeedback';
+import {createFeedback} from 'api/useFeedback';
 import {useAuth} from 'core';
 import React, {useState} from 'react';
 import {
@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 8,
+  },
+  tagsList: {
+    color: 'white',
+    fontSize: 14,
   },
 });
 
@@ -96,7 +100,7 @@ export const Raiting = () => {
           <Text color="white" fontSize={32} fontWeight="bold" mt="xl" mb="s">
             {title}
           </Text>
-          <TagsList tags={tags} textStyles={{color: 'white', fontSize: 14}} />
+          <TagsList tags={tags} textStyles={styles.tagsList} />
           <Text textAlign="center" color="white" mt="xl" fontSize={18} mx="l">
             Proven to help alleviate depression and anxiety, gratitude helps you
             live a happier, healthier, more appreciative life.

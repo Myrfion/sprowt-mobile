@@ -348,6 +348,8 @@ PODS:
   - React-jsinspector (0.67.1)
   - React-logger (0.67.1):
     - glog
+  - react-native-date-picker (4.2.0):
+    - React-Core
   - react-native-image-picker (4.7.3):
     - React-Core
   - react-native-mmkv (2.0.0):
@@ -545,6 +547,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -651,6 +654,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-mmkv:
@@ -767,6 +772,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1af5de75a4c834c05d53a77c1512e5aa6c18412f
   React-jsinspector: ab80bcdb02f28cdfc0dbbaea6db1241565d59002
   React-logger: b08f354e4c928ff794ca477347fea0922aaf11c3
+  react-native-date-picker: d83ab9cccbc497642a93fdca783ae76ecd6b17b6
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-mmkv: 0eda0c2a8af66073f5e7067558189bb920867aee
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
