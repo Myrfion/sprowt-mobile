@@ -1,9 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
+import {useProfile} from 'api/useProfile';
 import {useAuth} from 'core';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {BackIcon, Text, View} from 'ui';
+import {StyleSheet, ScrollView, SafeAreaView, Image} from 'react-native';
+import {Text, View} from 'ui';
 import {
   CardIcon,
   FamilyAccountIcon,
@@ -13,12 +13,20 @@ import {
   SupportIcon,
 } from 'ui/icons/Profile';
 import AccountButton from 'ui/Profile/AccountButton';
-import ProfileAvatar from 'ui/Profile/ProfileAvatar';
-import {SafeAreaView} from 'ui/SafeAreaView';
+import ProfileHeader from 'ui/Profile/ProfileHeader';
 
 const styles = StyleSheet.create({
   accountButton: {
-    marginTop: 16,
+    marginBottom: 16,
+  },
+  scrollView: {
+    paddingHorizontal: 16,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 80,
+    marginBottom: 4,
   },
 });
 
@@ -26,41 +34,35 @@ const Profile = () => {
   const {signOut} = useAuth();
   const navigation = useNavigation();
 
-  const {user} = useAuth();
-
+  const {data: profileData} = useProfile();
+  console.log(profileData);
   return (
-    <ScrollView>
-      <SafeAreaView px="m">
-        <View
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          pb="l"
-          pt="s">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <BackIcon color="#424242" />
-          </TouchableOpacity>
-          <Text fontWeight="600" fontSize={18}>
-            Account
-          </Text>
-          <View width={24}></View>
-        </View>
-        <ProfileAvatar />
-        <View alignItems="center" mb="l">
+    <View flex={1}>
+      <SafeAreaView>
+        <ProfileHeader title="Account" />
+      </SafeAreaView>
+      <ScrollView style={styles.scrollView}>
+        <View alignItems="center" mb="l" mt="xs">
+          {profileData?.data && (
+            <Image
+              source={{uri: profileData?.data.profilePicture}}
+              style={styles.image}
+            />
+          )}
           <Text fontSize={32} textAlign="center" mb="s">
-            {user?.displayName}
+            {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
           <Text>Jan 3 2021</Text>
           <Text color="neutral400">Member Since</Text>
         </View>
-        <Text color="neutral800" fontWeight="bold" fontSize={16}>
+        <Text color="neutral800" fontWeight="bold" fontSize={16} mb="m">
           Account Settings
         </Text>
 
         <AccountButton
           text="Profile"
           icon={<ProfileIcon />}
-          onPress={() => console.log('profile')}
+          onPress={() => navigation.navigate('Account')}
           rootStyles={styles.accountButton}
         />
         <AccountButton
@@ -75,7 +77,7 @@ const Profile = () => {
           onPress={() => console.log('Family account')}
           rootStyles={styles.accountButton}
         />
-        <Text color="neutral800" fontWeight="bold" fontSize={16} mt="l">
+        <Text color="neutral800" fontWeight="bold" fontSize={16} mt="l" mb="m">
           Help
         </Text>
         <AccountButton
@@ -98,8 +100,8 @@ const Profile = () => {
           rootStyles={styles.accountButton}
           isLogOut
         />
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

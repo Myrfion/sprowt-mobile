@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleProp, StyleSheet} from 'react-native';
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {RightArrowIcon} from 'ui/icons/Profile';
 import {Text} from 'ui/Text';
@@ -9,8 +9,8 @@ type Props = {
   text: string;
   icon: React.ReactElement;
   onPress: () => void;
-  rootStyles: StyleProp<TouchableOpacity> | null;
-  isLogOut: boolean | false;
+  rootStyles: StyleProp<ViewStyle> | null;
+  isLogOut?: boolean | false;
 };
 
 const styles = StyleSheet.create({

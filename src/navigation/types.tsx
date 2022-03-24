@@ -1,6 +1,8 @@
 import type {AuthStackParamList} from './AuthNavigator';
+import type {TabParamList} from './TabNavigator';
+import type {HomeParamList} from './TabNavigator';
 
-export type RootStackParamList = AuthStackParamList;
+type RootStackParamList = AuthStackParamList & HomeParamList & TabParamList;
 
 // export type RootStackParamList = AuthStackParamList & XXXStackParamList  &  YYYStackParamList  ;
 

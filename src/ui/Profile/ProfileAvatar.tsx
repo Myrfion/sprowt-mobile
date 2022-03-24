@@ -1,18 +1,15 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, Platform} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Svg, {Path} from 'react-native-svg';
-import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'react-native-image-picker';
 import {LogoIcon} from 'ui/icons';
 import {View} from 'ui/View';
-import {useProfilePicture, useProfilePictureAdd} from 'api/useProfilePicture';
 import {ImageLibraryOptions} from 'react-native-image-picker';
+import {useController} from 'react-hook-form';
 
 const styles = StyleSheet.create({
   touchableOpacity: {
-    width: 90,
-    height: 90,
     alignSelf: 'center',
   },
   root: {
@@ -48,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CameraIcon = props => (
+const CameraIcon = (props: any) => (
   <Svg
     width={16}
     height={16}
@@ -70,13 +67,18 @@ const CameraIcon = props => (
   </Svg>
 );
 
-const ProfileAvatar = () => {
-  const [image, setImage] =
-    useState<ImagePicker.Asset | null | undefined>(null);
+type Props = {
+  editMode: Boolean;
+  name: string;
+  control: any;
+};
 
-  const {data: profilePictureData, refetch} = useProfilePicture();
-  const addProfilePicture = useProfilePictureAdd({onSuccess: refetch});
-  console.log('profilePictureData: ', profilePictureData?.data.profilePicture);
+const ProfileAvatar: React.FC<Props> = ({editMode, control, name}) => {
+  const {field} = useController({
+    control,
+    name,
+  });
+
   const selectImage = async () => {
     const options: ImageLibraryOptions = {
       maxHeight: 200,
@@ -89,41 +91,32 @@ const ProfileAvatar = () => {
     const result = await ImagePicker.launchImageLibrary(options);
 
     if (result) {
-      setImage(result.assets[0]);
-      await uploadImage();
+      field.onChange(result?.assets[0].uri);
+      // await uploadImage();
     }
   };
 
-  const uploadImage = async () => {
-    const {uri} = image;
-    const filename =
-      '/profiles/' + `${uri.substring(uri.lastIndexOf('/') + 1)}`;
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+  const ContainerComponent = editMode ? TouchableOpacity : View;
 
-    try {
-      const ref = await storage().ref(filename);
-
-      await ref.putFile(uploadUri);
-      const url = await ref.getDownloadURL();
-      console.log(url);
-      addProfilePicture.mutate(url);
-    } catch (e) {
-      console.error(e);
-    }
-
-    console.log('Photo uploaded!');
-    setImage(null);
-  };
+  const imageSize = editMode ? 90 : 80;
 
   return (
-    <TouchableOpacity style={styles.touchableOpacity} onPress={selectImage}>
+    <ContainerComponent
+      style={[
+        styles.touchableOpacity,
+        {
+          width: imageSize,
+          height: imageSize,
+        },
+      ]}
+      onPress={editMode ? selectImage : () => {}}>
       <View width={80} height={80} borderRadius={80} style={styles.root}>
-        {profilePictureData?.data.profilePicture ? (
+        {field.value ? (
           <Image
             resizeMode="cover"
             resizeMethod="scale"
             source={{
-              uri: profilePictureData?.data.profilePicture,
+              uri: field.value,
             }}
             style={styles.image}
           />
@@ -131,10 +124,12 @@ const ProfileAvatar = () => {
           <LogoIcon />
         )}
       </View>
-      <View style={styles.cameraButton}>
-        <CameraIcon />
-      </View>
-    </TouchableOpacity>
+      {editMode && (
+        <View style={styles.cameraButton}>
+          <CameraIcon />
+        </View>
+      )}
+    </ContainerComponent>
   );
 };
 
