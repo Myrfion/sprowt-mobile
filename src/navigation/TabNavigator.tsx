@@ -17,6 +17,7 @@ import {Player} from 'screens/Home/Player';
 import {Raiting} from 'screens/Home/Raiting';
 import {IPost} from '../../types';
 import {Account} from 'screens/Home/Profile/Account';
+import {Subscription} from 'screens/Home/Profile/Subscription';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -52,6 +53,7 @@ export type HomeParamList = {
   Player: {post: IPost};
   Raiting: {post: IPost};
   Account: undefined;
+  Subscription: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -138,6 +140,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Player" component={Player} />
       <Stack.Screen name="Raiting" component={Raiting} />
       <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="Subscription" component={Subscription} />
     </Stack.Navigator>
   );
 };

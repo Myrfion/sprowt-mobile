@@ -39,6 +39,9 @@ export const BaseTheme = {
     neutral400: '#969696',
     success300: '#0B5641',
     success100: '#F6FFFA',
+    primary50: '#F4FCFA',
+    primary600: '#66A995',
+    primary700: '#46967E',
   },
   spacing: {
     xss: 2,

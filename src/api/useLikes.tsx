@@ -11,7 +11,7 @@ export function useLikes() {
   return useQuery('likes', getLikes);
 }
 
-const toggleTweet = postId => {
+const toggleTweet = (postId: string) => {
   return client.post('/likes', {postId});
 };
 

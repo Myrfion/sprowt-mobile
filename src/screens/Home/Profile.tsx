@@ -68,7 +68,7 @@ const Profile = () => {
         <AccountButton
           text="Subscription"
           icon={<CardIcon />}
-          onPress={() => console.log('Subscription')}
+          onPress={() => navigation.navigate('Subscription')}
           rootStyles={styles.accountButton}
         />
         <AccountButton
