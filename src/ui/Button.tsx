@@ -67,12 +67,13 @@ export const Button = ({
         paddingHorizontal="xl"
         marginVertical="s"
         justifyContent="center"
-        paddingVertical="s"
         {...props}>
         {loading ? (
           <ActivityIndicator size="small" color={'white'} />
         ) : (
-          <Text variant={textVariant as Partial<keyof Theme['textVariants']>}>
+          <Text
+            variant={textVariant as Partial<keyof Theme['textVariants']>}
+            style={{paddingVertical: 8}}>
             {label}
           </Text>
         )}
