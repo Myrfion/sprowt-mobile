@@ -18,6 +18,7 @@ import {Raiting} from 'screens/Home/Raiting';
 import {IPost} from '../../types';
 import {Account} from 'screens/Home/Profile/Account';
 import {Subscription} from 'screens/Home/Profile/Subscription';
+import {Family} from 'screens/Home/Profile/Family';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -54,6 +55,7 @@ export type HomeParamList = {
   Raiting: {post: IPost};
   Account: undefined;
   Subscription: undefined;
+  Family: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -141,6 +143,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Raiting" component={Raiting} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Subscription" component={Subscription} />
+      <Stack.Screen name="Family" component={Family} />
     </Stack.Navigator>
   );
 };

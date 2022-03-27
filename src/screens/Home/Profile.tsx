@@ -4,6 +4,7 @@ import {useAuth} from 'core';
 import React from 'react';
 import {StyleSheet, ScrollView, SafeAreaView, Image} from 'react-native';
 import {Text, View} from 'ui';
+import ProfilePhoto from 'ui/Home/ProfilePhoto';
 import {
   CardIcon,
   FamilyAccountIcon,
@@ -43,13 +44,8 @@ const Profile = () => {
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <View alignItems="center" mb="l" mt="xs">
-          {profileData?.data && (
-            <Image
-              source={{uri: profileData?.data.profilePicture}}
-              style={styles.image}
-            />
-          )}
-          <Text fontSize={32} textAlign="center" mb="s">
+          <ProfilePhoto />
+          <Text fontSize={32} textAlign="center" mb="s" mt="s">
             {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
           <Text>Jan 3 2021</Text>
@@ -74,7 +70,7 @@ const Profile = () => {
         <AccountButton
           text="Family account"
           icon={<FamilyAccountIcon />}
-          onPress={() => console.log('Family account')}
+          onPress={() => navigation.navigate('Family')}
           rootStyles={styles.accountButton}
         />
         <Text color="neutral800" fontWeight="bold" fontSize={16} mt="l" mb="m">
