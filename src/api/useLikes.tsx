@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
+import {showErrorMessageWithButton, showSuccessMessage} from 'ui';
 import {client} from './client';
 
 const getLikes = async () => {
@@ -24,7 +25,12 @@ export const useLikeMutation = () => {
 
       const snapshotOfPrevLikes = queryClient.getQueriesData('likes');
       console.log('likes snapshot: ', snapshotOfPrevLikes[0][1]);
+
       const isLiked = snapshotOfPrevLikes[0][1].includes(postId);
+
+      if (!isLiked) {
+        showSuccessMessage('Added to favourites');
+      }
 
       queryClient.setQueriesData('likes', prevLikes =>
         isLiked

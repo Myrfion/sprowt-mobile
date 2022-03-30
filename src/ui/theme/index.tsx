@@ -29,7 +29,7 @@ export const BaseTheme = {
     grey3: '#C3C3C3',
     grey4: '#E4E4E4',
     white: 'white',
-    red: '#EB5757',
+    red: '#EC5C5C',
 
     // neutral colors
     neutral50: '#F8F8F8',
@@ -42,7 +42,7 @@ export const BaseTheme = {
     neutral700: '#575757',
     neutral800: '#424242',
     neutral900: '#2d2d2d',
-
+    success200: '#317864',
     success300: '#0B5641',
     success100: '#F6FFFA',
 

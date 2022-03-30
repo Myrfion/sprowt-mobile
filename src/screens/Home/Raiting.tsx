@@ -8,10 +8,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {Rating} from 'react-native-ratings';
 import {useMutation} from 'react-query';
-import {BaseTheme, Button, Text, View} from 'ui';
+import {BaseTheme, Button, showSuccessMessage, Text, View} from 'ui';
 import TagsList from 'ui/Home/TagList';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {IPost} from '../../../types';
@@ -61,10 +60,7 @@ export const Raiting = () => {
       console.log('Error feedback mutation: ', error);
     },
     onSuccess() {
-      showMessage({
-        type: 'success',
-        message: 'Thank you for the feedback',
-      });
+      showSuccessMessage('We appreciate your feedback :)');
       navigation.navigate('Home');
     },
   });
