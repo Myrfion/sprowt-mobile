@@ -15,6 +15,7 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
+import Slider from '@react-native-community/slider';
 import {BackIcon, BaseTheme, Text, View} from 'ui';
 import TagsList from 'ui/Home/TagList';
 import {SafeAreaView} from 'ui/SafeAreaView';
@@ -196,6 +197,16 @@ export const Player = () => {
           <Text color="white" mt="s">
             {convertHMS(progress.position)} / {convertHMS(progress.duration)}
           </Text>
+          <Slider
+            style={{width: '70%', height: 40}}
+            minimumValue={0}
+            maximumValue={progress.duration}
+            minimumTrackTintColor={BaseTheme.colors.primary600}
+            maximumTrackTintColor={BaseTheme.colors.white}
+            thumbTintColor={BaseTheme.colors.primary600}
+            value={progress.position}
+            onSlidingComplete={async pos => await TrackPlayer.seekTo(pos)}
+          />
           <View
             alignSelf="stretch"
             backgroundColor="white"

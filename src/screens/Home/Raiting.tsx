@@ -1,7 +1,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {createFeedback} from 'api/useFeedback';
 import {useAuth} from 'core';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -73,6 +73,12 @@ export const Raiting = () => {
 
   const [rating, setRating] = useState(0);
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      e.preventDefault();
+    });
+  }, [navigation]);
 
   const post: IPost = route.params?.post;
 

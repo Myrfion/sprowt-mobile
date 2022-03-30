@@ -144,7 +144,11 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Content" component={Content} />
       <Stack.Screen name="Player" component={Player} />
-      <Stack.Screen name="Raiting" component={Raiting} />
+      <Stack.Screen
+        name="Raiting"
+        component={Raiting}
+        options={{gestureEnabled: false}}
+      />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Subscription" component={Subscription} />
       <Stack.Screen name="Family" component={Family} />
