@@ -51,19 +51,21 @@ export const EmailVerification = () => {
   });
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
-        <Image
-          source={require('../../../assets/logo.png')}
-          style={styles.logo}
-        />
-      </View>
-      <Text variant="header" textAlign="center">
-        Verify your account
-      </Text>
-      <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        Check your email for the link to verify your account.
-      </Text>
-    </SafeAreaView>
+    <View backgroundColor="background" flex={1}>
+      <SafeAreaView style={styles.safeAreaView}>
+        <View style={styles.header}>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logo}
+          />
+        </View>
+        <Text variant="header" textAlign="center">
+          Verify your account
+        </Text>
+        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+          Check your email for the link to verify your account.
+        </Text>
+      </SafeAreaView>
+    </View>
   );
 };

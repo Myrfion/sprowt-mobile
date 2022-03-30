@@ -4,7 +4,7 @@ import {Control, Path, RegisterOptions, useController} from 'react-hook-form';
 
 import {Text} from './Text';
 import {View} from './View';
-import {useTheme} from './theme';
+import {BaseTheme, useTheme} from './theme';
 
 // types
 type TRule = Omit<
@@ -57,6 +57,7 @@ export function Input<T>(props: Props<T>) {
           styles.input,
           {
             borderColor,
+            backgroundColor: BaseTheme.colors.white,
           },
         ]}
         autoCapitalize="none"

@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useProfile} from 'api/useProfile';
 import {useAuth} from 'core';
+import {format} from 'date-fns';
 import React from 'react';
 import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Text, View} from 'ui';
@@ -36,9 +37,9 @@ const Profile = () => {
   const navigation = useNavigation();
 
   const {data: profileData} = useProfile();
-  console.log(profileData);
+
   return (
-    <View flex={1}>
+    <View flex={1} backgroundColor="background">
       <SafeAreaView>
         <ProfileHeader title="Account" hideBack />
       </SafeAreaView>
@@ -48,7 +49,10 @@ const Profile = () => {
           <Text fontSize={32} textAlign="center" mb="s" mt="s">
             {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
-          <Text>Jan 3 2021</Text>
+          <Text>
+            {profileData?.data.joinDate &&
+              format(new Date(profileData?.data.joinDate), 'MMM d yyyy')}
+          </Text>
           <Text color="neutral400">Member Since</Text>
         </View>
         <Text color="neutral800" fontWeight="bold" fontSize={16} mb="m">

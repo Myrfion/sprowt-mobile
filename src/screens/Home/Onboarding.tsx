@@ -72,48 +72,53 @@ const Onboarding = () => {
   }
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView style={styles.safeAreaView}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
 
-      <Swiper
-        onIndexChanged={setIndex}
-        ref={swiperRef}
-        loop={false}
-        bounces
-        dotStyle={styles.dotStyle}
-        activeDotStyle={styles.dotStyleActive}>
-        <View style={styles.slide}>
-          <Image
-            source={require('../../../assets/illustrations/il_onboarding1.png')}
-            style={styles.image}
-          />
-          <Text style={styles.slideText}>
-            Check in with how you’re feeling and discover meditations made for
-            your mood
-          </Text>
-        </View>
-        <View style={styles.slide}>
-          <Image
-            source={require('../../../assets/illustrations/il_onboarding2.png')}
-            style={styles.image}
-          />
-          <Text style={styles.slideText}>
-            Choose what resonates, find stillness, and tend to the garden of
-            your inner world
-          </Text>
-        </View>
-        <View style={styles.slide}>
-          <Image
-            source={require('../../../assets/illustrations/il_onboarding3.png')}
-            style={styles.image}
-          />
-          <Text style={styles.slideText}>
-            Practice regularly to cultivate peace, resilience and adaptability
-          </Text>
-        </View>
-      </Swiper>
-      <Button label="Next" onPress={onNext} marginHorizontal="m" />
-    </SafeAreaView>
+        <Swiper
+          onIndexChanged={setIndex}
+          ref={swiperRef}
+          loop={false}
+          bounces
+          dotStyle={styles.dotStyle}
+          activeDotStyle={styles.dotStyleActive}>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/illustrations/il_onboarding1.png')}
+              style={styles.image}
+            />
+            <Text style={styles.slideText}>
+              Check in with how you’re feeling and discover meditations made for
+              your mood
+            </Text>
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/illustrations/il_onboarding2.png')}
+              style={styles.image}
+            />
+            <Text style={styles.slideText}>
+              Choose what resonates, find stillness, and tend to the garden of
+              your inner world
+            </Text>
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/illustrations/il_onboarding3.png')}
+              style={styles.image}
+            />
+            <Text style={styles.slideText}>
+              Practice regularly to cultivate peace, resilience and adaptability
+            </Text>
+          </View>
+        </Swiper>
+        <Button label="Next" onPress={onNext} marginHorizontal="m" />
+      </SafeAreaView>
+    </View>
   );
 };
 

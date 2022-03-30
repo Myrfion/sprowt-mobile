@@ -49,36 +49,40 @@ const Search = () => {
   console.log('Error: ', error);
 
   return (
-    <SafeAreaView paddingHorizontal="m" pt="m">
-      <View flexDirection="row" zIndex={10}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}>
-          <BackIcon color={BaseTheme.colors.neutral900} />
-        </TouchableOpacity>
-        <View flexDirection="row" flex={1}>
-          <SearchInput autoFocus text={query} onChange={setQuery} />
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView paddingHorizontal="m" pt="m">
+        <View flexDirection="row" zIndex={10}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}>
+            <BackIcon color={BaseTheme.colors.neutral900} />
+          </TouchableOpacity>
+          <View flexDirection="row" flex={1}>
+            <SearchInput autoFocus text={query} onChange={setQuery} />
+          </View>
         </View>
-      </View>
-      <ScrollView style={styles.scrollView}>
-        {isLoading && <ActivityIndicator />}
-        {data?.length === 0 && !isLoading && query.length > 0 && (
-          <Text mt="m">No results were found for query "{query}"</Text>
-        )}
-        {data?.map(post => {
-          return (
-            <MediumCard
-              isLiked
-              onLike={() => console.log('like')}
-              onPress={() => console.log('press')}
-              key={post.id}
-              rootStyles={styles.mediumCard}
-              {...post}
-            />
-          );
-        })}
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView style={styles.scrollView}>
+          {isLoading && <ActivityIndicator />}
+          {data?.length === 0 && !isLoading && query.length > 0 && (
+            <Text mt="xl" variant="header" textAlign="center">
+              Looks like there is no content that matches your search
+            </Text>
+          )}
+          {data?.map(post => {
+            return (
+              <MediumCard
+                isLiked
+                onLike={() => console.log('like')}
+                onPress={() => console.log('press')}
+                key={post.id}
+                rootStyles={styles.mediumCard}
+                {...post}
+              />
+            );
+          })}
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 };
 

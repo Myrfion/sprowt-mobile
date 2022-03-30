@@ -54,7 +54,7 @@ export const Home = () => {
   const firstName = user?.displayName?.split(' ')[0];
 
   return (
-    <View>
+    <View backgroundColor="background">
       <SafeAreaView />
       <ScrollView
         refreshControl={

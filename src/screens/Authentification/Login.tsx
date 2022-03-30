@@ -1,10 +1,10 @@
 import React from 'react';
-import {BaseTheme, Button, Input, Text} from 'ui';
+import {BaseTheme, Button, Input, Text, View} from 'ui';
 import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation} from '@react-navigation/native';
@@ -99,58 +99,63 @@ export const Login = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
-      <Text variant="header" textAlign="center">
-        Welcome!
-      </Text>
-      <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!
-      </Text>
-      <Input
-        control={control}
-        name="email"
-        label="Email"
-        error={loginErrors.login}
-      />
-      <Input
-        control={control}
-        name="password"
-        label="Password"
-        secureTextEntry
-        error={loginErrors.password}
-      />
-      <View style={styles.checkboxContainer}>
-        <CheckBox name="shouldRemember" control={control} />
-        <Text style={styles.rememberMeText}>Remember me</Text>
-        <Text
-          style={styles.forgotPassText}
-          onPress={() => navigation.navigate('ResetPassword')}>
-          Forgot password?
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView style={styles.safeAreaView}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <Text variant="header" textAlign="center">
+          Welcome!
         </Text>
-      </View>
-      <View style={styles.singInContainer}>
-        <Button
-          label="Sign in"
-          onPress={handleSubmit(onSubmit)}
-          variant="primary"
+        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+          We’re happy you’re here
+        </Text>
+        <Input
+          control={control}
+          name="email"
+          label="Email"
+          error={loginErrors.login}
         />
-        <Text>OR</Text>
-        <SocialsList
-          onPressSocial={(social: SocialProviders) =>
-            console.log('Sign in: ', social)
-          }
+        <Input
+          control={control}
+          name="password"
+          label="Password"
+          secureTextEntry
+          error={loginErrors.password}
         />
-        <View style={styles.createAccountRow}>
-          <Text>Don't have an account yet? </Text>
+        <View style={styles.checkboxContainer}>
+          <CheckBox name="shouldRemember" control={control} />
+          <Text style={styles.rememberMeText}>Remember me</Text>
           <Text
-            style={{color: BaseTheme.colors.primary}}
-            fontWeight="bold"
-            onPress={() => navigation.navigate('SignUp')}>
-            Create account
+            style={styles.forgotPassText}
+            onPress={() => navigation.navigate('ResetPassword')}>
+            Forgot password?
           </Text>
         </View>
-      </View>
-    </SafeAreaView>
+        <View style={styles.singInContainer}>
+          <Button
+            label="Sign in"
+            onPress={handleSubmit(onSubmit)}
+            variant="primary"
+          />
+          <Text>OR</Text>
+          <SocialsList
+            onPressSocial={(social: SocialProviders) =>
+              console.log('Sign in: ', social)
+            }
+          />
+          <View style={styles.createAccountRow}>
+            <Text>Don't have an account yet? </Text>
+            <Text
+              style={{color: BaseTheme.colors.primary}}
+              fontWeight="bold"
+              onPress={() => navigation.navigate('SignUp')}>
+              Create account
+            </Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };

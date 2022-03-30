@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Text} from 'ui';
+import {Button, Input, Text, View} from 'ui';
 import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -75,21 +75,26 @@ export const PersonalInformation = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
-      <Text variant="header" textAlign="center">
-        Personal Information
-      </Text>
-      <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!
-      </Text>
-      <Input control={control} name="firstName" label="First Name" />
-      <Input control={control} name="lastName" label="Last Name" />
-      <Button
-        label="Continue"
-        onPress={handleSubmit(onSubmit)}
-        variant="primary"
-      />
-    </SafeAreaView>
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView style={styles.safeAreaView}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <Text variant="header" textAlign="center">
+          Personal Information
+        </Text>
+        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+          Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!
+        </Text>
+        <Input control={control} name="firstName" label="First Name" />
+        <Input control={control} name="lastName" label="Last Name" />
+        <Button
+          label="Continue"
+          onPress={handleSubmit(onSubmit)}
+          variant="primary"
+        />
+      </SafeAreaView>
+    </View>
   );
 };

@@ -18,7 +18,6 @@ const createTheme = <T extends BaseThemeType>(themeObject: T): T => themeObject;
 export const BaseTheme = {
   colors: {
     text: '#181935',
-    background: '#fff',
     primary: '#46BA79',
     secondary: 'white',
     muted: '#f1f3f4',
@@ -57,6 +56,8 @@ export const BaseTheme = {
     primary700: '#46967E',
     primary800: '#1A7056',
     primary900: '#195E49',
+
+    background: '#FDFDFD',
   },
   spacing: {
     xss: 2,

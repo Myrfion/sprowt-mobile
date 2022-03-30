@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  CheckEmailIllustration,
-  EnvelopeIcon,
-  Input,
-  Text,
-  View,
-} from 'ui';
+import {Button, CheckEmailIllustration, Input, Text, View} from 'ui';
 import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -77,48 +70,50 @@ export const ResetPassword = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View width="100%">
-        <Image
-          source={require('../../../assets/logo.png')}
-          style={styles.logo}
-        />
-      </View>
-      <Text variant="header" textAlign="center">
-        {resetPasswordStatus === 'success'
-          ? 'Check your email'
-          : 'Reset password'}
-      </Text>
-      <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        {resetPasswordStatus === 'success'
-          ? 'Password recovery instructions sent to\n your email.'
-          : ' Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!'}
-      </Text>
-      {resetPasswordStatus === 'success' ? (
-        <>
-          <CheckEmailIllustration />
-          <Button
-            label="Back to login"
-            onPress={() => navigation.navigate('Login')}
-            variant="primary"
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView style={styles.safeAreaView}>
+        <View width="100%">
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logo}
           />
-        </>
-      ) : (
-        <>
-          <Input
-            control={control}
-            name="email"
-            label="Email"
-            error={resetPassowordErrors.email}
-          />
-          <Button
-            label="Send instructions"
-            onPress={handleSubmit(onSubmit)}
-            variant="primary"
-            loading={resetPasswordStatus === 'loading'}
-          />
-        </>
-      )}
-    </SafeAreaView>
+        </View>
+        <Text variant="header" textAlign="center">
+          {resetPasswordStatus === 'success'
+            ? 'Check your email'
+            : 'Reset password'}
+        </Text>
+        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+          {resetPasswordStatus === 'success'
+            ? 'Password recovery instructions sent to\n your email.'
+            : ' Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!'}
+        </Text>
+        {resetPasswordStatus === 'success' ? (
+          <>
+            <CheckEmailIllustration />
+            <Button
+              label="Back to login"
+              onPress={() => navigation.navigate('Login')}
+              variant="primary"
+            />
+          </>
+        ) : (
+          <>
+            <Input
+              control={control}
+              name="email"
+              label="Email"
+              error={resetPassowordErrors.email}
+            />
+            <Button
+              label="Send instructions"
+              onPress={handleSubmit(onSubmit)}
+              variant="primary"
+              loading={resetPasswordStatus === 'loading'}
+            />
+          </>
+        )}
+      </SafeAreaView>
+    </View>
   );
 };

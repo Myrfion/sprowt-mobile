@@ -109,60 +109,65 @@ export const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
-      <Text variant="header" textAlign="center">
-        Sign up
-      </Text>
-      <Text variant="subheader" textAlign="center" style={styles.subheader}>
-        Join free and enjoy a 7-day premium trial (no credit card required 😎)
-      </Text>
-      <Input control={control} name="email" label="Email" />
-      <Input
-        control={control}
-        name="password"
-        label="Password"
-        secureTextEntry
-      />
-      <Input
-        control={control}
-        name="confirmPassword"
-        label="Confirm Password"
-        secureTextEntry
-      />
-      <View flexDirection="row">
-        <CheckBox name="terms" control={control} />
-        <Text style={styles.checkboxText}>
-          I agree to{' '}
-          <Text style={styles.termsText}>
-            Terms of Service & Privacy Policy
+    <View flex={1} backgroundColor="background">
+      <SafeAreaView style={styles.safeAreaView}>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.logo}
+        />
+        <Text variant="header" textAlign="center">
+          Sign up
+        </Text>
+        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+          Join free and enjoy a 7-day premium trial (no credit card required 😎)
+        </Text>
+        <Input control={control} name="email" label="Email" />
+        <Input
+          control={control}
+          name="password"
+          label="Password"
+          secureTextEntry
+        />
+        <Input
+          control={control}
+          name="confirmPassword"
+          label="Confirm Password"
+          secureTextEntry
+        />
+        <View flexDirection="row">
+          <CheckBox name="terms" control={control} />
+          <Text style={styles.checkboxText}>
+            I agree to{' '}
+            <Text style={styles.termsText}>
+              Terms of Service & Privacy Policy
+            </Text>
           </Text>
-        </Text>
-      </View>
-      <View style={styles.singInContainer}>
-        <Button
-          label="Sign up"
-          onPress={handleSubmit(onSubmit)}
-          variant="primary"
-        />
-        <Text>OR</Text>
-        <SocialsList
-          onPressSocial={social => {
-            if (SocialProviders.google === social) {
-              console.log('social: ', social);
-            }
-          }}
-        />
-      </View>
-      <View style={styles.createAccountRow}>
-        <Text>Already have account? </Text>
-        <Text
-          style={{color: BaseTheme.colors.primary}}
-          fontWeight="bold"
-          onPress={() => navigation.navigate('Login')}>
-          Sing in
-        </Text>
-      </View>
-    </SafeAreaView>
+        </View>
+        <View style={styles.singInContainer}>
+          <Button
+            label="Sign up"
+            onPress={handleSubmit(onSubmit)}
+            variant="primary"
+          />
+          <Text>OR</Text>
+          <SocialsList
+            onPressSocial={social => {
+              if (SocialProviders.google === social) {
+                console.log('social: ', social);
+              }
+            }}
+          />
+        </View>
+        <View style={styles.createAccountRow}>
+          <Text>Already have account? </Text>
+          <Text
+            style={{color: BaseTheme.colors.primary}}
+            fontWeight="bold"
+            onPress={() => navigation.navigate('Login')}>
+            Sing in
+          </Text>
+        </View>
+      </SafeAreaView>
+    </View>
   );
 };

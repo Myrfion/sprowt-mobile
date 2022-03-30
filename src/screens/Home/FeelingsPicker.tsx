@@ -52,7 +52,7 @@ const FeelingPicker = () => {
   const navigation = useNavigation();
   const {setCurrent} = useFeeling();
 
-  function onNext(feeling) {
+  function onNext(feeling: string) {
     setCurrent(feeling);
     navigation.navigate('TabNavigation', {
       screen: 'Home',
@@ -60,7 +60,7 @@ const FeelingPicker = () => {
   }
 
   return (
-    <View flex={1} px="m">
+    <View flex={1} px="m" backgroundColor="background">
       <SafeAreaView style={styles.safeAreaView} />
       <ScrollView>
         <Image

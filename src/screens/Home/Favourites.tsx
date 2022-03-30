@@ -1,6 +1,6 @@
 import {usePosts} from 'api/usePosts';
 import React from 'react';
-import {Text} from 'ui';
+import {Text, View} from 'ui';
 import MediumCardsList from 'ui/Home/MediumCardsList';
 import {SafeAreaView} from 'react-native';
 import {ScrollView} from 'ui/ScrollView';
@@ -11,7 +11,7 @@ const Favourites = () => {
   const {data: likes} = useLikes();
 
   return (
-    <>
+    <View flex={1} backgroundColor="background">
       <SafeAreaView />
       <ScrollView>
         <Text
@@ -25,7 +25,7 @@ const Favourites = () => {
         </Text>
         <MediumCardsList posts={posts?.filter(p => likes.includes(p.id))} />
       </ScrollView>
-    </>
+    </View>
   );
 };
 
