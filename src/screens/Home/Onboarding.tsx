@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   dot: {
     width: 10,
     height: 10,
-    marginHorizontal: 6,
+
     borderRadius: 10,
   },
   slide: {
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 32,
     justifyContent: 'space-between',
+    width: 100 + '%',
   },
   slideText: {
     fontSize: 24,
@@ -35,15 +36,17 @@ const styles = StyleSheet.create({
     marginBottom: 96,
     marginHorizontal: 16,
   },
-  image1: {width: 352, height: 313},
-  image2: {width: 355, height: 278},
-  image3: {width: 352, height: 404},
+  image: {
+    width: 100 + '%',
+    height: 361,
+  },
+
   dotStyle: {width: 10, height: 10, borderRadius: 10},
   dotStyleActive: {
     width: 10,
     height: 10,
     borderRadius: 10,
-    backgroundColor: BaseTheme.colors.primary,
+    backgroundColor: BaseTheme.colors.primary700,
   },
 });
 
@@ -71,6 +74,7 @@ const Onboarding = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+
       <Swiper
         onIndexChanged={setIndex}
         ref={swiperRef}
@@ -81,7 +85,7 @@ const Onboarding = () => {
         <View style={styles.slide}>
           <Image
             source={require('../../../assets/illustrations/il_onboarding1.png')}
-            style={styles.image1}
+            style={styles.image}
           />
           <Text style={styles.slideText}>
             Check in with how you’re feeling and discover meditations made for
@@ -91,7 +95,7 @@ const Onboarding = () => {
         <View style={styles.slide}>
           <Image
             source={require('../../../assets/illustrations/il_onboarding2.png')}
-            style={styles.image2}
+            style={styles.image}
           />
           <Text style={styles.slideText}>
             Choose what resonates, find stillness, and tend to the garden of
@@ -101,7 +105,7 @@ const Onboarding = () => {
         <View style={styles.slide}>
           <Image
             source={require('../../../assets/illustrations/il_onboarding3.png')}
-            style={styles.image3}
+            style={styles.image}
           />
           <Text style={styles.slideText}>
             Practice regularly to cultivate peace, resilience and adaptability

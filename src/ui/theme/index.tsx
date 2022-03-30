@@ -30,18 +30,33 @@ export const BaseTheme = {
     grey4: '#E4E4E4',
     white: 'white',
     red: '#EB5757',
-    neutral900: '#2d2d2d',
-    neutral300: '#ababab',
-    neutral800: '#424242',
-    neutral700: '#575757',
-    neutral200: '#C0C0C0',
+
+    // neutral colors
+    neutral50: '#F8F8F8',
     neutral100: '#EAEAEA',
+    neutral200: '#C0C0C0',
+    neutral300: '#ababab',
     neutral400: '#969696',
+    neutral500: '#818181',
+    neutral600: '#6C6C6C',
+    neutral700: '#575757',
+    neutral800: '#424242',
+    neutral900: '#2d2d2d',
+
     success300: '#0B5641',
     success100: '#F6FFFA',
+
+    // primary colors
     primary50: '#F4FCFA',
+    primary100: '#EDFCF8',
+    primary200: '#DFF5EF',
+    primary300: '#CAEBE2',
+    primary400: '#ACE0D1',
+    primary500: '#72BDA6',
     primary600: '#66A995',
     primary700: '#46967E',
+    primary800: '#1A7056',
+    primary900: '#195E49',
   },
   spacing: {
     xss: 2,
@@ -63,7 +78,7 @@ export const theme = createTheme({
   navigation: {
     dark: false,
     colors: {
-      primary: '#16904C',
+      primary: '#46967E',
       background: 'white',
       card: '#f8f8fa',
       text: '#0c1245',
@@ -73,7 +88,7 @@ export const theme = createTheme({
   },
   buttonVariants: {
     primary: {
-      backgroundColor: 'primary',
+      backgroundColor: 'primary700',
     },
     secondary: {
       backgroundColor: 'secondary',
@@ -91,7 +106,6 @@ export const theme = createTheme({
       fontSize: 14,
     },
     header: {
-      fontFamily: 'Nunito',
       fontWeight: 'bold',
       fontSize: 24,
       lineHeight: 40,

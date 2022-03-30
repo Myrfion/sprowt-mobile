@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   logoIconButton: {
     width: 64,
     height: 64,
-    backgroundColor: '#EAF6EF',
+    backgroundColor: BaseTheme.colors.primary50,
     borderRadius: 64,
     marginTop: -28,
     justifyContent: 'center',
@@ -82,7 +82,9 @@ export const TabNavigator = () => {
           tabBarIcon: ({focused}) => (
             <HeartTabIcon
               color={
-                focused ? BaseTheme.colors.primary : BaseTheme.colors.neutral300
+                focused
+                  ? BaseTheme.colors.primary900
+                  : BaseTheme.colors.neutral300
               }
             />
           ),
@@ -111,7 +113,9 @@ export const TabNavigator = () => {
           tabBarIcon: ({focused}) => (
             <ProfileTabIcon
               color={
-                focused ? BaseTheme.colors.primary : BaseTheme.colors.neutral300
+                focused
+                  ? BaseTheme.colors.primary900
+                  : BaseTheme.colors.neutral300
               }
             />
           ),

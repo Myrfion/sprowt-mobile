@@ -101,16 +101,9 @@ const BigCard: React.FC<Props> = props => {
           <Text
             color="white"
             fontWeight="bold"
-            fontSize={18}
+            fontSize={24}
             marginBottom="xss">
             {title}
-          </Text>
-          <Text color="white" style={{marginTop: -5}}>
-            {' '}
-            .{' '}
-          </Text>
-          <Text fontWeight="600" color="white">
-            {toTitleCase(mediaType)}
           </Text>
         </View>
         <View flexDirection="row" mb="xs" flexWrap="wrap">

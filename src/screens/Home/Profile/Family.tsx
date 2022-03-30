@@ -1,6 +1,11 @@
 import React from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Image, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {View, Text, Button} from 'ui';
 import ProfileHeader from 'ui/Profile/ProfileHeader';
 import {useProfile} from 'api/useProfile';
@@ -16,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
     paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingVertical: 8,
   },
 });
 

@@ -110,7 +110,7 @@ export const Content = () => {
   }
 
   return (
-    <View position="relative" height="100%" style={{flex: 1}}>
+    <View position="relative" height="100%" flex={1}>
       <SafeAreaView>
         <View
           flexDirection="row"
