@@ -1,5 +1,12 @@
 import React from 'react';
-import {Button, EnvelopeIcon, Input, Text, View} from 'ui';
+import {
+  Button,
+  CheckEmailIllustration,
+  EnvelopeIcon,
+  Input,
+  Text,
+  View,
+} from 'ui';
 import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -17,9 +24,7 @@ const schema = yup.object().shape({
 });
 
 const styles = StyleSheet.create({
-  subheader: {
-    marginBottom: 28,
-  },
+  subheader: {},
   logo: {
     width: 115,
     height: 36,
@@ -91,9 +96,7 @@ export const ResetPassword = () => {
       </Text>
       {resetPasswordStatus === 'success' ? (
         <>
-          <View style={styles.iconContainer}>
-            <EnvelopeIcon />
-          </View>
+          <CheckEmailIllustration />
           <Button
             label="Back to login"
             onPress={() => navigation.navigate('Login')}

@@ -75,9 +75,10 @@ export const useAuth = create<AuthState>((set, get) => ({
     try {
       await auth().signInWithEmailAndPassword(user.email, user.password);
     } catch (error: any) {
+      console.log(error);
+      showErrorMessage(error.message);
       if (error.code === 'auth/wrong-password') {
         set({loginErrors: {password: 'Wrong password', login: null}});
-        showErrorMessage(error.code);
       }
     }
   },
