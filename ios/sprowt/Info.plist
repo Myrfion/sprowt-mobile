@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSAppTranspo</key>
-	<string></string>
+	<string/>
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -34,11 +34,12 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter.ttf</string>
 		<string>Nunito.ttf</string>
+		<string>Nineties.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>

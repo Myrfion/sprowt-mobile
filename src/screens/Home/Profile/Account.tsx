@@ -113,7 +113,7 @@ export const Account = () => {
 
   return (
     <View flex={1}>
-      <SafeAreaView style={styles.safeAreaView}>
+      <SafeAreaView>
         <ProfileHeader title="Profile" />
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>

@@ -66,7 +66,8 @@ export const Home = () => {
           fontSize={28}
           paddingBottom="l"
           color="neutral900"
-          paddingHorizontal="m">
+          paddingHorizontal="m"
+          pt="l">
           Good morning, {firstName}
         </Text>
         <View marginHorizontal="m">
@@ -88,7 +89,7 @@ export const Home = () => {
         <Text fontSize={14} mb="m" paddingHorizontal="m">
           Recommended for{' '}
           <Text
-            color="primary"
+            color="primary700"
             fontWeight="bold"
             onPress={() => navigation.navigate('FeelingPicker')}>
             {currentFeeling}

@@ -2,12 +2,19 @@ import {useNavigation} from '@react-navigation/native';
 import FEELINGS from 'constants/feelings';
 import {useFeeling} from 'core/Feeling';
 import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
-import {Button, Text, View} from 'ui';
-import {SafeAreaView} from 'ui/SafeAreaView';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
+import {BaseTheme, Button, Text, View} from 'ui';
 
 const styles = StyleSheet.create({
-  safeAreaView: {},
+  safeAreaView: {
+    marginHorizontal: 16,
+  },
   logo: {
     width: 115,
     height: 36,
@@ -26,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#EAF6EF',
+    borderColor: BaseTheme.colors.primary400,
     marginBottom: 16,
   },
   iconContainer: {
@@ -36,24 +43,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#EAF6EF',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: BaseTheme.colors.primary50,
   },
 });
 
 const FeelingPicker = () => {
-  const [pickedFeeling, setPickedFeeling] = useState(FEELINGS[0].name);
   const navigation = useNavigation();
   const {setCurrent} = useFeeling();
 
-  function onNext() {
-    setCurrent(pickedFeeling);
+  function onNext(feeling) {
+    setCurrent(feeling);
     navigation.navigate('TabNavigation', {
       screen: 'Home',
     });
   }
 
   return (
-    <ScrollView>
-      <SafeAreaView style={styles.safeAreaView} marginHorizontal="m">
+    <View flex={1} px="m">
+      <SafeAreaView style={styles.safeAreaView} />
+      <ScrollView>
         <Image
           source={require('../../../assets/logo.png')}
           style={styles.logo}
@@ -65,19 +74,13 @@ const FeelingPicker = () => {
         <View style={styles.buttonsContainer}>
           {FEELINGS.map(feeling => {
             const Icon = feeling.icon;
-            const buttonStyles =
-              feeling.name === pickedFeeling
-                ? {backgroundColor: '#EAF6EF'}
-                : {borderWidth: 1};
-            const iconContainerStyles =
-              feeling.name === pickedFeeling ? {backgroundColor: 'white'} : {};
 
             return (
               <TouchableOpacity
-                style={[styles.button, buttonStyles]}
+                style={[styles.button, {borderWidth: 1}]}
                 key={feeling.name}
-                onPress={() => setPickedFeeling(feeling.name)}>
-                <View style={[styles.iconContainer, iconContainerStyles]}>
+                onPress={() => onNext(feeling.name)}>
+                <View style={[styles.iconContainer]}>
                   <Icon />
                 </View>
                 <Text marginLeft="m" fontSize={16}>
@@ -87,9 +90,8 @@ const FeelingPicker = () => {
             );
           })}
         </View>
-        <Button label="Let's go" onPress={onNext} />
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

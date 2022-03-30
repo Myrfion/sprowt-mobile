@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useProfile} from 'api/useProfile';
 import {useAuth} from 'core';
 import React from 'react';
-import {StyleSheet, ScrollView, SafeAreaView, Image} from 'react-native';
+import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Text, View} from 'ui';
 import ProfilePhoto from 'ui/Home/ProfilePhoto';
 import {
@@ -40,7 +40,7 @@ const Profile = () => {
   return (
     <View flex={1}>
       <SafeAreaView>
-        <ProfileHeader title="Account" />
+        <ProfileHeader title="Account" hideBack />
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <View alignItems="center" mb="l" mt="xs">

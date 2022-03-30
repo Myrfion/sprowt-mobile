@@ -19,7 +19,8 @@ const Favourites = () => {
           textAlign="left"
           fontSize={28}
           paddingBottom="l"
-          color="neutral900">
+          color="neutral900"
+          pt="l">
           Favourites
         </Text>
         <MediumCardsList posts={posts?.filter(p => likes.includes(p.id))} />

@@ -7,25 +7,28 @@ import {View} from 'ui/View';
 
 type Props = {
   title: string;
+  hideBack?: boolean;
 };
 
-const ProfileHeader: FC<Props> = ({title}) => {
+const ProfileHeader: FC<Props> = ({title, hideBack}) => {
   const navigation = useNavigation();
 
   return (
     <View
       flexDirection="row"
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent={hideBack ? 'center' : 'space-between'}
       py="s"
       px="m">
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <BackIcon color="#424242" />
-      </TouchableOpacity>
+      {!hideBack && (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <BackIcon color="#424242" />
+        </TouchableOpacity>
+      )}
       <Text fontWeight="600" fontSize={18}>
         {title}
       </Text>
-      <View width={24}></View>
+      {!hideBack && <View width={24}></View>}
     </View>
   );
 };
