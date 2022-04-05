@@ -13,6 +13,8 @@ import {SearchInput} from 'ui/SearchInput';
 import {IPost, ITag} from '../../../types';
 import BigCard from 'ui/Home/BigCard';
 import {SafeAreaView} from 'react-native';
+import {addMinutes, compareAsc, startOfDay} from 'date-fns';
+import {addHours} from 'date-fns/esm';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -34,6 +36,35 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
 });
+
+const getGreeting = (name: string) => {
+  const currentDate = new Date();
+
+  const morning = addMinutes(addHours(startOfDay(new Date()), 3), 30);
+  const afternoon = addMinutes(addHours(startOfDay(new Date()), 12), 0);
+  const evening = addMinutes(addHours(startOfDay(new Date()), 18), 0);
+
+  if (
+    compareAsc(currentDate, morning) === 1 &&
+    compareAsc(currentDate, afternoon) === -1
+  ) {
+    return `Good morning, ${name}`;
+  }
+
+  if (
+    compareAsc(currentDate, afternoon) === 1 &&
+    compareAsc(currentDate, evening) === -1
+  ) {
+    return `Good afternoon, ${name}`;
+  }
+
+  if (
+    compareAsc(currentDate, evening) === 1 &&
+    compareAsc(currentDate, morning) === -1
+  ) {
+    return `Good evening, ${name}`;
+  }
+};
 
 export const Home = () => {
   const navigation = useNavigation();
@@ -67,7 +98,7 @@ export const Home = () => {
           color="neutral900"
           paddingHorizontal="m"
           pt="l">
-          Good morning, {firstName}
+          {getGreeting(firstName)}
         </Text>
         <View marginHorizontal="m">
           <SearchInput
