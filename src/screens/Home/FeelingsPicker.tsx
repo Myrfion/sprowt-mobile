@@ -67,9 +67,7 @@ const FeelingPicker = () => {
           source={require('../../../assets/logo.png')}
           style={styles.logo}
         />
-        <Text variant="header" fontSize={32}>
-          Let's begin
-        </Text>
+        <Text variant="header">Let's begin</Text>
         <Text fontSize={18}>What are you feeling?</Text>
         <View style={styles.buttonsContainer}>
           {FEELINGS.map(feeling => {

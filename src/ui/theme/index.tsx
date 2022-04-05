@@ -107,16 +107,17 @@ export const theme = createTheme({
       fontSize: 14,
     },
     header: {
-      fontWeight: 'bold',
-      fontSize: 24,
       lineHeight: 40,
+      fontSize: 32,
       color: 'neutral900',
+      fontFamily: 'Perfectly Nineties',
     },
     subheader: {
       fontWeight: '400',
-      fontSize: 18,
+      fontSize: 24,
       lineHeight: 32,
       color: 'neutral800',
+      fontFamily: 'Perfectly Nineties',
     },
     body: {
       fontFamily: 'Inter',

@@ -17,7 +17,6 @@ const Favourites = () => {
         <Text
           variant="header"
           textAlign="left"
-          fontSize={28}
           paddingBottom="l"
           color="neutral900"
           pt="l">

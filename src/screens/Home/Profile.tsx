@@ -46,7 +46,7 @@ const Profile = () => {
       <ScrollView style={styles.scrollView}>
         <View alignItems="center" mb="l" mt="xs">
           <ProfilePhoto />
-          <Text fontSize={32} textAlign="center" mb="s" mt="s">
+          <Text variant="header" textAlign="center" mb="s" mt="s">
             {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
           <Text>
