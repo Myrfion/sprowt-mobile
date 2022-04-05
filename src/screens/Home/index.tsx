@@ -63,7 +63,6 @@ export const Home = () => {
         <Text
           variant="header"
           textAlign="left"
-          fontSize={28}
           paddingBottom="l"
           color="neutral900"
           paddingHorizontal="m"
@@ -78,9 +77,8 @@ export const Home = () => {
           />
         </View>
         <Text
-          variant="header"
+          variant="subheader"
           textAlign="left"
-          fontSize={28}
           marginTop="m"
           color="neutral900"
           paddingHorizontal="m">
@@ -106,9 +104,8 @@ export const Home = () => {
           })}
         </ScrollView>
         <Text
-          variant="header"
+          variant="subheader"
           textAlign="left"
-          fontSize={28}
           marginTop="m"
           color="neutral900"
           marginBottom="m"
