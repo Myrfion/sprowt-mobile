@@ -64,7 +64,7 @@ const Search = () => {
         <ScrollView style={styles.scrollView}>
           {isLoading && <ActivityIndicator />}
           {data?.length === 0 && !isLoading && query.length > 0 && (
-            <Text mt="xl" variant="header" textAlign="center">
+            <Text mt="xl" variant="subheader" textAlign="center">
               Looks like there is no content that matches your search
             </Text>
           )}

@@ -2,13 +2,15 @@ import {usePosts} from 'api/usePosts';
 import React from 'react';
 import {Text, View} from 'ui';
 import MediumCardsList from 'ui/Home/MediumCardsList';
-import {SafeAreaView} from 'react-native';
+import {ActivityIndicator, SafeAreaView} from 'react-native';
 import {ScrollView} from 'ui/ScrollView';
 import {useLikes} from '../../api/useLikes';
 
 const Favourites = () => {
-  const {data: posts} = usePosts({tag: ''});
+  const {data: posts, isLoading, isFetched} = usePosts({tag: ''});
   const {data: likes} = useLikes();
+
+  const postsWithLikes = posts?.filter(p => likes?.includes(p.id));
 
   return (
     <View flex={1} backgroundColor="background">
@@ -22,7 +24,11 @@ const Favourites = () => {
           pt="l">
           Favourites
         </Text>
-        <MediumCardsList posts={posts?.filter(p => likes.includes(p.id))} />
+        {isLoading || !isFetched ? (
+          <ActivityIndicator />
+        ) : (
+          <MediumCardsList posts={postsWithLikes} />
+        )}
       </ScrollView>
     </View>
   );

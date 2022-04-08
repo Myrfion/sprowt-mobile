@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const getGreeting = (name: string) => {
+const getGreeting = (name: string | undefined) => {
   const currentDate = new Date();
 
   const morning = addMinutes(addHours(startOfDay(new Date()), 3), 30);
@@ -64,6 +64,8 @@ const getGreeting = (name: string) => {
   ) {
     return `Good evening, ${name}`;
   }
+
+  return `Good evening, ${name}`;
 };
 
 export const Home = () => {

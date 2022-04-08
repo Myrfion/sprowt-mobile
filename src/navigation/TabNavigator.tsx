@@ -19,6 +19,8 @@ import {IPost} from '../../types';
 import {Account} from 'screens/Home/Profile/Account';
 import {Subscription} from 'screens/Home/Profile/Subscription';
 import {Family} from 'screens/Home/Profile/Family';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {compareAsc, fromUnixTime, parseISO, startOfDay, toDate} from 'date-fns';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -71,7 +73,8 @@ export const TabNavigator = () => {
         tabBarStyle: {
           backgroundColor: BaseTheme.colors.white,
         },
-      }}>
+      }}
+      initialRouteName="Home">
       <Tab.Screen
         name="Favorites"
         component={Favourites}
@@ -126,21 +129,55 @@ export const TabNavigator = () => {
 };
 
 export const HomeNavigator = () => {
-  const {hadOnboarding} = useAsyncStorage();
+  const [isAppFirstLaunch, setIsAppFirstLaunch] = React.useState(false);
+  const [isFirstTodayLaunch, setIsFirstTodayLaunch] = React.useState(false);
 
-  let initialRouteName = hadOnboarding ? 'Home' : 'Onboarding';
-  console.log(initialRouteName);
+  React.useEffect(() => {
+    (async () => {
+      const appData = await AsyncStorage.getItem('isAppFirstLaunch');
+
+      if (appData === null) {
+        setIsAppFirstLaunch(true);
+        await AsyncStorage.setItem('isAppFirstLaunch', 'true');
+      } else {
+        setIsAppFirstLaunch(false);
+      }
+
+      /* const lastOpenDateString = await AsyncStorage.getItem('lastOpenDate');
+
+      if (!lastOpenDateString) {
+        setIsFirstTodayLaunch(true);
+      }
+
+      const lastOpenDate = fromUnixTime(Number(lastOpenDateString));
+
+      console.log('lastOpenDate: ', lastOpenDate);
+
+      const opennedToday =
+        compareAsc(lastOpenDate, startOfDay(lastOpenDate)) === 1;
+
+      console.log('opennedToday', opennedToday);
+
+      setIsFirstTodayLaunch(!opennedToday);
+
+      await AsyncStorage.setItem('lastOpenDate', Date.now().toString());*/
+    })();
+  }, []);
+
   return (
-    <Stack.Navigator
-      screenOptions={{headerShown: false}}
-      initialRouteName={initialRouteName}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      {isAppFirstLaunch && (
+        <Stack.Screen name="Onboarding" component={Onboarding} />
+      )}
+
+      <Stack.Screen name="FeelingPicker" component={FeelingPicker} />
+
       <Stack.Screen
         name="TabNavigation"
         component={TabNavigator}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Onboarding" component={Onboarding} />
-      <Stack.Screen name="FeelingPicker" component={FeelingPicker} />
+
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Content" component={Content} />
       <Stack.Screen name="Player" component={Player} />

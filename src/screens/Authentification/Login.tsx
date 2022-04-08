@@ -25,6 +25,8 @@ const schema = yup.object().shape({
 const styles = StyleSheet.create({
   subheader: {
     marginBottom: 28,
+    fontSize: 18,
+    color: BaseTheme.colors.neutral800,
   },
   logo: {
     width: 115,
@@ -108,7 +110,7 @@ export const Login = () => {
         <Text variant="header" textAlign="center">
           Welcome!
         </Text>
-        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+        <Text textAlign="center" style={styles.subheader}>
           We’re happy you’re here
         </Text>
         <Input

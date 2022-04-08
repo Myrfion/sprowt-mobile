@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import useAsyncStorage from 'core/Storage';
 import React, {useRef, useState, useEffect} from 'react';
@@ -56,12 +57,6 @@ const Onboarding = () => {
   const navigation = useNavigation();
   const swiperRef = useRef();
   const [index, setIndex] = useState(0);
-
-  const {setValue} = useAsyncStorage();
-
-  useEffect(() => {
-    setValue('hadOnboarding', 'yes');
-  }, [setValue]);
 
   function onNext() {
     if (index + 1 === sliderLength) {

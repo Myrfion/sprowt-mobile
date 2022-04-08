@@ -1,7 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
 import * as React from 'react';
-import {Image, StyleProp, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  StyleSheetProperties,
+} from 'react-native';
 import {View, Text, HeartIcon} from 'ui';
 import {IPost} from '../../../types/index';
 import {ContentIcons} from './BigCard';
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props extends IPost {
-  rootStyles?: StyleProp<TouchableOpacity>;
+  rootStyles?: StyleSheetProperties | null;
   isLiked: boolean;
   onLike: () => void;
   onPress: () => void;
