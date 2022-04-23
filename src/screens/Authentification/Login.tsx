@@ -4,7 +4,7 @@ import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {Image, StyleSheet} from 'react-native';
+import {Image, KeyboardAvoidingView, StyleSheet} from 'react-native';
 
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation} from '@react-navigation/native';
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1,
     height: 100 + '%',
+    justifyContent: 'space-between'
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -65,7 +66,6 @@ const styles = StyleSheet.create({
   singInContainer: {
     alignItems: 'center',
     width: 100 + '%',
-    marginTop: 'auto',
   },
   googleIcon: {
     shadowColor: '#000',
@@ -103,37 +103,39 @@ export const Login = () => {
   return (
     <View flex={1} backgroundColor="background">
       <SafeAreaView style={styles.safeAreaView}>
-        <Image
-          source={require('../../../assets/logo.png')}
-          style={styles.logo}
-        />
-        <Text variant="header" textAlign="center">
-          Welcome!
-        </Text>
-        <Text textAlign="center" style={styles.subheader}>
-          We’re happy you’re here
-        </Text>
-        <Input
-          control={control}
-          name="email"
-          label="Email"
-          error={loginErrors.login}
-        />
-        <Input
-          control={control}
-          name="password"
-          label="Password"
-          secureTextEntry
-          error={loginErrors.password}
-        />
-        <View style={styles.checkboxContainer}>
-          <CheckBox name="shouldRemember" control={control} />
-          <Text style={styles.rememberMeText}>Remember me</Text>
-          <Text
-            style={styles.forgotPassText}
-            onPress={() => navigation.navigate('ResetPassword')}>
-            Forgot password?
+        <View>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logo}
+          />
+          <Text variant="header" textAlign="center">
+            Welcome!
           </Text>
+          <Text textAlign="center" style={styles.subheader}>
+            We’re happy you’re here
+          </Text>
+          <Input
+            control={control}
+            name="email"
+            label="Email"
+            error={loginErrors.login}
+          />
+          <Input
+            control={control}
+            name="password"
+            label="Password"
+            secureTextEntry
+            error={loginErrors.password}
+          />
+          <View style={styles.checkboxContainer}>
+            <CheckBox name="shouldRemember" control={control} />
+            <Text style={styles.rememberMeText}>Remember me</Text>
+            <Text
+              style={styles.forgotPassText}
+              onPress={() => navigation.navigate('ResetPassword')}>
+              Forgot password?
+            </Text>
+          </View>
         </View>
         <View style={styles.singInContainer}>
           <Button

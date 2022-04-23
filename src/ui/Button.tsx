@@ -53,7 +53,7 @@ export const Button = ({
   variant = 'primary',
   ...rest
 }: Props) => {
-  const props = useRestyle(restyleFunctions, {...rest, variant});
+ // const props = useRestyle(restyleFunctions, {...rest, variant});
 
   const textVariant = 'button_' + variant;
 
@@ -67,12 +67,12 @@ export const Button = ({
         paddingHorizontal="xl"
         marginVertical="s"
         justifyContent="center"
-        {...props}>
+        variant="primary">
         {loading ? (
           <ActivityIndicator size="small" color={'white'} />
         ) : (
           <Text
-            variant={textVariant as Partial<keyof Theme['textVariants']>}
+            variant="button_primary"
             style={{paddingVertical: 8}}>
             {label}
           </Text>

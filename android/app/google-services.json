@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "796983538258",
+    "project_id": "sprowt-8da25",
+    "storage_bucket": "sprowt-8da25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796983538258:android:b8c51cebbd207c65caa58b",
+        "android_client_info": {
+          "package_name": "com.sprowt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxn38HLH4as1jOSHqDk_9-ZRT_BIBFrU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "796983538258-tfc192ho7ha2amoqvaa0kcfu6gssj477.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.sprowt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

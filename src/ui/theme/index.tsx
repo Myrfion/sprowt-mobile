@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { createTheme, BaseTheme } from '@shopify/restyle';
+import {Platform} from 'react-native'
 import {
   ThemeProvider as ReThemeProvider,
   TextProps,
@@ -110,14 +110,14 @@ export const theme = createTheme({
       lineHeight: 40,
       fontSize: 32,
       color: 'neutral900',
-      fontFamily: 'Perfectly Nineties',
+      fontFamily:  Platform.OS === 'ios' ?  'Perfectly Nineties' : 'Nineties',
     },
     subheader: {
       fontWeight: '400',
       fontSize: 24,
       lineHeight: 32,
       color: 'neutral800',
-      fontFamily: 'Perfectly Nineties',
+      fontFamily: Platform.OS === 'ios' ?  'Perfectly Nineties' : 'Nineties',
     },
     body: {
       fontFamily: 'Inter',
