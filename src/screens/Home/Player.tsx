@@ -58,15 +58,7 @@ const styles = StyleSheet.create({
     height: 320,
     borderRadius: 330,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+   
   },
 });
 
@@ -95,15 +87,15 @@ export const Player = () => {
   const likeMutation = useLikeMutation();
   const {data: likes} = useLikes();
 
-  //const playerState = usePlaybackState();
-  // const progress = useProgress();
+  const playerState = usePlaybackState();
+  const progress = useProgress();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [repeat, setRepeat] = useState(false);
 
   const post: IPost = route.params?.post;
 
-  /*useTrackPlayerEvents(
+  useTrackPlayerEvents(
     [Event.PlaybackTrackChanged, Event.PlaybackQueueEnded],
     async event => {
       console.log('STATE CHANGE: ', event.state);
@@ -113,13 +105,13 @@ export const Player = () => {
         navigation.navigate('Raiting', {post});
       }
     },
-  );*/
+  );
 
   const {thumbnail, title, tags, id, mediaPath} = post;
 
   const isLiked = likes.includes(id);
 
-  /*useEffect(() => {
+  useEffect(() => {
     (async () => {
       await TrackPlayer.setupPlayer();
 
@@ -143,6 +135,7 @@ export const Player = () => {
         await TrackPlayer.stop();
         await TrackPlayer.destroy();
       })();
+      
     };
   }, [id, mediaPath, title, thumbnail]);
 
@@ -166,7 +159,7 @@ export const Player = () => {
       await TrackPlayer.setRepeatMode(RepeatMode.Track);
       setRepeat(true);
     }
-  }*/
+  }
 
   return (
     <SafeAreaView flex={1}>
@@ -195,17 +188,17 @@ export const Player = () => {
           </Text>
           <TagsList tags={tags} textStyles={{color: 'white', fontSize: 14}} />
           <Text color="white" mt="s">
-            {/*convertHMS(progress.position)} / {convertHMS(progress.duration)*/}
+            {convertHMS(progress.position)} / {convertHMS(progress.duration)}
           </Text>
           <Slider
             style={{width: '70%', height: 40}}
             minimumValue={0}
-            //maximumValue={progress.duration}
+            maximumValue={progress.duration}
             minimumTrackTintColor={BaseTheme.colors.primary600}
             maximumTrackTintColor={BaseTheme.colors.white}
             thumbTintColor={BaseTheme.colors.primary600}
-            //value={progress.position}
-            //onSlidingComplete={async pos => await TrackPlayer.seekTo(pos)}
+            value={progress.position}
+            onSlidingComplete={async pos => await TrackPlayer.seekTo(pos)}
           />
           <View
             alignSelf="stretch"
@@ -224,27 +217,25 @@ export const Player = () => {
               <LikePlayIcon fill={isLiked ? '#0B5641' : 'none'} />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={
-                async () => {}
-                // await TrackPlayer.seekTo(progress.position - 15)
+              onPress={async () =>
+                await TrackPlayer.seekTo(progress.position - 15)
               }>
               <FifteenBackIcon />
             </TouchableOpacity>
             <TouchableOpacity
-              //onPress={onPlayPausePress}
+              onPress={onPlayPausePress}
               style={styles.playButtonContainer}>
               <View style={styles.playButton}>
                 {isPlaying ? <PauseIcon /> : <PlayIcon />}
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={
-                async () => {}
-                //await TrackPlayer.seekTo(progress.position + 15)
+              onPress={async () =>
+                await TrackPlayer.seekTo(progress.position + 15)
               }>
               <FifteenForwardIcon />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={onRepeatToggle}>
               <RepeatIcon
                 color={
                   repeat ? BaseTheme.colors.success300 : BaseTheme.colors.grey3

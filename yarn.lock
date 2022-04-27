@@ -2646,9 +2646,9 @@
   "version" "1.0.1"
 
 "async@^2.4.0":
-  "integrity" "sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg=="
-  "resolved" "https://registry.npmjs.org/async/-/async-2.6.3.tgz"
-  "version" "2.6.3"
+  "integrity" "sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA=="
+  "resolved" "https://registry.npmjs.org/async/-/async-2.6.4.tgz"
+  "version" "2.6.4"
   dependencies:
     "lodash" "^4.17.14"
 
@@ -8032,6 +8032,11 @@
   dependencies:
     "prop-types" "^15.5.10"
 
+"react-native-track-player@^2.2.0-rc3":
+  "integrity" "sha512-Pvmum3MQ5PE8/yOIIPsk00zZk3EzdocUuVUwuBKSCmdKK/3O9YhnZRC3EuT59XCDm23pZZJZDSR44VeXN6Gamg=="
+  "resolved" "https://registry.npmjs.org/react-native-track-player/-/react-native-track-player-2.2.0-rc3.tgz"
+  "version" "2.2.0-rc3"
+
 "react-native-version@^4.0.0":
   "integrity" "sha512-OMoSbeDcrE5JnmeilkZXYsXnk98/I2hZe/z68NZ+nel3LkixJIOh1AnAxsqW1Cq20Nmyz3bV4PpEYxilKAy9xg=="
   "resolved" "https://registry.npmjs.org/react-native-version/-/react-native-version-4.0.0.tgz"
@@ -8051,7 +8056,7 @@
     "resolve-from" "^5.0.0"
     "semver" "^7.0.0"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.67 || 1000.0.0", "react-native@>= 0.62", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59.0", "react-native@>=0.60.0", "react-native@>=0.65.0", "react-native@0.67.1":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.67 || 1000.0.0", "react-native@>= 0.62", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59.0", "react-native@>=0.60.0", "react-native@>=0.60.0-rc.2", "react-native@>=0.65.0", "react-native@0.67.1":
   "integrity" "sha512-doKN9qhtjilF+6p8603OVzqGKL4fq8EDAH5u00KPmZbL5ampHDQX9y8/uwlUvJggvHwZXlnvhW63u8Y1LA8rxw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.67.1.tgz"
   "version" "0.67.1"
