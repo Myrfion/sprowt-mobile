@@ -128,8 +128,7 @@ export const Login = () => {
             error={loginErrors.password}
           />
           <View style={styles.checkboxContainer}>
-            <CheckBox name="shouldRemember" control={control} />
-            <Text style={styles.rememberMeText}>Remember me</Text>
+          
             <Text
               style={styles.forgotPassText}
               onPress={() => navigation.navigate('ResetPassword')}>
