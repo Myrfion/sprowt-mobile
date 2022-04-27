@@ -58,15 +58,7 @@ const styles = StyleSheet.create({
     height: 320,
     borderRadius: 330,
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+   
   },
 });
 
@@ -143,6 +135,7 @@ export const Player = () => {
         await TrackPlayer.stop();
         await TrackPlayer.destroy();
       })();
+      
     };
   }, [id, mediaPath, title, thumbnail]);
 
