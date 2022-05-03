@@ -5,9 +5,11 @@ import FlashMessage from 'react-native-flash-message';
 import {RootNavigator} from 'navigation';
 import {hydrateAuth, setI18nConfig} from 'core';
 import APIProvider from 'api/APIProvider';
+import {registerPushNotifications} from 'services/push-notifications';
 
 setI18nConfig();
 hydrateAuth();
+registerPushNotifications();
 
 const App = () => {
   return (

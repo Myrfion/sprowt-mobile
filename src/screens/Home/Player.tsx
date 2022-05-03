@@ -99,10 +99,11 @@ export const Player = () => {
     [Event.PlaybackTrackChanged, Event.PlaybackQueueEnded],
     async event => {
       console.log('STATE CHANGE: ', event.state);
-      if (event.nextTrack === undefined) {
+      if (event.nextTrack === undefined && !repeat) {
         console.log('STATE CHANGE: ', event.state);
-
-        navigation.navigate('Raiting', {post});
+        await TrackPlayer.pause();
+        navigation.navigate('Raiting', { post });
+        
       }
     },
   );
