@@ -74,12 +74,12 @@ const Profile = () => {
           onPress={() => navigation.navigate('Subscription')}
           rootStyles={styles.accountButton}
         />
-        <AccountButton
+        {/*<AccountButton
           text="Family account"
           icon={<FamilyAccountIcon />}
           onPress={() => navigation.navigate('Family')}
           rootStyles={styles.accountButton}
-        />
+            />*/}
         <Text color="neutral800" fontWeight="bold" fontSize={16} mt="l" mb="m">
           Help
         </Text>

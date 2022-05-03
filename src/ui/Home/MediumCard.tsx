@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100 + '%',
     height: 128,
-    borderTopEndRadius: 8,
-    borderTopLeftRadius: 8,
+
   },
   imageContainer: {
     width: 100 + '%',
