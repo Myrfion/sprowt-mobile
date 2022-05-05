@@ -3,9 +3,10 @@ import {usePosts} from 'api/usePosts';
 import {useTags} from 'api/useTags';
 import {useAuth} from 'core';
 import {useFeeling} from 'core/Feeling';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import messaging from '@react-native-firebase/messaging';
 import {Text, View} from 'ui';
 import MediumCard from 'ui/Home/MediumCard';
 import HorizontalTags from 'ui/Home/HorizontalTags';
@@ -68,6 +69,17 @@ const getGreeting = (name: string | undefined) => {
   return `Good evening, ${name}`;
 };
 
+async function requestUserPermission() {
+  const authStatus = await messaging().requestPermission();
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+  if (enabled) {
+    console.log('Authorization status:', authStatus);
+  }
+}
+
 export const Home = () => {
   const navigation = useNavigation();
 
@@ -83,6 +95,12 @@ export const Home = () => {
   const {data: exploreData, isLoading: exploreLoading} = usePosts({
     tag: exploreTag?.name || '',
   });
+
+  useEffect(() => {
+    (async () => {
+      await requestUserPermission();
+    })();
+  }, []);
 
   const firstName = user?.displayName?.split(' ')[0];
 
