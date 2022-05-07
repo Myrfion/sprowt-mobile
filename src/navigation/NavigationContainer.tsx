@@ -7,6 +7,7 @@ import {Theme} from 'ui';
 
 export const NavigationContainer = ({
   children,
+  containerRef,
 }: {
   children: React.ReactNode;
 }) => {
@@ -17,7 +18,7 @@ export const NavigationContainer = ({
         barStyle={navigation.dark ? 'light-content' : 'dark-content'}
         backgroundColor={navigation.colors.background}
       />
-      <RNNavigationContainer theme={navigation}>
+      <RNNavigationContainer theme={navigation} ref={containerRef}>
         {children}
       </RNNavigationContainer>
     </SafeAreaProvider>

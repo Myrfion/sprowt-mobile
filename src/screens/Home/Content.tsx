@@ -87,17 +87,27 @@ export const Content = () => {
   const route = useRoute();
 
   const {data: likes} = useLikes();
+
   const likeMutation = useLikeMutation();
 
-  const post: IPost = route.params?.post;
+  const {data: allPosts} = usePosts({tag: ''});
 
-  let {data: relatedPosts} = usePosts({tag: post.tags[0].name});
+  console.log(route.params?.postId);
+  const post: IPost =
+    route.params?.post || allPosts?.find(p => p.id === route.params?.postId);
+
+  let {data: relatedPosts} = usePosts({tag: post?.tags[0].name || ''});
+
+  console.log(post);
+  if (!post) {
+    return null;
+  }
 
   relatedPosts = relatedPosts?.filter(p => p.id !== post.id);
 
   const {mediaType, thumbnail, title, id, description, tags, isPremium} = post;
 
-  const isLiked = likes.includes(id);
+  const isLiked = likes?.includes(id) || false;
 
   function onPlay() {
     if (isPremium) {

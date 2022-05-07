@@ -1,4 +1,5 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {navigationWithRef} from 'navigation';
 import {Platform} from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
@@ -10,6 +11,17 @@ class NotificationManager {
       },
       onNotification: function (notification: any) {
         console.log('NOTIFICATION:', notification);
+        const {data} = notification;
+
+        if (data.post) {
+          console.log(data.post);
+          setTimeout(() => {
+            navigationWithRef('Content', {
+              postId: data.post || 'BJ13nbIyaUViia7Bow8u',
+            });
+          }, 1000);
+        }
+
         notification.finish(PushNotificationIOS.FetchResult.NoData);
       },
       permissions: {
@@ -27,7 +39,6 @@ class NotificationManager {
       },
       created => console.log(`createChannel returned '${created}`),
     );
-    
   };
 
   buildAdroidNotification = (
@@ -83,6 +94,7 @@ class NotificationManager {
     options = {},
     date: Date,
   ) => {
+    console.log(data);
     PushNotification.localNotificationSchedule({
       //Android
       ...this.buildAdroidNotification(id, title, message, data, options),

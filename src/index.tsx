@@ -6,13 +6,13 @@ import {RootNavigator} from 'navigation';
 import messaging from '@react-native-firebase/messaging';
 import {hydrateAuth, setI18nConfig} from 'core';
 import APIProvider from 'api/APIProvider';
-import {registerPushNotifications} from 'services/push-notifications';
+//import {registerPushNotifications} from 'services/push-notifications';
 import {Alert} from 'react-native';
 import {notificationManager} from 'services/notification-service';
 
 setI18nConfig();
 hydrateAuth();
-registerPushNotifications();
+//registerPushNotifications();
 notificationManager.configure();
 // Register background handler
 messaging().setBackgroundMessageHandler(async remoteMessage => {
