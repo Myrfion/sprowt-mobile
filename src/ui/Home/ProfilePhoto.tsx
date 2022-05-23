@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {View} from '../View';
 import {useProfile} from '../../api/useProfile';
+import {LogoIcon} from 'ui/icons';
 
 const styles = StyleSheet.create({
   root: {
@@ -17,6 +18,8 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     width: 80,
     height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: 80,
@@ -31,10 +34,14 @@ const ProfilePhoto = () => {
 
   return (
     <View style={styles.root}>
-      <Image
-        source={{uri: profileData?.data.profilePicture}}
-        style={styles.image}
-      />
+      {profileData?.data.profilePictur ? (
+        <Image
+          source={{uri: profileData?.data.profilePicture}}
+          style={styles.image}
+        />
+      ) : (
+        <LogoIcon />
+      )}
     </View>
   );
 };

@@ -14,9 +14,9 @@ const creatProfile = ({
   lastName,
   email,
 }: {
-  firstName: string;
-  lastName: string;
-  email: string;
+  firstName: string | undefined | null;
+  lastName: string | undefined | null;
+  email: string | undefined | null;
 }) => client.post('/profile', {firstName, lastName, email});
 
 const getProfile = () => client.get('/profile');

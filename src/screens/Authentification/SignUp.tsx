@@ -11,7 +11,8 @@ import {SocialProviders, SocialsList} from 'ui/Auth/SocialsList';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
+import {useProfileCreate} from 'api/useProfile';
 
 export type SignUpFormData = {
   email: string;
@@ -101,6 +102,10 @@ const styles = StyleSheet.create({
 export const SignUp = () => {
   const navigation = useNavigation();
 
+  const profileCreate = useProfileCreate({
+    onSuccess: () => console.log('user profile createed!'),
+  });
+
   const {handleSubmit, control} = useForm<SignUpFormData>({
     resolver: yupResolver(schema),
   });
@@ -117,11 +122,20 @@ export const SignUp = () => {
       webClientId:
         '796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com',
     });
+    Settings.setAppID('699728804407049');
   }, []);
 
   async function onGoogleButtonPress() {
     const {idToken} = await GoogleSignin.signIn();
+    const currentUser = await GoogleSignin.getCurrentUser();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    console.log(currentUser?.user.givenName);
+
+    profileCreate.mutate({
+      firstName: currentUser?.user.givenName,
+      lastName: currentUser?.user.familyName,
+      email: currentUser?.user.email,
+    });
 
     return auth().signInWithCredential(googleCredential);
   }
