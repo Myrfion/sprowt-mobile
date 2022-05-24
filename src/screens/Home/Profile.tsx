@@ -3,7 +3,7 @@ import {useProfile} from 'api/useProfile';
 import {useAuth} from 'core';
 import {format} from 'date-fns';
 import React from 'react';
-import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {StyleSheet, ScrollView, SafeAreaView, Linking} from 'react-native';
 import {Text, View} from 'ui';
 import ProfilePhoto from 'ui/Home/ProfilePhoto';
 import {
@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
 });
+
+const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us'
+const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com'
 
 const Profile = () => {
   const {signOut} = useAuth();
@@ -76,25 +79,25 @@ const Profile = () => {
           onPress={() => navigation.navigate('Subscription')}
           rootStyles={styles.accountButton}
         />
-        <AccountButton
+        {/*<AccountButton
           text="Family account"
           icon={<FamilyAccountIcon />}
           onPress={() => navigation.navigate('Family')}
           rootStyles={styles.accountButton}
-        />
+            />*/}
         <Text color="neutral800" fontWeight="bold" fontSize={16} mt="l" mb="m">
           Help
         </Text>
         <AccountButton
           text="Support"
           icon={<SupportIcon />}
-          onPress={() => console.log('Support')}
           rootStyles={styles.accountButton}
+          onPress={() => Linking.openURL(SUPPORT_LINK)}
         />
         <AccountButton
           text="FAQs"
           icon={<FAQIcon />}
-          onPress={() => console.log('FAQ')}
+          onPress={() => Linking.openURL(FAQ_LINK)}
           rootStyles={styles.accountButton}
         />
         <View width="100%" height={1} backgroundColor="neutral100" my="l" />
