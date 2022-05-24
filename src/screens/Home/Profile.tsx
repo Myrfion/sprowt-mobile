@@ -32,15 +32,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us'
-const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com'
+const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us';
+const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com';
 
 const Profile = () => {
   const {signOut} = useAuth();
   const navigation = useNavigation();
 
-  const {data: profileData} = useProfile();
-
+  const {data: profileData, error} = useProfile();
+  console.log(error);
+  console.log('profile: ', profileData);
   const joinDate = new Date(
     profileData?.data.joinDate._seconds * 1000 +
       profileData?.data.joinDate._nanoseconds / 1000000,
