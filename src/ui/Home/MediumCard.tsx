@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
+import usePremium from 'api/usePremium';
 import * as React from 'react';
 import {
   Image,
@@ -8,6 +9,7 @@ import {
   StyleSheetProperties,
 } from 'react-native';
 import {View, Text, HeartIcon} from 'ui';
+import {LockIcon} from 'ui/icons';
 import {IPost} from '../../../types/index';
 import {ContentIcons} from './BigCard';
 import TagsList from './TagList';
@@ -30,7 +32,6 @@ const styles = StyleSheet.create({
   image: {
     width: 100 + '%',
     height: 128,
-
   },
   imageContainer: {
     width: 100 + '%',
@@ -56,12 +57,16 @@ interface Props extends IPost {
 }
 
 const MediumCard: React.FC<Props> = props => {
-  const {thumbnail, rootStyles, title, mediaType, tags, id} = props;
+  const {thumbnail, rootStyles, title, mediaType, tags, id, isPremium} = props;
 
   const navigation = useNavigation();
 
   const {data: likes} = useLikes();
   const likeMutation = useLikeMutation();
+  const {hasPremium} = usePremium();
+
+  const isAvailable = !isPremium || hasPremium;
+
   const isLiked = likes?.includes(id);
 
   const post: IPost = props;
@@ -87,11 +92,17 @@ const MediumCard: React.FC<Props> = props => {
             10 mins
           </Text>
         </View>
-        <TouchableOpacity
-          style={styles.likeIcon}
-          onPress={() => likeMutation.mutate(id)}>
-          <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
-        </TouchableOpacity>
+        {isAvailable ? (
+          <TouchableOpacity
+            style={styles.likeIcon}
+            onPress={() => likeMutation.mutate(id)}>
+            <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.likeIcon}>
+            <LockIcon />
+          </View>
+        )}
       </View>
       <View p="s">
         <View flexDirection="row" alignItems="center">

@@ -51,14 +51,18 @@ export const Button = ({
   label,
   loading = false,
   variant = 'primary',
+  disabled,
   ...rest
 }: Props) => {
- // const props = useRestyle(restyleFunctions, {...rest, variant});
+  // const props = useRestyle(restyleFunctions, {...rest, variant});
 
   const textVariant = 'button_' + variant;
 
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.touchableOpacity]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.touchableOpacity]}
+      disabled={disabled}>
       <ButtonContainer
         borderWidth={1}
         borderColor="primary"
@@ -71,9 +75,7 @@ export const Button = ({
         {loading ? (
           <ActivityIndicator size="small" color={'white'} />
         ) : (
-          <Text
-            variant="button_primary"
-            style={{paddingVertical: 8}}>
+          <Text variant="button_primary" style={{paddingVertical: 8}}>
             {label}
           </Text>
         )}

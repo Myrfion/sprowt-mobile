@@ -541,7 +541,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.react.native.sprowt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.segicm.sprowt;
 				PRODUCT_NAME = sprowt;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -557,7 +557,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = sprowt/sprowt.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VPX5SC2LLD;
+				DEVELOPMENT_TEAM = BDB8C84C79;
 				INFOPLIST_FILE = sprowt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -569,7 +569,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.react.native.sprowt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.segicm.sprowt;
 				PRODUCT_NAME = sprowt;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

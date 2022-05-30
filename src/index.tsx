@@ -8,6 +8,7 @@ import {hydrateAuth, setI18nConfig} from 'core';
 import APIProvider from 'api/APIProvider';
 //import {registerPushNotifications} from 'services/push-notifications';
 import {Alert} from 'react-native';
+import {activateAdapty, adapty} from 'react-native-adapty';
 import {notificationManager} from 'services/notification-service';
 
 setI18nConfig();
@@ -26,6 +27,12 @@ const App = () => {
     });
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    activateAdapty({sdkKey: 'public_live_7mnVB3RP.yBsxfd1ExZ6VTWLAZ4M5'}).then(
+      () => {},
+    );
   }, []);
 
   return (
