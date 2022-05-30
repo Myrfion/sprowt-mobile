@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
+import usePremium from 'api/usePremium';
 import * as React from 'react';
 import {
   Image,
@@ -75,7 +76,11 @@ const BigCard: React.FC<Props> = props => {
   const {data: likes} = useLikes();
   const mutation = useLikeMutation();
 
+  const {hasPremium} = usePremium();
+
   const isLiked = likes?.includes(id);
+
+  const isAvailable = hasPremium || !isPremium;
 
   const slicedTags = tags.slice(0, 3);
 
@@ -83,7 +88,7 @@ const BigCard: React.FC<Props> = props => {
     <TouchableOpacity
       style={[styles.root, rootStyles || {}]}
       onPress={() => navigation.navigate('Content', {post: props})}>
-      {isPremium ? (
+      {!isAvailable ? (
         <View style={styles.likeIcon}>
           <LockIcon />
         </View>

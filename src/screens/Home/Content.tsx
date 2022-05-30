@@ -20,6 +20,7 @@ import {PlayIcon, LockIcon} from 'ui/icons/Content';
 import {usePosts} from 'api/usePosts';
 import MediumCardsList from 'ui/Home/MediumCardsList';
 import {SafeAreaView} from 'react-native';
+import usePremium from 'api/usePremium';
 
 const styles = StyleSheet.create({
   image: {
@@ -86,6 +87,8 @@ export const Content = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
+  const {hasPremium} = usePremium();
+
   const {data: likes} = useLikes();
 
   const likeMutation = useLikeMutation();
@@ -98,7 +101,6 @@ export const Content = () => {
 
   let {data: relatedPosts} = usePosts({tag: post?.tags[0].name || ''});
 
-  console.log(post);
   if (!post) {
     return null;
   }
@@ -107,10 +109,12 @@ export const Content = () => {
 
   const {mediaType, thumbnail, title, id, description, tags, isPremium} = post;
 
+  const isPostAvailable = !isPremium || hasPremium;
+
   const isLiked = likes?.includes(id) || false;
 
   function onPlay() {
-    if (isPremium) {
+    if (!isPostAvailable) {
       showErrorMessage('Buy premium to unlock this content');
 
       return;
@@ -185,7 +189,7 @@ export const Content = () => {
             <Text variant="header" mr="s">
               {title}
             </Text>
-            {isPremium ? (
+            {!isPostAvailable ? (
               <LockIcon />
             ) : (
               <TouchableOpacity onPress={() => likeMutation.mutate(id)}>

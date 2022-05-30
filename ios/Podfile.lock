@@ -1,4 +1,5 @@
 PODS:
+  - Adapty (1.16.8)
   - AppAuth (1.5.0):
     - AppAuth/Core (= 1.5.0)
     - AppAuth/ExternalUserAgent (= 1.5.0)
@@ -8,6 +9,8 @@ PODS:
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - FBAEMKit (13.2.0):
+    - FBSDKCoreKit_Basics (= 13.2.0)
   - FBLazyVector (0.67.1)
   - FBReactNativeSpec (0.67.1):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -16,23 +19,35 @@ PODS:
     - React-Core (= 0.67.1)
     - React-jsi (= 0.67.1)
     - ReactCommon/turbomodule/core (= 0.67.1)
-  - Firebase/Auth (8.15.0):
+  - FBSDKCoreKit (13.2.0):
+    - FBAEMKit (= 13.2.0)
+    - FBSDKCoreKit_Basics (= 13.2.0)
+  - FBSDKCoreKit_Basics (13.2.0)
+  - FBSDKGamingServicesKit (13.2.0):
+    - FBSDKCoreKit (= 13.2.0)
+    - FBSDKCoreKit_Basics (= 13.2.0)
+    - FBSDKShareKit (= 13.2.0)
+  - FBSDKLoginKit (13.2.0):
+    - FBSDKCoreKit (= 13.2.0)
+  - FBSDKShareKit (13.2.0):
+    - FBSDKCoreKit (= 13.2.0)
+  - Firebase/Auth (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 8.15.0)
-  - Firebase/CoreOnly (8.15.0):
-    - FirebaseCore (= 8.15.0)
-  - Firebase/Messaging (8.15.0):
+    - FirebaseAuth (~> 8.14.0)
+  - Firebase/CoreOnly (8.14.0):
+    - FirebaseCore (= 8.14.0)
+  - Firebase/Messaging (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.15.0)
-  - Firebase/Storage (8.15.0):
+    - FirebaseMessaging (~> 8.14.0)
+  - Firebase/Storage (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseStorage (~> 8.15.0)
-  - FirebaseAuth (8.15.0):
+    - FirebaseStorage (~> 8.14.0)
+  - FirebaseAuth (8.14.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/Environment (~> 7.7)
     - GTMSessionFetcher/Core (~> 1.5)
-  - FirebaseCore (8.15.0):
+  - FirebaseCore (8.14.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
@@ -46,7 +61,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseMessaging (8.15.0):
+  - FirebaseMessaging (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.1)
@@ -55,7 +70,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseStorage (8.15.0):
+  - FirebaseStorage (8.14.0):
     - FirebaseCore (~> 8.0)
     - GTMSessionFetcher/Core (~> 1.5)
   - Flipper (0.99.0):
@@ -120,9 +135,9 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.1.4):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (6.0.2):
     - AppAuth (~> 1.4)
@@ -145,7 +160,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
-  - GTMAppAuth (1.2.3):
+  - GTMAppAuth (1.3.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.2)
@@ -364,7 +379,25 @@ PODS:
   - React-jsinspector (0.67.1)
   - React-logger (0.67.1):
     - glog
+  - react-native-adapty (1.3.13):
+    - Adapty (= 1.16.8)
+    - React
   - react-native-date-picker (4.2.0):
+    - React-Core
+  - react-native-fbsdk-next (8.0.5):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 8.0.5)
+    - react-native-fbsdk-next/Login (= 8.0.5)
+    - react-native-fbsdk-next/Share (= 8.0.5)
+  - react-native-fbsdk-next/Core (8.0.5):
+    - FBSDKCoreKit (~> 13.2.0)
+    - React-Core
+  - react-native-fbsdk-next/Login (8.0.5):
+    - FBSDKLoginKit (~> 13.2.0)
+    - React-Core
+  - react-native-fbsdk-next/Share (8.0.5):
+    - FBSDKGamingServicesKit (~> 13.2.0)
+    - FBSDKShareKit (~> 13.2.0)
     - React-Core
   - react-native-image-picker (4.7.3):
     - React-Core
@@ -458,19 +491,19 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFBApp (14.9.1):
-    - Firebase/CoreOnly (= 8.15.0)
+  - RNFBApp (14.7.0):
+    - Firebase/CoreOnly (= 8.14.0)
     - React-Core
-  - RNFBAuth (14.9.1):
-    - Firebase/Auth (= 8.15.0)
+  - RNFBAuth (14.7.0):
+    - Firebase/Auth (= 8.14.0)
     - React-Core
     - RNFBApp
   - RNFBMessaging (14.9.1):
-    - Firebase/Messaging (= 8.15.0)
+    - Firebase/Messaging (= 8.14.0)
     - React-Core
     - RNFBApp
   - RNFBStorage (14.7.0):
-    - Firebase/Storage (= 8.15.0)
+    - Firebase/Storage (= 8.14.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.10.3):
@@ -568,7 +601,9 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-adapty (from `../node_modules/react-native-adapty`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -608,8 +643,15 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Adapty
     - AppAuth
     - CocoaAsyncSocket
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAuth
     - FirebaseCore
@@ -677,8 +719,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-adapty:
+    :path: "../node_modules/react-native-adapty"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
@@ -753,19 +799,26 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Adapty: 7bd19095b4e77ebbda17af2faf7268a0fdbc295b
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  FBAEMKit: c2b2895363b7e57192013d1dc49fdf498b28624c
   FBLazyVector: cf409c74423d3507bda74bda1dc41e903ec2cd5b
   FBReactNativeSpec: ef0ce762fdb37900abb01e008cce5f0ef2cce6b7
-  Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
-  FirebaseAuth: 3e73bf8abf4fbb40f8b421f361f4cc48ee57388c
-  FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
+  FBSDKCoreKit: 58139803d861e72c7661dc875611a759352a55ac
+  FBSDKCoreKit_Basics: 1ffc68326a5ece051d85574f02a0adcf27c2a5f2
+  FBSDKGamingServicesKit: 2af7e19dcfc3459581dec011a230d1eeddc17861
+  FBSDKLoginKit: 19e2a878556c2ee4f20486dc406e582783cd7578
+  FBSDKShareKit: 079497bb0cfeb049dc8ff6aee2702698680a2806
+  Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
+  FirebaseAuth: c5fde343630090253d3af7e2d35697b414b40202
+  FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
-  FirebaseMessaging: 5e5118a2383b3531e730d974680954c679ca0a13
-  FirebaseStorage: 8019af461599b2c3bc61c6a5dbdfa3d2de66a4d9
+  FirebaseMessaging: 5ebc42d281567658a2cb72b9ef3506e4a1a1a6e4
+  FirebaseStorage: 32ab036ce11eb7e94c279a238a65efa24f81593d
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 57ffbe81ef95306cc9e69c4aa3aeeeeb58a6a28c
@@ -777,10 +830,10 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
+  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  GTMAppAuth: 987526d41b07efb1bedda5e936fe0cb718a03113
+  GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
@@ -799,11 +852,13 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 1af5de75a4c834c05d53a77c1512e5aa6c18412f
   React-jsinspector: ab80bcdb02f28cdfc0dbbaea6db1241565d59002
   React-logger: b08f354e4c928ff794ca477347fea0922aaf11c3
+  react-native-adapty: 5ead7b9a40fd0aa11a107b68185ec1ee3c81d292
   react-native-date-picker: d83ab9cccbc497642a93fdca783ae76ecd6b17b6
-  react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
-  react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
-  react-native-track-player: c4a4c5ec8090aec5b97a3f634dab8bdb657491a0
+  react-native-fbsdk-next: 79815a5b8f66ab0990fbb370b4a4b5bdf0a15e6c
+  react-native-image-picker: ae1202414bd5c37c00b2a701daa5b6194a06b7d9
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
+  react-native-slider: aaba824a95032157dd3087b408b0c531e2ac4613
+  react-native-track-player: d5ac19f74ab9fc2a9e46acc28d05938e8139fa2a
   React-perflogger: 9a6172711d9c4c8c7ac0a426717317c3c6ecf85c
   React-RCTActionSheet: ed408b54b08278e6af8a75e08679675041da61ae
   React-RCTAnimation: 0163b497a423a9576a776685c6e3fe276f934758
@@ -818,19 +873,19 @@ SPEC CHECKSUMS:
   ReactCommon: 2e816fad39f65f2a94a5999d5be463a6b620dcf6
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
-  RNBootSplash: 605c94f76180e3f8e5832bcafbe52ff5194a51d0
-  RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
-  RNCCheckbox: 6369808337432cdbd5025d62ceced2480b4c51df
-  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
+  RNBootSplash: 39ab0fe4d672e3e4ab273a46e13576fd7ab11681
+  RNCAsyncStorage: c0754b486fec6e532d358bfd7337cb45c8d2c897
+  RNCCheckbox: 7e2cd6ea8e200210c36fe0898bbe200826bdaf56
+  RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
+  RNCPushNotificationIOS: 089da3b657e1e3d464f38195fd2e3069608ef5af
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
-  RNFBApp: fd23737680ed2bdde41ca27d8bfb171b6d668c6b
-  RNFBAuth: 4cfeb48367f81b135aced4bb9800df5488bc9660
-  RNFBMessaging: cd273b4dcacf98c83a25ce1711c8c85511573990
-  RNFBStorage: 953f4eaee19b55b22b5d887767e6725f857b8e3e
+  RNFBApp: 097a31d372b3db15b41c7a1a5c429433b0609e12
+  RNFBAuth: 85b7ad91e3783dfde011702b2b747b1fd7be7234
+  RNFBMessaging: 319006c4e8c171d8e62169659a2ae974d60ed69f
+  RNFBStorage: c5e7b02c06014908fa70261836a05fa0ef476d45
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
-  RNLocalize: f567ea0e35116a641cdffe6683b0d212d568f32a
+  RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5
+  RNLocalize: b8980509fc4db6895953aa95b90c8d81cb984603
   RNReanimated: 1326679461fa5d2399d54c18ca1432ba3e816b9e
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0

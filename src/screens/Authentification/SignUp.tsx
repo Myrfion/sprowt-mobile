@@ -8,6 +8,11 @@ import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation} from '@react-navigation/native';
 import {CheckBox} from 'ui/CheckBox';
 import {SocialProviders, SocialsList} from 'ui/Auth/SocialsList';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
+import {useProfileCreate} from 'api/useProfile';
 
 export type SignUpFormData = {
   email: string;
@@ -97,6 +102,10 @@ const styles = StyleSheet.create({
 export const SignUp = () => {
   const navigation = useNavigation();
 
+  const profileCreate = useProfileCreate({
+    onSuccess: () => console.log('user profile createed!'),
+  });
+
   const {handleSubmit, control} = useForm<SignUpFormData>({
     resolver: yupResolver(schema),
   });
@@ -107,6 +116,79 @@ export const SignUp = () => {
       password: data.password,
     });
   };
+
+  React.useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com',
+    });
+    Settings.setAppID('699728804407049');
+  }, []);
+
+  async function onGoogleButtonPress() {
+    const {idToken} = await GoogleSignin.signIn();
+    const currentUser = await GoogleSignin.getCurrentUser();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    console.log(currentUser?.user.givenName);
+
+    profileCreate.mutate({
+      firstName: currentUser?.user.givenName,
+      lastName: currentUser?.user.familyName,
+      email: currentUser?.user.email,
+    });
+
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  async function onAppleButtonPress() {
+    // Start the sign-in request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    // Ensure Apple returned a user identityToken
+    if (!appleAuthRequestResponse.identityToken) {
+      throw new Error('Apple Sign-In failed - no identify token returned');
+    }
+
+    // Create a Firebase credential from the response
+    const {identityToken, nonce} = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+
+    // Sign the user in with the credential
+    return auth().signInWithCredential(appleCredential);
+  }
+
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
 
   return (
     <View flex={1} backgroundColor="background">
@@ -152,8 +234,19 @@ export const SignUp = () => {
           <Text>OR</Text>
           <SocialsList
             onPressSocial={social => {
-              if (SocialProviders.google === social) {
-                console.log('social: ', social);
+              console.log('social: ', social);
+              if (social === 0) {
+                onGoogleButtonPress().then(() =>
+                  console.log('Signed in with Google!'),
+                );
+              } else if (social === 1) {
+                onFacebookButtonPress().then(() =>
+                  console.log('Signed in with Facebook!'),
+                );
+              } else if (social === 2) {
+                onAppleButtonPress().then(() =>
+                  console.log('Apple sign-in complete!'),
+                );
               }
             }}
           />

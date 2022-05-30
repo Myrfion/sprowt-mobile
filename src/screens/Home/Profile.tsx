@@ -32,14 +32,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us'
-const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com'
+const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us';
+const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com';
 
 const Profile = () => {
   const {signOut} = useAuth();
   const navigation = useNavigation();
 
-  const {data: profileData} = useProfile();
+  const {data: profileData, error} = useProfile();
+  console.log(error);
+  console.log('profile: ', profileData);
+  const joinDate = new Date(
+    profileData?.data.joinDate._seconds * 1000 +
+      profileData?.data.joinDate._nanoseconds / 1000000,
+  );
 
   return (
     <View flex={1} backgroundColor="background">
@@ -53,10 +59,10 @@ const Profile = () => {
             {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
           <Text>
-            {profileData?.data.joinDate &&
-              format(new Date(profileData?.data.joinDate), 'MMM d yyyy')}
+            {profileData?.data.joinDate && format(joinDate, 'MMM d yyyy')}
           </Text>
           <Text color="neutral400">Member Since</Text>
+          <Text></Text>
         </View>
         <Text color="neutral800" fontWeight="bold" fontSize={16} mb="m">
           Account Settings

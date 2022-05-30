@@ -55,7 +55,9 @@ export const Account = () => {
     defaultValues: {
       firstName: profileData?.data.firstName,
       lastName: profileData?.data.lastName,
-      birthDay: parseISO(profileData?.data.birthDay) || new Date(),
+      birthDay: profileData?.data.birthDay
+        ? parseISO(profileData?.data.birthDay)
+        : new Date(),
       profilePicture: profileData?.data.profilePicture,
     },
   });
