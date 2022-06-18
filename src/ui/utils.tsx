@@ -44,8 +44,7 @@ export const showErrorMessage = (message: string = 'Something went wrong ') => {
 export const showSuccessMessage = (message: string = 'Nice!') => {
   showMessage({
     backgroundColor: BaseTheme.colors.neutral50,
-    message: 'Please note',
-    description: message,
+    message: message,
     type: 'success',
     duration: 4000,
     renderFlashMessageIcon: () => (

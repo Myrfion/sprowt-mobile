@@ -22,6 +22,7 @@ const schema = yup.object().shape({
 const styles = StyleSheet.create({
   subheader: {
     marginBottom: 28,
+    fontSize: 18,
   },
   logo: {
     width: 115,
@@ -84,8 +85,12 @@ export const PersonalInformation = () => {
         <Text variant="header" textAlign="center">
           Personal Information
         </Text>
-        <Text variant="subheader" textAlign="center" style={styles.subheader}>
-          Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!
+        <Text
+          textAlign="center"
+          style={styles.subheader}
+          mt="s"
+          color="neutral800">
+          Please enter your first and last name
         </Text>
         <Input control={control} name="firstName" label="First Name" />
         <Input control={control} name="lastName" label="Last Name" />

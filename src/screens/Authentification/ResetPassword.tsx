@@ -17,7 +17,10 @@ const schema = yup.object().shape({
 });
 
 const styles = StyleSheet.create({
-  subheader: {},
+  subheader: {
+    marginBottom: 28,
+    fontSize: 18,
+  },
   logo: {
     width: 115,
     height: 36,
@@ -83,10 +86,14 @@ export const ResetPassword = () => {
             ? 'Check your email'
             : 'Reset password'}
         </Text>
-        <Text variant="subheader" textAlign="center" style={styles.subheader}>
+        <Text
+          my="s"
+          textAlign="center"
+          style={styles.subheader}
+          color="neutral800">
           {resetPasswordStatus === 'success'
             ? 'Password recovery instructions sent to\n your email.'
-            : ' Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet!'}
+            : 'Please enter the email associated with your account'}
         </Text>
         {resetPasswordStatus === 'success' ? (
           <>

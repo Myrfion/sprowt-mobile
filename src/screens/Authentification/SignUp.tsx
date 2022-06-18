@@ -3,11 +3,11 @@ import {BaseTheme, Button, Input, Text, View} from 'ui';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Linking, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation} from '@react-navigation/native';
 import {CheckBox} from 'ui/CheckBox';
-import {SocialProviders, SocialsList} from 'ui/Auth/SocialsList';
+import {SocialsList} from 'ui/Auth/SocialsList';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
@@ -27,12 +27,14 @@ const schema = yup.object().shape({
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
-  terms: yup.boolean().oneOf([true], 'you must accept terms and conditions'),
+  terms: yup.bool().oneOf([true], 'you must accept terms and conditions'),
 });
 
 const styles = StyleSheet.create({
   subheader: {
     marginBottom: 28,
+    fontSize: 18,
+    marginTop: 12,
   },
   logo: {
     width: 115,
@@ -94,20 +96,31 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   termsText: {
-    color: BaseTheme.colors.primary,
+    color: BaseTheme.colors.primary900,
     fontWeight: 'bold',
   },
 });
+
+GoogleSignin.configure({
+  webClientId:
+    '796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com',
+  iosClientId:
+    '796983538258-ec0siks1orr3dl82asiv4ti62ivgr5si.apps.googleusercontent.com',
+});
+Settings.setAppID('699728804407049');
 
 export const SignUp = () => {
   const navigation = useNavigation();
 
   const profileCreate = useProfileCreate({
-    onSuccess: () => console.log('user profile createed!'),
+    onSuccess: () => console.log('user profile created!'),
   });
 
   const {handleSubmit, control} = useForm<SignUpFormData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      terms: false,
+    },
   });
 
   const onSubmit = (data: SignUpFormData) => {
@@ -116,14 +129,6 @@ export const SignUp = () => {
       password: data.password,
     });
   };
-
-  React.useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '796983538258-ltud2s5dnr0nhpmtgu9b3e1cfs5qbrs1.apps.googleusercontent.com',
-    });
-    Settings.setAppID('699728804407049');
-  }, []);
 
   async function onGoogleButtonPress() {
     const {idToken} = await GoogleSignin.signIn();
@@ -158,6 +163,12 @@ export const SignUp = () => {
       identityToken,
       nonce,
     );
+
+    profileCreate.mutate({
+      firstName: appleAuthRequestResponse.fullName?.givenName ?? '',
+      lastName: appleAuthRequestResponse.fullName?.familyName ?? '',
+      email: appleAuthRequestResponse.email,
+    });
 
     // Sign the user in with the credential
     return auth().signInWithCredential(appleCredential);
@@ -198,10 +209,10 @@ export const SignUp = () => {
           style={styles.logo}
         />
         <Text variant="header" textAlign="center">
-          Sign up
+          Sign Up
         </Text>
-        <Text variant="subheader" textAlign="center" style={styles.subheader}>
-          Join free and enjoy a 7-day premium trial (no credit card required 😎)
+        <Text textAlign="center" style={styles.subheader} color="neutral800">
+          Join free (no credit card required) 😎
         </Text>
         <Input control={control} name="email" label="Email" />
         <Input
@@ -220,8 +231,18 @@ export const SignUp = () => {
           <CheckBox name="terms" control={control} />
           <Text style={styles.checkboxText}>
             I agree to{' '}
-            <Text style={styles.termsText}>
-              Terms of Service & Privacy Policy
+            <Text
+              style={styles.termsText}
+              onPress={() => Linking.openURL('https://www.sprowt.io/terms')}>
+              Terms of Service
+            </Text>{' '}
+            &{' '}
+            <Text
+              style={styles.termsText}
+              onPress={() =>
+                Linking.openURL('https://www.sprowt.io/privacy-policy')
+              }>
+              Privacy Policy
             </Text>
           </Text>
         </View>
@@ -252,12 +273,15 @@ export const SignUp = () => {
           />
         </View>
         <View style={styles.createAccountRow}>
-          <Text>Already have account? </Text>
-          <Text
-            style={{color: BaseTheme.colors.primary}}
-            fontWeight="bold"
-            onPress={() => navigation.navigate('Login')}>
-            Sing in
+          <Text textDecorationLine="underline">
+            Already have an account?{' '}
+            <Text
+              textDecorationLine="underline"
+              color="primary700"
+              fontWeight="bold"
+              onPress={() => navigation.navigate('Login')}>
+              Sign in
+            </Text>
           </Text>
         </View>
       </SafeAreaView>

@@ -14,6 +14,7 @@ import TrackPlayer, {
   usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
+  Capability,
 } from 'react-native-track-player';
 import Slider from '@react-native-community/slider';
 import {BackIcon, BaseTheme, Text, View} from 'ui';
@@ -57,17 +58,15 @@ const styles = StyleSheet.create({
     width: 330,
     height: 320,
     borderRadius: 330,
-
-   
   },
 });
 
-function convertHMS(value: Number) {
-  const sec = parseInt(value, 10); // convert value to number if it's string
-  let hours = Math.floor(sec / 3600); // get hours
-  let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
-  let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
-  // add 0 if value < 10; Example: 2 => 02
+function convertHMS(value: number) {
+  const sec = value;
+  let hours: number | string = Math.floor(sec / 3600);
+  let minutes: number | string = Math.floor((sec - hours * 3600) / 60);
+  let seconds: number | string = sec - hours * 3600 - minutes * 60;
+
   if (hours < 10) {
     hours = '0' + hours;
   }
@@ -77,7 +76,7 @@ function convertHMS(value: Number) {
   if (seconds < 10) {
     seconds = '0' + seconds;
   }
-  return minutes + ':' + seconds; // Return is HH : MM : SS
+  return minutes + ':' + seconds;
 }
 
 export const Player = () => {
@@ -98,12 +97,9 @@ export const Player = () => {
   useTrackPlayerEvents(
     [Event.PlaybackTrackChanged, Event.PlaybackQueueEnded],
     async event => {
-      console.log('STATE CHANGE: ', event.state);
       if (event.nextTrack === undefined && !repeat) {
-        console.log('STATE CHANGE: ', event.state);
         await TrackPlayer.pause();
-        navigation.navigate('Raiting', { post });
-        
+        navigation.navigate('Raiting', {post});
       }
     },
   );
@@ -115,12 +111,28 @@ export const Player = () => {
   useEffect(() => {
     (async () => {
       await TrackPlayer.setupPlayer();
+      await TrackPlayer.updateOptions({
+        stopWithApp: true,
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.Stop,
+          Capability.SeekTo,
+        ],
+        notificationCapabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.Stop,
+          Capability.SeekTo,
+        ],
+      });
 
       await TrackPlayer.add({
         id: id,
         url: mediaPath,
         title: title,
-        artist: thumbnail,
+        artwork: thumbnail,
+        artist: 'Sprowt',
       });
 
       await TrackPlayer.play();
@@ -136,7 +148,6 @@ export const Player = () => {
         await TrackPlayer.stop();
         await TrackPlayer.destroy();
       })();
-      
     };
   }, [id, mediaPath, title, thumbnail]);
 
@@ -184,13 +195,17 @@ export const Player = () => {
             </TouchableOpacity>
           </View>
           <Image source={{uri: thumbnail}} style={styles.image} />
-          <Text color="white" fontSize={32} fontWeight="bold" mt="xl" mb="s">
+          <Text
+            color="white"
+            fontSize={32}
+            variant="header"
+            fontWeight="bold"
+            mt="xl"
+            mb="s">
             {title}
           </Text>
           <TagsList tags={tags} textStyles={{color: 'white', fontSize: 14}} />
-          <Text color="white" mt="s">
-            {convertHMS(progress.position)} / {convertHMS(progress.duration)}
-          </Text>
+
           <Slider
             style={{width: '70%', height: 40}}
             minimumValue={0}
@@ -201,6 +216,9 @@ export const Player = () => {
             value={progress.position}
             onSlidingComplete={async pos => await TrackPlayer.seekTo(pos)}
           />
+          <Text color="white" mt="s">
+            {convertHMS(progress.position)} / {convertHMS(progress.duration)}
+          </Text>
           <View
             alignSelf="stretch"
             backgroundColor="white"

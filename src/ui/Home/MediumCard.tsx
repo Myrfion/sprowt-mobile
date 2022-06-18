@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
 import {useLikeMutation, useLikes} from 'api/useLikes';
-import usePremium from 'api/usePremium';
 import * as React from 'react';
 import {
   Image,
@@ -32,6 +31,9 @@ const styles = StyleSheet.create({
   image: {
     width: 100 + '%',
     height: 128,
+    overflow: 'hidden',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   imageContainer: {
     width: 100 + '%',
@@ -50,20 +52,30 @@ const styles = StyleSheet.create({
 });
 
 interface Props extends IPost {
-  rootStyles?: StyleSheetProperties | null;
+  rootStyles?: StyleSheetProperties | {};
   isLiked: boolean;
   onLike: () => void;
   onPress: () => void;
+  hasPremium: boolean;
 }
 
 const MediumCard: React.FC<Props> = props => {
-  const {thumbnail, rootStyles, title, mediaType, tags, id, isPremium} = props;
+  const {
+    thumbnail,
+    rootStyles,
+    title,
+    mediaType,
+    tags,
+    id,
+    isPremium,
+    duration,
+    hasPremium,
+  } = props;
 
   const navigation = useNavigation();
 
   const {data: likes} = useLikes();
   const likeMutation = useLikeMutation();
-  const {hasPremium} = usePremium();
 
   const isAvailable = !isPremium || hasPremium;
 
@@ -74,7 +86,11 @@ const MediumCard: React.FC<Props> = props => {
   return (
     <TouchableOpacity
       style={[styles.root, rootStyles]}
-      onPress={() => navigation.navigate('Content', {post})}>
+      onPress={() =>
+        isAvailable
+          ? navigation.navigate('Content', {post})
+          : navigation.navigate('Subscription')
+      }>
       <View style={styles.imageContainer}>
         <Image source={{uri: thumbnail}} style={styles.image} />
         <View
@@ -89,13 +105,13 @@ const MediumCard: React.FC<Props> = props => {
           borderRadius={20}
           alignItems="center">
           <Text fontSize={12} color="success300" fontWeight="bold">
-            10 mins
+            {duration ? `${duration} mins` : '0 mins'}
           </Text>
         </View>
         {isAvailable ? (
           <TouchableOpacity
             style={styles.likeIcon}
-            onPress={() => likeMutation.mutate(id)}>
+            onPress={() => likeMutation.mutate(id as string)}>
             <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
           </TouchableOpacity>
         ) : (
@@ -122,7 +138,7 @@ const MediumCard: React.FC<Props> = props => {
             {ContentIcons[mediaType]}
           </View>
         </View>
-        <TagsList tags={tags} />
+        <TagsList tags={tags} keyPrefix={title} />
       </View>
     </TouchableOpacity>
   );

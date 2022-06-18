@@ -11,7 +11,7 @@ import {AuthNavigator} from './AuthNavigator';
 const Stack = createStackNavigator();
 export const navigationRef = createNavigationContainerRef();
 
-export function navigationWithRef(name, params) {
+export function navigationWithRef(name: string, params) {
   if (navigationRef.isReady()) {
     navigationRef.navigate(name, params);
   }

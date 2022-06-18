@@ -78,7 +78,12 @@ const SubscriptionInfoPanel: FC<Props> = ({
         justifyContent="space-between">
         <Text color="neutral700">Member Since</Text>
         <Text pr="s">
-          {format(new Date(purchasedSubscription?.activatedAt), 'MMMM d yyyy')}
+          {purchasedSubscription?.activatedAt
+            ? format(
+                new Date(purchasedSubscription?.activatedAt),
+                'MMMM d yyyy',
+              )
+            : ''}
         </Text>
       </View>
     </View>

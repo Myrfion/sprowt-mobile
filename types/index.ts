@@ -25,6 +25,7 @@ export interface IPost {
   feedbacksNum?: number;
   raiting?: number;
   created?: string;
+  duration?: number;
 }
 
 export interface ITag {

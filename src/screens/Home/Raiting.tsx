@@ -1,9 +1,11 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {createFeedback} from 'api/useFeedback';
 import {useAuth} from 'core';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  EmitterSubscription,
   ImageBackground,
+  Keyboard,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -49,11 +51,33 @@ const styles = StyleSheet.create({
   },
 });
 
-const FEEDBACK_RAITING = 3;
-
 export const Raiting = () => {
   const route = useRoute();
   const navigation = useNavigation();
+
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+  const onKeyboardShow = (event: {
+    endCoordinates: {height: React.SetStateAction<number>};
+  }) => setKeyboardOffset(event.endCoordinates.height);
+  const onKeyboardHide = () => setKeyboardOffset(0);
+  const keyboardDidShowListener = useRef<EmitterSubscription>();
+  const keyboardDidHideListener = useRef<EmitterSubscription>();
+
+  useEffect(() => {
+    keyboardDidShowListener.current = Keyboard.addListener(
+      'keyboardWillShow',
+      onKeyboardShow,
+    );
+    keyboardDidHideListener.current = Keyboard.addListener(
+      'keyboardWillHide',
+      onKeyboardHide,
+    );
+
+    return () => {
+      keyboardDidShowListener?.current?.remove();
+      keyboardDidHideListener?.current?.remove();
+    };
+  }, []);
 
   const {isLoading, mutate} = useMutation(createFeedback, {
     onError(error) {
@@ -67,7 +91,7 @@ export const Raiting = () => {
 
   const {user} = useAuth();
 
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(4.5);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -76,7 +100,7 @@ export const Raiting = () => {
     });
   }, [navigation]);
 
-  const post: IPost = route.params?.post;
+  const {post} = route.params as {post: IPost};
 
   const {thumbnail, title, tags} = post;
 
@@ -99,15 +123,18 @@ export const Raiting = () => {
         blurRadius={3}
         resizeMode="cover">
         <View alignItems="center">
-          <Text color="white" fontSize={32} fontWeight="bold" mt="xl" mb="s">
+          <Text
+            color="white"
+            fontSize={32}
+            fontWeight="bold"
+            mt="xl"
+            mb="s"
+            variant="header">
             {title}
           </Text>
           <TagsList tags={tags} textStyles={styles.tagsList} />
-          <Text textAlign="center" color="white" mt="xl" fontSize={18} mx="l">
-            Proven to help alleviate depression and anxiety, gratitude helps you
-            live a happier, healthier, more appreciative life.
-          </Text>
         </View>
+
         <View
           borderTopEndRadius={50}
           borderTopStartRadius={50}
@@ -119,7 +146,8 @@ export const Raiting = () => {
           left={0}
           right={0}
           pt="xl"
-          px="m">
+          px="m"
+          style={{paddingBottom: keyboardOffset}}>
           <Text fontWeight="700" fontSize={18} mb="s">
             How would you rate this content?
           </Text>
@@ -131,19 +159,19 @@ export const Raiting = () => {
             fractions={1}
             style={styles.starsRaiting}
             onFinishRating={setRating}
+            startingValue={4.5}
           />
-          {rating <= FEEDBACK_RAITING && (
-            <TextInput
-              style={styles.feedbackInput}
-              multiline
-              numberOfLines={4}
-              editable
-              placeholder="We appreciate your thoughts and suggestions!"
-              maxLength={400}
-              value={text}
-              onChangeText={setText}
-            />
-          )}
+
+          <TextInput
+            style={styles.feedbackInput}
+            multiline
+            numberOfLines={4}
+            editable
+            placeholder="We appreciate your thoughts and suggestions!"
+            maxLength={400}
+            value={text}
+            onChangeText={setText}
+          />
 
           <Button
             label="Submit"

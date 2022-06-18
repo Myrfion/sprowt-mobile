@@ -24,6 +24,12 @@ const Favourites = () => {
           pt="l">
           Favourites
         </Text>
+        {!isLoading && postsWithLikes?.length === 0 && (
+          <Text mt="xl" variant="subheader" textAlign="center">
+            Keep your favourite content here
+          </Text>
+        )}
+
         {isLoading || !isFetched ? (
           <ActivityIndicator />
         ) : (

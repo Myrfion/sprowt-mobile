@@ -16,6 +16,7 @@ import BigCard from 'ui/Home/BigCard';
 import {SafeAreaView} from 'react-native';
 import {addMinutes, compareAsc, startOfDay} from 'date-fns';
 import {addHours} from 'date-fns/esm';
+import usePremium from 'api/usePremium';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -49,24 +50,24 @@ const getGreeting = (name: string | undefined) => {
     compareAsc(currentDate, morning) === 1 &&
     compareAsc(currentDate, afternoon) === -1
   ) {
-    return `Good morning, ${name}`;
+    return name ? `Good morning, ${name}` : 'Good morning';
   }
 
   if (
     compareAsc(currentDate, afternoon) === 1 &&
     compareAsc(currentDate, evening) === -1
   ) {
-    return `Good afternoon, ${name}`;
+    return name ? `Good afternoon, ${name}` : 'Good afternoon';
   }
 
   if (
     compareAsc(currentDate, evening) === 1 &&
     compareAsc(currentDate, morning) === -1
   ) {
-    return `Good evening, ${name}`;
+    return name ? `Good evening, ${name}` : 'Good evening';
   }
 
-  return `Good evening, ${name}`;
+  return name ? `Good evening, ${name}` : 'Good evening,';
 };
 
 async function requestUserPermission() {
@@ -87,14 +88,25 @@ export const Home = () => {
 
   const {user} = useAuth();
   const [search, setSearch] = useState('');
-  const {data: exploreTags} = useTags();
+  const {data: exploreTags, refetch: refetchTags} = useTags();
   const [exploreTag, setExploreTag] = useState<ITag>();
-  const {data, isLoading, refetch} = usePosts({
+  const {
+    data,
+    isLoading,
+    refetch: refetchPosts,
+  } = usePosts({
     tag: currentFeeling,
   });
-  const {data: exploreData, isLoading: exploreLoading} = usePosts({
+  let {data: exploreData, isLoading: exploreLoading} = usePosts({
     tag: exploreTag?.name || '',
   });
+  const {hasPremium} = usePremium();
+
+  if (!exploreTag?.name) {
+    exploreData = (exploreData ?? []).sort((a, b) =>
+      compareAsc(new Date(b.created as string), new Date(a.created as string)),
+    );
+  }
 
   useEffect(() => {
     (async () => {
@@ -109,7 +121,13 @@ export const Home = () => {
       <SafeAreaView />
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => {
+              refetchTags();
+              refetchPosts();
+            }}
+          />
         }>
         <Text
           variant="header"
@@ -132,7 +150,8 @@ export const Home = () => {
           textAlign="left"
           marginTop="m"
           color="neutral900"
-          paddingHorizontal="m">
+          paddingHorizontal="m"
+          mb="s">
           Made for you
         </Text>
         <Text fontSize={14} mb="m" paddingHorizontal="m">
@@ -150,7 +169,12 @@ export const Home = () => {
           style={{paddingHorizontal: 16}}>
           {data?.map((post: IPost) => {
             return (
-              <BigCard key={post.id} rootStyles={styles.photoCard} {...post} />
+              <BigCard
+                key={`big-card-${post.id}`}
+                rootStyles={styles.photoCard}
+                hasPremium={hasPremium}
+                {...post}
+              />
             );
           })}
         </ScrollView>
@@ -174,8 +198,9 @@ export const Home = () => {
           {exploreData?.map((post: IPost) => {
             return (
               <MediumCard
-                key={post.id}
+                key={`medium-card-${post.id}`}
                 rootStyles={styles.horizontalCard}
+                hasPremium={hasPremium}
                 {...post}
               />
             );

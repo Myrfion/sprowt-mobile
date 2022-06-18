@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     borderRadius: 42,
+    marginHorizontal: 8,
   },
   googleIcon: {
     shadowColor: '#000',
@@ -33,7 +34,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
+    alignItems: 'center',
+    justifyContent: 'center',
     elevation: 10,
   },
   facebookIcon: {
@@ -51,11 +53,6 @@ export const SocialsList: FC<SocialsListProps> = props => {
         onPress={() => onPressSocial(SocialProviders.google)}
         style={[styles.icon, styles.googleIcon]}>
         <GoogleIcon />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => onPressSocial(SocialProviders.facebook)}
-        style={[styles.icon, styles.facebookIcon]}>
-        <FacebookIcon />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => onPressSocial(SocialProviders.apple)}

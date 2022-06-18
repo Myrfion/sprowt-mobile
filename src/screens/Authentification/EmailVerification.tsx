@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   },
   subheader: {
     marginBottom: 28,
+    fontSize: 18,
   },
   ilContainer: {
     height: 100,
@@ -62,9 +63,17 @@ export const EmailVerification = () => {
         <Text variant="header" textAlign="center">
           Verify your account
         </Text>
-        <Text variant="subheader" textAlign="center" style={styles.subheader}>
-          Check your email for the link to verify your account.
+        <Text
+          mt="s"
+          textAlign="center"
+          style={styles.subheader}
+          color="neutral800">
+          Please check your email for the link to verify your account.
         </Text>
+        <Image
+          source={require('../../../assets/illustrations/il_email_verification.png')}
+          style={{width: 160, height: 160}}
+        />
       </SafeAreaView>
     </View>
   );

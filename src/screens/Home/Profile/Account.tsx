@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Button, Input, showErrorMessage, showSuccessMessage, Text, View} from 'ui';
+import {
+  Button,
+  Input,
+  showErrorMessage,
+  showSuccessMessage,
+  Text,
+  View,
+} from 'ui';
 import ProfileAvatar from 'ui/Profile/ProfileAvatar';
 import ProfileHeader from 'ui/Profile/ProfileHeader';
 import {Platform, SafeAreaView, ScrollView} from 'react-native';

@@ -23,13 +23,6 @@ const ButtonContainer = createRestyleComponent<
   Theme
 >([buttonVariant], View);
 
-const restyleFunctions = [
-  buttonVariant as any,
-  spacing,
-  border,
-  backgroundColor,
-];
-
 type Props = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   BorderProps<Theme> &
@@ -55,8 +48,6 @@ export const Button = ({
   ...rest
 }: Props) => {
   // const props = useRestyle(restyleFunctions, {...rest, variant});
-
-  const textVariant = 'button_' + variant;
 
   return (
     <TouchableOpacity

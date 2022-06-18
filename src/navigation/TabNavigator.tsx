@@ -4,7 +4,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Home} from 'screens';
 import Onboarding from 'screens/Home/Onboarding';
 import FeelingPicker from 'screens/Home/FeelingsPicker';
-import useAsyncStorage from 'core/Storage';
 import Search from 'screens/Home/Search';
 import Profile from 'screens/Home/Profile';
 import Favourites from 'screens/Home/Favourites';
@@ -20,7 +19,7 @@ import {Account} from 'screens/Home/Profile/Account';
 import {Subscription} from 'screens/Home/Profile/Subscription';
 import {Family} from 'screens/Home/Profile/Family';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {compareAsc, fromUnixTime, parseISO, startOfDay, toDate} from 'date-fns';
+import {navigationWithRef} from './RootNavigator';
 
 const styles = StyleSheet.create({
   logoIconButton: {
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.04,
     shadowRadius: 6.27,
+    zIndex: 10,
   },
 });
 
@@ -129,47 +129,20 @@ export const TabNavigator = () => {
 };
 
 export const HomeNavigator = () => {
-  const [isAppFirstLaunch, setIsAppFirstLaunch] = React.useState(false);
-  const [isFirstTodayLaunch, setIsFirstTodayLaunch] = React.useState(false);
-
   React.useEffect(() => {
     (async () => {
       const appData = await AsyncStorage.getItem('isAppFirstLaunch');
 
-      if (appData === null) {
-        setIsAppFirstLaunch(true);
+      if (!appData) {
+        navigationWithRef('Onboarding');
+
         await AsyncStorage.setItem('isAppFirstLaunch', 'true');
-      } else {
-        setIsAppFirstLaunch(false);
       }
-
-      /* const lastOpenDateString = await AsyncStorage.getItem('lastOpenDate');
-
-      if (!lastOpenDateString) {
-        setIsFirstTodayLaunch(true);
-      }
-
-      const lastOpenDate = fromUnixTime(Number(lastOpenDateString));
-
-      console.log('lastOpenDate: ', lastOpenDate);
-
-      const opennedToday =
-        compareAsc(lastOpenDate, startOfDay(lastOpenDate)) === 1;
-
-      console.log('opennedToday', opennedToday);
-
-      setIsFirstTodayLaunch(!opennedToday);
-
-      await AsyncStorage.setItem('lastOpenDate', Date.now().toString());*/
     })();
   }, []);
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {isAppFirstLaunch && (
-        <Stack.Screen name="Onboarding" component={Onboarding} />
-      )}
-
       <Stack.Screen name="FeelingPicker" component={FeelingPicker} />
 
       <Stack.Screen
@@ -189,6 +162,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Subscription" component={Subscription} />
       <Stack.Screen name="Family" component={Family} />
+      <Stack.Screen name="Onboarding" component={Onboarding} />
     </Stack.Navigator>
   );
 };

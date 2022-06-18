@@ -67,16 +67,24 @@ export const ContentIcons = {
 interface Props extends IPost {
   rootStyles: StyleSheetProperties | null;
   isLiked: boolean;
+  hasPremium: boolean;
 }
 
 const BigCard: React.FC<Props> = props => {
-  const {rootStyles, title, tags, thumbnail, isPremium, id, mediaType} = props;
+  const {
+    rootStyles,
+    title,
+    tags,
+    thumbnail,
+    isPremium,
+    id,
+    mediaType,
+    duration,
+    hasPremium,
+  } = props;
   const navigation = useNavigation();
-
   const {data: likes} = useLikes();
   const mutation = useLikeMutation();
-
-  const {hasPremium} = usePremium();
 
   const isLiked = likes?.includes(id);
 
@@ -87,7 +95,11 @@ const BigCard: React.FC<Props> = props => {
   return (
     <TouchableOpacity
       style={[styles.root, rootStyles || {}]}
-      onPress={() => navigation.navigate('Content', {post: props})}>
+      onPress={() =>
+        isAvailable
+          ? navigation.navigate('Content', {post: props})
+          : navigation.navigate('Subscription')
+      }>
       {!isAvailable ? (
         <View style={styles.likeIcon}>
           <LockIcon />
@@ -134,7 +146,7 @@ const BigCard: React.FC<Props> = props => {
             borderRadius={20}
             alignItems="center">
             <Text fontSize={12} color="success300" fontWeight="bold">
-              10 mins
+              {duration ? `${duration} mins` : '0 mins'}
             </Text>
           </View>
           <View

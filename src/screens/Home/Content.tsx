@@ -95,7 +95,6 @@ export const Content = () => {
 
   const {data: allPosts} = usePosts({tag: ''});
 
-  console.log(route.params?.postId);
   const post: IPost =
     route.params?.post || allPosts?.find(p => p.id === route.params?.postId);
 
@@ -107,7 +106,16 @@ export const Content = () => {
 
   relatedPosts = relatedPosts?.filter(p => p.id !== post.id);
 
-  const {mediaType, thumbnail, title, id, description, tags, isPremium} = post;
+  const {
+    mediaType,
+    thumbnail,
+    title,
+    id,
+    description,
+    tags,
+    isPremium,
+    duration,
+  } = post;
 
   const isPostAvailable = !isPremium || hasPremium;
 
@@ -173,7 +181,7 @@ export const Content = () => {
             style={{marginTop: -36}}>
             <View style={styles.infoContainer}>
               <Text color="success300" fontWeight="600" fontSize={12}>
-                10 min
+                {duration ?? 0} mins
               </Text>
             </View>
             <View style={styles.infoContainer}>{ContentIcons[mediaType]}</View>
@@ -192,7 +200,8 @@ export const Content = () => {
             {!isPostAvailable ? (
               <LockIcon />
             ) : (
-              <TouchableOpacity onPress={() => likeMutation.mutate(id)}>
+              <TouchableOpacity
+                onPress={() => likeMutation.mutate(id as string)}>
                 <BigHeartIcon fill={isLiked ? '#37493E' : 'none'} />
               </TouchableOpacity>
             )}
@@ -204,7 +213,7 @@ export const Content = () => {
               <TouchableOpacity
                 onPress={() => navigation.navigate('Search', {text: tag.name})}
                 style={[styles.infoContainer, {marginRight: 8}]}
-                key={tag.id}>
+                key={`tag-${tag.id}`}>
                 <Text color="success300" fontWeight="bold">
                   {tag.name}
                 </Text>
@@ -216,7 +225,7 @@ export const Content = () => {
         <View width={100 + '%'} height={1} backgroundColor="neutral200" />
         <Text my="l" fontSize={16}>
           Related to{' '}
-          <Text fontSize={16} fontWeight="bold" color="primary">
+          <Text fontSize={16} fontWeight="bold" color="primary700">
             {tags[0].name}
           </Text>
         </Text>

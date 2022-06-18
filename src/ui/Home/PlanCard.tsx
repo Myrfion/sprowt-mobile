@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import {StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {CheckmarkIcon} from 'ui/icons/Subscription';
 import {Text} from 'ui/Text';
 import {View} from 'ui/View';
 
 const styles = StyleSheet.create({
   root: {
     borderWidth: 1,
-
     borderRadius: 8,
     padding: 16,
     width: 100 + '%',
@@ -21,6 +21,8 @@ type Props = {
   period: string;
   active: boolean;
   onPress: () => void;
+  crossedPrice?: string;
+  features: Array<string>;
 };
 
 const PlanCard: FC<Props> = ({
@@ -30,6 +32,8 @@ const PlanCard: FC<Props> = ({
   active,
   period,
   onPress,
+  crossedPrice,
+  features,
 }) => {
   return (
     <TouchableOpacity style={[styles.root, rootStyles]} onPress={onPress}>
@@ -44,8 +48,18 @@ const PlanCard: FC<Props> = ({
             {period.charAt(0).toUpperCase() + period.slice(1)}ly
           </Text>
         </View>
-        <View flexDirection="row">
-          <Text fontSize={18} fontWeight="bold" mr="xs">
+        <View flexDirection="row" alignItems="center">
+          {crossedPrice ? (
+            <Text
+              fontSize={16}
+              fontWeight="bold"
+              color="red"
+              textDecorationLine="line-through"
+              mr="xs">
+              {crossedPrice}
+            </Text>
+          ) : null}
+          <Text fontSize={16} fontWeight="bold" mr="xs">
             {price}
           </Text>
           <Text color="neutral400">/ {period}</Text>
@@ -67,11 +81,14 @@ const PlanCard: FC<Props> = ({
         </View>
       </View>
 
-      <Text>
-        Share the love by adding up to 4 members to your account {'\n'}
-        Learn EQ for a happier, healthier life{'\n'}Access all premium content
-        with new content
-      </Text>
+      {features.map(feature => {
+        return (
+          <View flexDirection="row" alignItems="center" key={feature}>
+            <CheckmarkIcon />
+            <Text ml="xs">{feature}</Text>
+          </View>
+        );
+      })}
     </TouchableOpacity>
   );
 };

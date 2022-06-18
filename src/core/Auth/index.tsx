@@ -125,7 +125,6 @@ export const signOut = () => useAuth.getState().signOut();
 export const hydrateAuth = () => useAuth.getState().hydrate();
 
 auth().onUserChanged(async user => {
-  console.log('auth state changed');
   try {
     if (user) {
       const token = await user.getIdToken();
@@ -144,7 +143,6 @@ auth().onUserChanged(async user => {
 });
 
 auth().onAuthStateChanged(async user => {
-  console.log('auth state changed');
   try {
     if (user) {
       const token = await user.getIdToken();

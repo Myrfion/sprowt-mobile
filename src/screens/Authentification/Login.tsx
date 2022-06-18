@@ -4,12 +4,14 @@ import {useAuth} from 'core';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {Image, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation} from '@react-navigation/native';
-import {CheckBox} from 'ui/CheckBox';
 import {SocialProviders, SocialsList} from 'ui/Auth/SocialsList';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 export type SingInFormData = {
   email: string;
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1,
     height: 100 + '%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -100,6 +102,36 @@ export const Login = () => {
     signIn(data);
   };
 
+  async function onGoogleSignIn() {
+    const {idToken} = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  async function onAppleSignIn() {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+
+    // Create a Firebase credential from the response
+    const {identityToken, nonce} = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+
+    // use credentialState response to ensure the user is authenticated
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      return auth().signInWithCredential(appleCredential);
+    }
+  }
+
   return (
     <View flex={1} backgroundColor="background">
       <SafeAreaView style={styles.safeAreaView}>
@@ -108,8 +140,8 @@ export const Login = () => {
             source={require('../../../assets/logo.png')}
             style={styles.logo}
           />
-          <Text variant="header" textAlign="center">
-            Welcome!
+          <Text variant="header" textAlign="center" mb="s">
+            Welcome
           </Text>
           <Text textAlign="center" style={styles.subheader}>
             We’re happy you’re here
@@ -128,7 +160,6 @@ export const Login = () => {
             error={loginErrors.password}
           />
           <View style={styles.checkboxContainer}>
-          
             <Text
               style={styles.forgotPassText}
               onPress={() => navigation.navigate('ResetPassword')}>
@@ -144,14 +175,18 @@ export const Login = () => {
           />
           <Text>OR</Text>
           <SocialsList
-            onPressSocial={(social: SocialProviders) =>
-              console.log('Sign in: ', social)
-            }
+            onPressSocial={async (social: SocialProviders) => {
+              if (social === SocialProviders.google) {
+                return await onGoogleSignIn();
+              } else if (social === SocialProviders.apple) {
+                return await onAppleSignIn();
+              }
+            }}
           />
           <View style={styles.createAccountRow}>
-            <Text>Don't have an account yet? </Text>
+            <Text color="neutral900">Don't have an account yet? </Text>
             <Text
-              style={{color: BaseTheme.colors.primary}}
+              style={{color: BaseTheme.colors.primary700}}
               fontWeight="bold"
               onPress={() => navigation.navigate('SignUp')}>
               Create account

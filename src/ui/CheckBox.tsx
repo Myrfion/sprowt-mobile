@@ -22,7 +22,7 @@ export const CheckBox: FC<CheckBoxProps> = props => {
   const {field, fieldState} = useController({control, name});
 
   const theme = useTheme();
-  console.log(fieldState.error);
+
   return (
     <>
       <NativeCheckbox
@@ -36,7 +36,6 @@ export const CheckBox: FC<CheckBoxProps> = props => {
         offAnimationType="bounce"
         {...inputProps}
       />
-      <Text>{fieldState.error}</Text>
     </>
   );
 };

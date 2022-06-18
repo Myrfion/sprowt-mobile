@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-export const PlayIcon = props => (
+export const PlayIcon = (props: any) => (
   <Svg
     width={21}
     height={24}
@@ -15,7 +15,7 @@ export const PlayIcon = props => (
   </Svg>
 );
 
-export const PauseIcon = props => (
+export const PauseIcon = (props: any) => (
   <Svg
     width={40}
     height={40}
@@ -29,7 +29,7 @@ export const PauseIcon = props => (
   </Svg>
 );
 
-export const LikePlayIcon = props => (
+export const LikePlayIcon = (props: any) => (
   <Svg
     width={24}
     height={20}
@@ -46,7 +46,7 @@ export const LikePlayIcon = props => (
   </Svg>
 );
 
-export const FifteenBackIcon = props => (
+export const FifteenBackIcon = (props: any) => (
   <Svg
     width={23}
     height={26}
@@ -66,7 +66,7 @@ export const FifteenBackIcon = props => (
   </Svg>
 );
 
-export const FifteenForwardIcon = props => (
+export const FifteenForwardIcon = (props: any) => (
   <Svg
     width={23}
     height={26}
@@ -86,7 +86,7 @@ export const FifteenForwardIcon = props => (
   </Svg>
 );
 
-export const RepeatIcon = props => (
+export const RepeatIcon = (props: any) => (
   <Svg
     width={24}
     height={24}

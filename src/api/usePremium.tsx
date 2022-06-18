@@ -19,6 +19,7 @@ async function getProducts() {
 }
 
 const usePremium = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [availableSubscriptions, setAvailableSubscriptions] = useState<
     Array<AdaptyProduct>
   >([]);
@@ -27,33 +28,42 @@ const usePremium = () => {
   const [hasPremium, setHasPremium] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     getProducts().then(fetchedProducts =>
       setAvailableSubscriptions(fetchedProducts),
     );
-    adapty.purchases.getInfo().then(fetchedProfile => {
-      if (
-        Object.keys(fetchedProfile.subscriptions ?? {}).length > 0 &&
-        subscriptionsSkus?.includes(
-          Object.keys(fetchedProfile.subscriptions ?? {})[0],
-        )
-      ) {
-        const subscription = Object.values(
-          fetchedProfile.subscriptions ?? {},
-        )[0];
+    adapty.purchases
+      .getInfo()
+      .then(fetchedProfile => {
+        if (
+          Object.keys(fetchedProfile.subscriptions ?? {}).length > 0 &&
+          subscriptionsSkus?.includes(
+            Object.keys(fetchedProfile.subscriptions ?? {})[0],
+          )
+        ) {
+          const subscription = Object.values(
+            fetchedProfile.subscriptions ?? {},
+          )[0];
 
-        setPurchasedSubscription(subscription);
+          setPurchasedSubscription(subscription);
 
-        if (subscription?.isActive) {
-          setHasPremium(true);
+          if (subscription?.isActive) {
+            setHasPremium(true);
+          }
         }
-      }
-    });
-  }, [purchasedSubscription?.isActive]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   return {
     availableSubscriptions,
     purchasedSubscription,
     hasPremium,
+    isLoading,
+
+    setHasPremium,
   };
 };
 

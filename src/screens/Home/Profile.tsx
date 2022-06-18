@@ -40,7 +40,7 @@ const Profile = () => {
   const navigation = useNavigation();
 
   const {data: profileData, error} = useProfile();
-  console.log(error);
+
   console.log('profile: ', profileData);
   const joinDate = new Date(
     profileData?.data.joinDate._seconds * 1000 +
@@ -54,7 +54,7 @@ const Profile = () => {
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <View alignItems="center" mb="l" mt="xs">
-          <ProfilePhoto />
+          <ProfilePhoto uri={profileData?.data.profilePicture} />
           <Text variant="header" textAlign="center" mb="s" mt="s">
             {profileData?.data.firstName} {profileData?.data.lastName}
           </Text>
@@ -62,7 +62,6 @@ const Profile = () => {
             {profileData?.data.joinDate && format(joinDate, 'MMM d yyyy')}
           </Text>
           <Text color="neutral400">Member Since</Text>
-          <Text></Text>
         </View>
         <Text color="neutral800" fontWeight="bold" fontSize={16} mb="m">
           Account Settings

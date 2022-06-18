@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {View} from '../View';
-import {useProfile} from '../../api/useProfile';
 import {LogoIcon} from 'ui/icons';
 
 const styles = StyleSheet.create({
@@ -25,23 +24,13 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 80,
-    marginBottom: 4,
   },
 });
 
-const ProfilePhoto = () => {
-  const {data: profileData} = useProfile();
-
+const ProfilePhoto = ({uri}: {uri: string | undefined}) => {
   return (
     <View style={styles.root}>
-      {profileData?.data.profilePictur ? (
-        <Image
-          source={{uri: profileData?.data.profilePicture}}
-          style={styles.image}
-        />
-      ) : (
-        <LogoIcon />
-      )}
+      {uri ? <Image source={{uri}} style={styles.image} /> : <LogoIcon />}
     </View>
   );
 };

@@ -111,7 +111,10 @@ const Onboarding = () => {
             </Text>
           </View>
         </Swiper>
-        <Button label="Next" onPress={onNext} marginHorizontal="m" />
+        {}
+        <View px="m" width="100%">
+          <Button label="Next" onPress={onNext} marginHorizontal="m" />
+        </View>
       </SafeAreaView>
     </View>
   );
