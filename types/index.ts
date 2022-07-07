@@ -24,7 +24,7 @@ export interface IPost {
   isPremium: boolean;
   feedbacksNum?: number;
   raiting?: number;
-  created?: string;
+  created: string;
   duration?: number;
 }
 
@@ -48,4 +48,16 @@ export interface IInvite {
   firstName: string;
   lastName: string;
   email: string;
+}
+
+export interface IProfile {
+  firstName: string;
+  lastName: string;
+  birthDay: string;
+  profilePicture: string;
+  favourites: Array<string>;
+  joinDate: {
+    _seconds: number;
+    _nanoseconds: number;
+  };
 }

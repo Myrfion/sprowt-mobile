@@ -1,16 +1,17 @@
-import {usePosts} from 'api/usePosts';
+import {usePosts} from 'api/posts';
 import React from 'react';
 import {Text, View} from 'ui';
 import MediumCardsList from 'ui/Home/MediumCardsList';
 import {ActivityIndicator, SafeAreaView} from 'react-native';
 import {ScrollView} from 'ui/ScrollView';
-import {useLikes} from '../../api/useLikes';
+import {useLikes} from '../../api/favourites';
 
 const Favourites = () => {
-  const {data: posts, isLoading, isFetched} = usePosts({tag: ''});
-  const {data: likes} = useLikes();
-
-  const postsWithLikes = posts?.filter(p => likes?.includes(p.id));
+  const {posts, loading} = usePosts();
+  const {likes} = useLikes();
+  console.log('likes: ', likes);
+  console.log(posts);
+  const postsWithLikes = posts?.filter(p => likes?.includes(p.id as string));
 
   return (
     <View flex={1} backgroundColor="background">
@@ -24,13 +25,13 @@ const Favourites = () => {
           pt="l">
           Favourites
         </Text>
-        {!isLoading && postsWithLikes?.length === 0 && (
+        {!loading && postsWithLikes?.length === 0 && (
           <Text mt="xl" variant="subheader" textAlign="center">
             Keep your favourite content here
           </Text>
         )}
 
-        {isLoading || !isFetched ? (
+        {loading ? (
           <ActivityIndicator />
         ) : (
           <MediumCardsList posts={postsWithLikes} />

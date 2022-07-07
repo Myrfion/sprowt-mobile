@@ -1,4 +1,3 @@
-import {useLikes} from 'api/useLikes';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {View} from 'ui/View';
@@ -16,8 +15,6 @@ const styles = StyleSheet.create({
 });
 
 const MediumCardsList: React.FC<Props> = ({posts}) => {
-  const {data: likes} = useLikes();
-
   if (!posts) {
     return null;
   }
@@ -25,15 +22,10 @@ const MediumCardsList: React.FC<Props> = ({posts}) => {
   return (
     <View flexDirection="column">
       {posts.map((post: IPost) => {
-        const isLiked = likes?.includes(post?.id);
-
         return (
           <MediumCard
             rootStyles={styles.horizontalCard}
-            key={post.id}
-            isLiked={isLiked}
-            onPress={() => console.log('photo-card')}
-            {...post}
+            key={`medium-card-${post.id}`}
             {...post}
           />
         );

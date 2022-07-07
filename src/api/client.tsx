@@ -1,11 +1,11 @@
 import axios from 'axios';
-import {navigationWithRef} from 'navigation';
+
 import {showErrorMessage} from 'ui';
 
 //import {API_URL} from '@env';
 
 export const client = axios.create({
-  /* baseURL:
+  /*baseURL:
     Platform.OS === 'android'
       ? 'http://10.0.2.2:3000/api'
       : 'http://localhost:3000/api',*/

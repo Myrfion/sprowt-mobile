@@ -1,13 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
-import {useLikeMutation, useLikes} from 'api/useLikes';
+import {useLikeMutation, useLikes} from 'api/favourites';
 import usePremium from 'api/usePremium';
+import {usePremiumStore} from 'core/Premium';
 import * as React from 'react';
-import {
-  Image,
-  StyleSheet,
-  StyleSheetProperties,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, StyleSheetProperties, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   View,
   Text,
@@ -76,17 +73,18 @@ const BigCard: React.FC<Props> = props => {
     title,
     tags,
     thumbnail,
-    isPremium,
     id,
     mediaType,
     duration,
-    hasPremium,
+    isPremium,
   } = props;
   const navigation = useNavigation();
-  const {data: likes} = useLikes();
-  const mutation = useLikeMutation();
+  const {likes} = useLikes();
+  const {updateLike} = useLikeMutation();
 
-  const isLiked = likes?.includes(id);
+  const {hasPremium} = usePremiumStore();
+  console.log('hasPremium: ', hasPremium);
+  const isLiked = likes?.includes(id as string);
 
   const isAvailable = hasPremium || !isPremium;
 
@@ -107,11 +105,11 @@ const BigCard: React.FC<Props> = props => {
       ) : (
         <TouchableOpacity
           style={styles.likeIcon}
-          onPress={() => mutation.mutate(id)}>
+          onPress={() => updateLike(id as string)}>
           <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
         </TouchableOpacity>
       )}
-      <Image source={{uri: thumbnail}} style={styles.image} />
+      <FastImage source={{uri: thumbnail}} style={styles.image} />
       <View style={styles.overlay} />
       <View padding="s" alignSelf="flex-end" width="100%">
         <View flexDirection="row" alignItems="center">

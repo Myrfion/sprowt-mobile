@@ -1,5 +1,4 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {createFeedback} from 'api/useFeedback';
 import {useAuth} from 'core';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -11,10 +10,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Rating} from 'react-native-ratings';
-import {useMutation} from 'react-query';
-import {BaseTheme, Button, showSuccessMessage, Text, View} from 'ui';
+import {BaseTheme, Button, Text, View} from 'ui';
 import TagsList from 'ui/Home/TagList';
 import {SafeAreaView} from 'ui/SafeAreaView';
+import {useFeedbackMutation} from 'api/feedback';
 import {IPost} from '../../../types';
 
 const styles = StyleSheet.create({
@@ -62,6 +61,7 @@ export const Raiting = () => {
   const onKeyboardHide = () => setKeyboardOffset(0);
   const keyboardDidShowListener = useRef<EmitterSubscription>();
   const keyboardDidHideListener = useRef<EmitterSubscription>();
+  const {addFeedback, loading: feedbackAddLoading} = useFeedbackMutation();
 
   useEffect(() => {
     keyboardDidShowListener.current = Keyboard.addListener(
@@ -78,16 +78,6 @@ export const Raiting = () => {
       keyboardDidHideListener?.current?.remove();
     };
   }, []);
-
-  const {isLoading, mutate} = useMutation(createFeedback, {
-    onError(error) {
-      console.log('Error feedback mutation: ', error);
-    },
-    onSuccess() {
-      showSuccessMessage('We appreciate your feedback :)');
-      navigation.navigate('Home');
-    },
-  });
 
   const {user} = useAuth();
 
@@ -107,12 +97,13 @@ export const Raiting = () => {
   console.log('raiting: ', rating);
 
   function onSubmit() {
-    mutate({
+    addFeedback({
       text,
       raiting: rating,
       userId: user?.uid,
       postId: post.id,
     });
+    navigation.navigate('Home');
   }
 
   return (
@@ -177,7 +168,7 @@ export const Raiting = () => {
             label="Submit"
             variant="primary"
             onPress={onSubmit}
-            loading={isLoading}
+            loading={feedbackAddLoading}
           />
           <TouchableOpacity
             style={styles.skipButton}

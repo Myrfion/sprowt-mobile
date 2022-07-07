@@ -3,8 +3,8 @@ import {ProfileData} from '../screens/Home/Profile/Account';
 import {client} from './client';
 
 type MutationActions = {
-  onSuccess: any;
-  onError: any;
+  onSuccess?: any;
+  onError?: any;
 };
 
 const changeProfile = (profile: ProfileData) => client.put('/profile', profile);

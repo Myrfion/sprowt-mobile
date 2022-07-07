@@ -1,10 +1,11 @@
-import {useNavigation} from '@react-navigation/native';
-import {usePosts} from 'api/usePosts';
-import {useTags} from 'api/useTags';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {useTags} from 'api/tags';
 import {useAuth} from 'core';
 import {useFeeling} from 'core/Feeling';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
+//import RNRestart from 'react-native-restart'; // Import package from node modules
+
 import {ScrollView} from 'react-native-gesture-handler';
 import messaging from '@react-native-firebase/messaging';
 import {Text, View} from 'ui';
@@ -16,7 +17,8 @@ import BigCard from 'ui/Home/BigCard';
 import {SafeAreaView} from 'react-native';
 import {addMinutes, compareAsc, startOfDay} from 'date-fns';
 import {addHours} from 'date-fns/esm';
-import usePremium from 'api/usePremium';
+import {getPostsList} from 'api/posts';
+import {usePremiumStore} from 'core/Premium';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -83,30 +85,21 @@ async function requestUserPermission() {
 
 export const Home = () => {
   const navigation = useNavigation();
+  const route = useRoute();
 
   const {current: currentFeeling} = useFeeling();
-
   const {user} = useAuth();
-  const [search, setSearch] = useState('');
-  const {data: exploreTags, refetch: refetchTags} = useTags();
-  const [exploreTag, setExploreTag] = useState<ITag>();
-  const {
-    data,
-    isLoading,
-    refetch: refetchPosts,
-  } = usePosts({
-    tag: currentFeeling,
-  });
-  let {data: exploreData, isLoading: exploreLoading} = usePosts({
-    tag: exploreTag?.name || '',
-  });
-  const {hasPremium} = usePremium();
+  const {hasPremium} = usePremiumStore();
 
-  if (!exploreTag?.name) {
-    exploreData = (exploreData ?? []).sort((a, b) =>
-      compareAsc(new Date(b.created as string), new Date(a.created as string)),
-    );
-  }
+  const [search, setSearch] = useState('');
+  const {tags: exploreTags} = useTags();
+  const [exploreTag, setExploreTag] = useState<ITag>();
+
+  const [discoverPosts, setDiscoverPosts] = useState<Array<IPost>>([]);
+  const [isDiscoverPostsLoading, setIsDiscoverPostsLoading] = useState(false);
+
+  const [explorePosts, setExplorePosts] = useState<Array<IPost>>([]);
+  const [isExplorePostsLoading, setIsExplorePostsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -114,21 +107,45 @@ export const Home = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    setIsDiscoverPostsLoading(true);
+    (async () => {
+      const discoverPostsResult = await getPostsList(currentFeeling ?? '');
+
+      setDiscoverPosts(discoverPostsResult);
+      setIsDiscoverPostsLoading(false);
+    })();
+  }, [currentFeeling]);
+
+  useEffect(() => {
+    console.log('subscription updated in Home hasPremium: ', hasPremium);
+  }, [hasPremium]);
+
+  /* useEffect(() => {
+    console.log(route.params, ' ', hasPremium);
+    if (route.params?.hasPremium) {
+      setHasPremium(true);
+      RNRestart.Restart();
+    }
+  }, [route.params, hasPremium]);*/
+
+  useEffect(() => {
+    setIsExplorePostsLoading(true);
+    (async () => {
+      const explorePostsResult = await getPostsList(exploreTag?.name ?? '');
+
+      setExplorePosts(explorePostsResult);
+      setIsExplorePostsLoading(false);
+    })();
+  }, [exploreTag?.name]);
+
   const firstName = user?.displayName?.split(' ')[0];
 
   return (
     <View backgroundColor="background">
       <SafeAreaView />
       <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={() => {
-              refetchTags();
-              refetchPosts();
-            }}
-          />
-        }>
+        refreshControl={<RefreshControl refreshing={isDiscoverPostsLoading} />}>
         <Text
           variant="header"
           textAlign="left"
@@ -167,12 +184,11 @@ export const Home = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{paddingHorizontal: 16}}>
-          {data?.map((post: IPost) => {
+          {discoverPosts?.map((post: IPost) => {
             return (
               <BigCard
                 key={`big-card-${post.id}`}
                 rootStyles={styles.photoCard}
-                hasPremium={hasPremium}
                 {...post}
               />
             );
@@ -194,13 +210,12 @@ export const Home = () => {
         />
 
         <View marginHorizontal="m">
-          {exploreLoading && <ActivityIndicator />}
-          {exploreData?.map((post: IPost) => {
+          {isExplorePostsLoading && <ActivityIndicator />}
+          {explorePosts?.map((post: IPost) => {
             return (
               <MediumCard
                 key={`medium-card-${post.id}`}
                 rootStyles={styles.horizontalCard}
-                hasPremium={hasPremium}
                 {...post}
               />
             );

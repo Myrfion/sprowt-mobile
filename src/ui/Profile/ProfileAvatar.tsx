@@ -11,6 +11,7 @@ import {useController} from 'react-hook-form';
 const styles = StyleSheet.create({
   touchableOpacity: {
     alignSelf: 'center',
+    marginTop: 8,
   },
   root: {
     shadowColor: '#000',

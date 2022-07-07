@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useLikeMutation, useLikes} from 'api/useLikes';
+import {useLikeMutation, useLikes} from 'api/favourites';
 import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
@@ -29,6 +29,7 @@ import {
   PlayIcon,
   RepeatIcon,
 } from 'ui/icons/Player';
+import FastImage from 'react-native-fast-image';
 
 const styles = StyleSheet.create({
   imageBackground: {
@@ -62,11 +63,11 @@ const styles = StyleSheet.create({
 });
 
 function convertHMS(value: number) {
-  const sec = value;
-  let hours: number | string = Math.floor(sec / 3600);
-  let minutes: number | string = Math.floor((sec - hours * 3600) / 60);
-  let seconds: number | string = sec - hours * 3600 - minutes * 60;
-
+  const sec = parseInt(value, 10); // convert value to number if it's string
+  let hours = Math.floor(sec / 3600); // get hours
+  let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+  let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
+  // add 0 if value < 10; Example: 2 => 02
   if (hours < 10) {
     hours = '0' + hours;
   }
@@ -76,15 +77,15 @@ function convertHMS(value: number) {
   if (seconds < 10) {
     seconds = '0' + seconds;
   }
-  return minutes + ':' + seconds;
+  return minutes + ':' + seconds; // Return is HH : MM : SS
 }
 
 export const Player = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const likeMutation = useLikeMutation();
-  const {data: likes} = useLikes();
+  const {updateLike} = useLikeMutation();
+  const {likes} = useLikes();
 
   const playerState = usePlaybackState();
   const progress = useProgress();
@@ -106,7 +107,7 @@ export const Player = () => {
 
   const {thumbnail, title, tags, id, mediaPath} = post;
 
-  const isLiked = likes.includes(id);
+  const isLiked = likes.includes(id as string);
 
   useEffect(() => {
     (async () => {
@@ -194,7 +195,7 @@ export const Player = () => {
               <BackIcon color="#fff" />
             </TouchableOpacity>
           </View>
-          <Image source={{uri: thumbnail}} style={styles.image} />
+          <FastImage source={{uri: thumbnail}} style={styles.image} />
           <Text
             color="white"
             fontSize={32}
@@ -232,7 +233,8 @@ export const Player = () => {
             flexDirection="row"
             justifyContent="space-evenly"
             alignItems="center">
-            <TouchableOpacity onPress={() => likeMutation.mutate(id)}>
+            <TouchableOpacity
+              onPress={async () => await updateLike(id as string)}>
               <LikePlayIcon fill={isLiked ? '#0B5641' : 'none'} />
             </TouchableOpacity>
             <TouchableOpacity

@@ -1,6 +1,7 @@
 import {useAuth} from 'core';
 import React from 'react';
 import {StyleSheet, Image} from 'react-native';
+import EmailManager from 'services/email-service';
 import {Text, View} from 'ui';
 import {SafeAreaView} from 'ui/SafeAreaView';
 
@@ -48,7 +49,18 @@ export const EmailVerification = () => {
         console.log(error);
       }
     }, 1000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+
+      (async () => {
+        if (user?.emailVerified) {
+          await EmailManager.sendWelcome({
+            firstName: user.displayName || '',
+            email: user.email as string,
+          });
+        }
+      })();
+    };
   });
 
   return (

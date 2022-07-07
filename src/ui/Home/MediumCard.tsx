@@ -1,12 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
-import {useLikeMutation, useLikes} from 'api/useLikes';
+import {useLikeMutation, useLikes} from 'api/favourites';
+import {usePremiumStore} from 'core/Premium';
 import * as React from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  StyleSheetProperties,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, StyleSheetProperties} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {View, Text, HeartIcon} from 'ui';
 import {LockIcon} from 'ui/icons';
 import {IPost} from '../../../types/index';
@@ -53,10 +50,6 @@ const styles = StyleSheet.create({
 
 interface Props extends IPost {
   rootStyles?: StyleSheetProperties | {};
-  isLiked: boolean;
-  onLike: () => void;
-  onPress: () => void;
-  hasPremium: boolean;
 }
 
 const MediumCard: React.FC<Props> = props => {
@@ -69,13 +62,13 @@ const MediumCard: React.FC<Props> = props => {
     id,
     isPremium,
     duration,
-    hasPremium,
   } = props;
 
   const navigation = useNavigation();
 
-  const {data: likes} = useLikes();
-  const likeMutation = useLikeMutation();
+  const {likes} = useLikes();
+  const {updateLike} = useLikeMutation();
+  const {hasPremium} = usePremiumStore();
 
   const isAvailable = !isPremium || hasPremium;
 
@@ -92,7 +85,7 @@ const MediumCard: React.FC<Props> = props => {
           : navigation.navigate('Subscription')
       }>
       <View style={styles.imageContainer}>
-        <Image source={{uri: thumbnail}} style={styles.image} />
+        <FastImage source={{uri: thumbnail}} style={styles.image} />
         <View
           position="absolute"
           left={12}
@@ -111,7 +104,7 @@ const MediumCard: React.FC<Props> = props => {
         {isAvailable ? (
           <TouchableOpacity
             style={styles.likeIcon}
-            onPress={() => likeMutation.mutate(id as string)}>
+            onPress={async () => await updateLike(id as string)}>
             <HeartIcon fill={isLiked ? '#F8F8F8' : '#969696'} />
           </TouchableOpacity>
         ) : (

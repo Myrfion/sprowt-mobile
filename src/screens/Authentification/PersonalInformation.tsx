@@ -7,7 +7,8 @@ import * as yup from 'yup';
 import {Image, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useProfileCreate} from 'api/useProfile';
+import {useProfileCreate} from 'api/profile';
+import EmailManager from 'services/email-service';
 
 export type PersonalInformationFormData = {
   firstName: string;
@@ -55,23 +56,23 @@ const styles = StyleSheet.create({
 
 export const PersonalInformation = () => {
   const {signUp} = useAuth();
+  const {createProfile} = useProfileCreate();
   const route = useRoute();
   const navigation = useNavigation();
   console.log(route.params);
-
-  const profileCreate = useProfileCreate({
-    onSuccess: () => console.log('user profile created!'),
-  });
 
   const {handleSubmit, control} = useForm<PersonalInformationFormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: PersonalInformationFormData) => {
+  const onSubmit = async (data: PersonalInformationFormData) => {
     const {email, password} = route.params;
     const {firstName, lastName} = data;
 
-    signUp({email, password, firstName, lastName}, profileCreate.mutate);
+    signUp({email, password, firstName, lastName}, () => {
+      createProfile({email, firstName, lastName});
+    });
+
     navigation.navigate('EmailVerification');
   };
 

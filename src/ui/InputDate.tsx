@@ -35,7 +35,7 @@ export const InputDate: React.FC<Props> = ({label, control, name}) => {
     name,
   });
 
-  console.log(fieldState.invalid);
+  console.log('field.value: ', field.value);
 
   return (
     <View marginBottom="m" width="100%">
@@ -47,7 +47,9 @@ export const InputDate: React.FC<Props> = ({label, control, name}) => {
       <TouchableOpacity
         onPress={() => setModalOpen(true)}
         style={[styles.input, {borderColor: colors.neutral300}]}>
-        <Text fontSize={16}>{format(field.value, 'MMMM d yyyy')}</Text>
+        <Text fontSize={16}>
+          {field.value && format(field.value, 'MMMM d yyyy')}
+        </Text>
       </TouchableOpacity>
       <DatePicker
         mode="date"

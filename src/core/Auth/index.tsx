@@ -4,7 +4,6 @@ import {getToken} from './utils';
 import {SingInFormData} from 'screens';
 import {client} from 'api/client';
 import {showErrorMessage} from 'ui';
-import {useProfileCreate} from 'api/useProfile';
 
 type Status = 'success' | 'loading' | 'error' | 'idle';
 
@@ -21,7 +20,7 @@ interface AuthState {
   resetPasswordStatus: Status;
   signIn: (user: SingInFormData) => void;
   signOut: () => void;
-  signUp: (newUser, onCreateHandler: any) => void;
+  signUp: (newUser: any, signUpCallback: any) => void;
   hydrate: () => void;
   getUser: () => void;
   resetPassword: (email: string) => void;
@@ -39,7 +38,7 @@ export const useAuth = create<AuthState>((set, get) => ({
     email: null,
   },
   resetPasswordStatus: 'idle',
-  signUp: async (newUser, onCreateHandler) => {
+  signUp: async (newUser, signUpCallback) => {
     try {
       const {user} = await auth().createUserWithEmailAndPassword(
         newUser.email,
@@ -53,12 +52,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       await user.sendEmailVerification();
 
       set({user: auth().currentUser});
-
-      onCreateHandler({
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-      });
+      signUpCallback();
     } catch (error: any) {
       showErrorMessage(error.message);
     }

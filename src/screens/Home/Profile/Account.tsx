@@ -17,10 +17,9 @@ import * as yup from 'yup';
 import {StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {InputDate} from 'ui/InputDate';
-import {useProfile, useProfileMutation} from 'api/useProfile';
-import {showMessage} from 'react-native-flash-message';
+import {useProfile, useProfileUpdate} from 'api/profile';
 import storage from '@react-native-firebase/storage';
-import {parseISO} from 'date-fns';
+import {convertFirebaseDateToDate} from '../Profile';
 
 export type ProfileData = {
   firstName: string;
@@ -51,41 +50,39 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Account = () => {
-  const {data: profileData, refetch} = useProfile();
-  const navigation = useNavigation();
+function convertFirebaseProfileToFormData(profile: any) {
+  return {
+    firstName: profile?.firstName,
+    lastName: profile?.lastName,
+    birthDay: profile?.birthDay
+      ? convertFirebaseDateToDate(profile?.birthDay)
+      : new Date(),
+    profilePicture: profile?.profilePicture,
+  };
+}
 
+export const Account = () => {
+  const {profile} = useProfile();
+  const {
+    updateProfile,
+    error: updateProfileError,
+    loading: updateProfileLoading,
+  } = useProfileUpdate();
+  const navigation = useNavigation();
+  console.log('updateProfileError: ', updateProfileError);
   const [imageUploading, setImageUploading] = useState(false);
 
-  const {handleSubmit, control} = useForm<ProfileData>({
+  const {handleSubmit, control, reset} = useForm<ProfileData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      firstName: profileData?.data.firstName,
-      lastName: profileData?.data.lastName,
-      birthDay: profileData?.data.birthDay
-        ? parseISO(profileData?.data.birthDay)
-        : new Date(),
-      profilePicture: profileData?.data.profilePicture,
-    },
+    defaultValues: convertFirebaseProfileToFormData(profile),
   });
 
-  const profileMutation = useProfileMutation({
-    onSuccess: () => {
-      refetch();
-      showSuccessMessage('Profile was successfuly updated');
-      navigation.goBack();
-    },
-    onError: () => {
-      showMessage({
-        type: 'danger',
-        message: 'profile update error',
-      });
-    },
-  });
+  useEffect(() => {
+    console.log('profile: ', profile);
+    reset(convertFirebaseProfileToFormData(profile));
+  }, [profile, reset]);
 
-  useEffect(() => {}, [profileData]);
-
-  const fullName = `${profileData?.data?.firstName} ${profileData?.data?.lastName}`;
+  const fullName = `${profile?.firstName} ${profile?.lastName}`;
 
   const uploadImage = async (uri: string) => {
     const filename =
@@ -105,15 +102,25 @@ export const Account = () => {
     try {
       if (
         data.profilePicture &&
-        data.profilePicture !== profileData?.data.profilePicture
+        data.profilePicture !== undefined &&
+        data.profilePicture !== profile?.profilePicture
       ) {
         const profilePictureUri = await uploadImage(data.profilePicture);
-        profileMutation.mutate({...data, profilePicture: profilePictureUri});
+        await updateProfile({...data, profilePicture: profilePictureUri});
       } else {
-        profileMutation.mutate({...data});
+        await updateProfile({
+          firstName: data?.firstName,
+          lastName: data?.lastName,
+          birthDay: data?.birthDay,
+        });
       }
+
+      showSuccessMessage('Profile was successfuly updated');
+      navigation.goBack();
     } catch (error: any) {
+      console.log(error);
       showErrorMessage(error?.message || 'error');
+      showErrorMessage('profile update error');
     }
   };
 
@@ -124,7 +131,7 @@ export const Account = () => {
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <ProfileAvatar editMode name="profilePicture" control={control} />
-        <Text fontSize={32} textAlign="center" mb="s">
+        <Text fontSize={32} variant="header" textAlign="center" my="s">
           {fullName}
         </Text>
         <Input name="firstName" label="First Name" control={control} />
@@ -137,7 +144,7 @@ export const Account = () => {
             onPress={handleSubmit(onSubmit)}
             variant="primary"
             marginTop="l"
-            loading={profileMutation.isLoading || imageUploading}
+            loading={updateProfileLoading || imageUploading}
           />
           <TouchableOpacity
             style={styles.cancelButton}

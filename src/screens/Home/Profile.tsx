@@ -1,14 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
-import {useProfile} from 'api/useProfile';
+import {getProfile, useProfile} from 'api/profile';
 import {useAuth} from 'core';
 import {format} from 'date-fns';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView, SafeAreaView, Linking} from 'react-native';
 import {Text, View} from 'ui';
 import ProfilePhoto from 'ui/Home/ProfilePhoto';
 import {
   CardIcon,
-  FamilyAccountIcon,
   FAQIcon,
   LogOutIcon,
   ProfileIcon,
@@ -35,17 +34,18 @@ const styles = StyleSheet.create({
 const FAQ_LINK = 'https://sprowt.zendesk.com/hc/en-us';
 const SUPPORT_LINK = 'mailto:support@sprowt.zendesk.com';
 
+export function convertFirebaseDateToDate(firebaseDate: any) {
+  return new Date(
+    firebaseDate._seconds * 1000 + firebaseDate._nanoseconds / 1000000,
+  );
+}
+
 const Profile = () => {
+  const {profile} = useProfile();
+
+  console.log('user profile: ', profile);
   const {signOut} = useAuth();
   const navigation = useNavigation();
-
-  const {data: profileData, error} = useProfile();
-
-  console.log('profile: ', profileData);
-  const joinDate = new Date(
-    profileData?.data.joinDate._seconds * 1000 +
-      profileData?.data.joinDate._nanoseconds / 1000000,
-  );
 
   return (
     <View flex={1} backgroundColor="background">
@@ -54,12 +54,17 @@ const Profile = () => {
       </SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <View alignItems="center" mb="l" mt="xs">
-          <ProfilePhoto uri={profileData?.data.profilePicture} />
+          <ProfilePhoto uri={profile?.profilePicture} />
           <Text variant="header" textAlign="center" mb="s" mt="s">
-            {profileData?.data.firstName} {profileData?.data.lastName}
+            {profile?.firstName} {profile?.lastName}
           </Text>
           <Text>
-            {profileData?.data.joinDate && format(joinDate, 'MMM d yyyy')}
+            {profile
+              ? format(
+                  convertFirebaseDateToDate(profile.joinDate),
+                  'MMM d yyyy',
+                )
+              : ''}
           </Text>
           <Text color="neutral400">Member Since</Text>
         </View>

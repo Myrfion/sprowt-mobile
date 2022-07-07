@@ -12,6 +12,7 @@ import {SocialProviders, SocialsList} from 'ui/Auth/SocialsList';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import appleAuth from '@invertase/react-native-apple-authentication';
+import {useProfileUpdate} from 'api/profile';
 
 export type SingInFormData = {
   email: string;
@@ -97,6 +98,8 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
+  const {updateProfile} = useProfileUpdate();
+
   const onSubmit = (data: SingInFormData) => {
     console.log(data);
     signIn(data);
@@ -105,8 +108,17 @@ export const Login = () => {
   async function onGoogleSignIn() {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    const currentUser = await GoogleSignin.getCurrentUser();
 
-    return auth().signInWithCredential(googleCredential);
+    return auth()
+      .signInWithCredential(googleCredential)
+      .then(() => {
+        updateProfile({
+          firstName: currentUser?.user.givenName,
+          lastName: currentUser?.user.familyName,
+          email: currentUser?.user.email,
+        });
+      });
   }
 
   async function onAppleSignIn() {
@@ -128,7 +140,15 @@ export const Login = () => {
 
     // use credentialState response to ensure the user is authenticated
     if (credentialState === appleAuth.State.AUTHORIZED) {
-      return auth().signInWithCredential(appleCredential);
+      return auth()
+        .signInWithCredential(appleCredential)
+        .then(() => {
+          updateProfile({
+            firstName: appleAuthRequestResponse.fullName?.givenName ?? '',
+            lastName: appleAuthRequestResponse.fullName?.familyName ?? '',
+            email: appleAuthRequestResponse.email,
+          });
+        });
     }
   }
 

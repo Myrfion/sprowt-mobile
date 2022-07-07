@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 export const Family = () => {
-  const {data: profileData} = useProfile();
+  const {profile} = useProfile();
 
   return (
     <View flex={1}>
@@ -36,7 +36,7 @@ export const Family = () => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <ProfilePhoto />
         <Text fontSize={32} textAlign="center" mb="s" mt="s">
-          {profileData?.data.firstName} {profileData?.data.lastName}
+          {profileData?.firstName} {profileData?.lastName}
         </Text>
         <View
           flex={1}
@@ -57,7 +57,7 @@ export const Family = () => {
             borderColor="neutral100"
             borderTopWidth={1}>
             <Image
-              source={{uri: profileData?.data.profilePicture}}
+              source={{uri: profile?.profilePicture}}
               style={{width: 32, height: 32, borderRadius: 32, marginRight: 12}}
             />
             <View>
@@ -78,7 +78,7 @@ export const Family = () => {
             borderColor="neutral100"
             borderTopWidth={1}>
             <Image
-              source={{uri: profileData?.data.profilePicture}}
+              source={{uri: profile?.profilePicture}}
               style={{width: 32, height: 32, borderRadius: 32, marginRight: 12}}
             />
             <View>

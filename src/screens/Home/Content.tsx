@@ -1,7 +1,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useLikeMutation, useLikes} from 'api/useLikes';
-import React from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {useLikeMutation, useLikes} from 'api/favourites';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import Share from 'react-native-share';
@@ -17,10 +17,11 @@ import {ContentIcons, toTitleCase} from 'ui/Home/BigCard';
 import {ScrollView} from 'react-native-gesture-handler';
 import {IPost} from '../../../types';
 import {PlayIcon, LockIcon} from 'ui/icons/Content';
-import {usePosts} from 'api/usePosts';
 import MediumCardsList from 'ui/Home/MediumCardsList';
 import {SafeAreaView} from 'react-native';
 import usePremium from 'api/usePremium';
+import {getPostsById, getPostsList} from 'api/posts';
+import FastImage from 'react-native-fast-image';
 
 const styles = StyleSheet.create({
   image: {
@@ -81,6 +82,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  tag: {
+    marginRight: 8,
+  },
 });
 
 export const Content = () => {
@@ -89,22 +93,54 @@ export const Content = () => {
 
   const {hasPremium} = usePremium();
 
-  const {data: likes} = useLikes();
+  const {likes} = useLikes();
 
-  const likeMutation = useLikeMutation();
+  const {updateLike} = useLikeMutation();
 
-  const {data: allPosts} = usePosts({tag: ''});
+  const [relatedPosts, setReletedPosts] = useState<Array<IPost>>([]);
+  const [isRelatedPostsLoading, setIsReletedPostsLoading] = useState(false);
 
-  const post: IPost =
-    route.params?.post || allPosts?.find(p => p.id === route.params?.postId);
+  const [currentPost, setCurrentPost] = useState<IPost | undefined>();
+  const [isCurrentPostLoading, setIsCurrentPostLoading] = useState(false);
 
-  let {data: relatedPosts} = usePosts({tag: post?.tags[0].name || ''});
+  useEffect(() => {
+    setIsCurrentPostLoading(true);
+    (async () => {
+      const {postId, post} = route.params as {
+        postId: string | undefined;
+        post: IPost | undefined;
+      };
+      if (post) {
+        setCurrentPost(post);
+      } else if (postId) {
+        const currentPostResult = await getPostsById(postId);
 
-  if (!post) {
-    return null;
+        setCurrentPost(currentPostResult);
+      }
+
+      setIsCurrentPostLoading(false);
+    })();
+  }, [route.params]);
+
+  useEffect(() => {
+    if (currentPost) {
+      setIsReletedPostsLoading(true);
+      (async () => {
+        let reletedPostsResult = await getPostsList(currentPost?.tags[0].name);
+
+        reletedPostsResult = reletedPostsResult?.filter(
+          p => p.id !== currentPost.id,
+        );
+
+        setReletedPosts(reletedPostsResult);
+        setIsReletedPostsLoading(false);
+      })();
+    }
+  }, [currentPost]);
+
+  if (!currentPost || isCurrentPostLoading) {
+    return <ActivityIndicator />;
   }
-
-  relatedPosts = relatedPosts?.filter(p => p.id !== post.id);
 
   const {
     mediaType,
@@ -115,7 +151,7 @@ export const Content = () => {
     tags,
     isPremium,
     duration,
-  } = post;
+  } = currentPost;
 
   const isPostAvailable = !isPremium || hasPremium;
 
@@ -128,7 +164,7 @@ export const Content = () => {
       return;
     }
 
-    navigation.navigate('Player', {post});
+    navigation.navigate('Player', {post: currentPost as IPost});
   }
 
   return (
@@ -167,7 +203,7 @@ export const Content = () => {
       <ScrollView style={{paddingHorizontal: 16}}>
         <View style={styles.imageContainer}>
           <View position="relative">
-            <Image source={{uri: thumbnail}} style={styles.image} />
+            <FastImage source={{uri: thumbnail}} style={styles.image} />
             <View style={styles.overlay}>
               <TouchableOpacity style={styles.playButton} onPress={onPlay}>
                 <PlayIcon />
@@ -201,7 +237,7 @@ export const Content = () => {
               <LockIcon />
             ) : (
               <TouchableOpacity
-                onPress={() => likeMutation.mutate(id as string)}>
+                onPress={async () => await updateLike(id as string)}>
                 <BigHeartIcon fill={isLiked ? '#37493E' : 'none'} />
               </TouchableOpacity>
             )}
@@ -212,7 +248,7 @@ export const Content = () => {
             return (
               <TouchableOpacity
                 onPress={() => navigation.navigate('Search', {text: tag.name})}
-                style={[styles.infoContainer, {marginRight: 8}]}
+                style={[styles.infoContainer, styles.tag]}
                 key={`tag-${tag.id}`}>
                 <Text color="success300" fontWeight="bold">
                   {tag.name}
@@ -229,7 +265,11 @@ export const Content = () => {
             {tags[0].name}
           </Text>
         </Text>
-        <MediumCardsList posts={relatedPosts} />
+        {isRelatedPostsLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <MediumCardsList posts={relatedPosts} />
+        )}
       </ScrollView>
     </View>
   );

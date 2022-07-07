@@ -1,11 +1,12 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {
   default as NativeCheckbox,
   CheckBoxProps as NativeCheckboxProps,
 } from '@react-native-community/checkbox';
 import {useTheme} from '@react-navigation/native';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Control, useController} from 'react-hook-form';
+import {showErrorMessage} from './utils';
 
 const styles = StyleSheet.create({
   root: {width: 19, height: 19},
@@ -22,6 +23,12 @@ export const CheckBox: FC<CheckBoxProps> = props => {
   const {field, fieldState} = useController({control, name});
 
   const theme = useTheme();
+
+  useEffect(() => {
+    if (fieldState.error) {
+      showErrorMessage('You must select the checkbox');
+    }
+  }, [fieldState.error]);
 
   return (
     <>

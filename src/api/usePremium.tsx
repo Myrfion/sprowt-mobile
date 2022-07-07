@@ -1,3 +1,4 @@
+import {navigationWithRef} from 'navigation';
 import {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {
@@ -5,6 +6,8 @@ import {
   AdaptySubscriptionsInfo,
   adapty,
 } from 'react-native-adapty';
+import {showErrorMessage, showSuccessMessage} from 'ui';
+import {usePremiumStore} from '../core/Premium';
 
 const subscriptionsSkus = Platform.select({
   ios: ['com.premium.monthly', 'com.premium.annualy'],
@@ -25,7 +28,21 @@ const usePremium = () => {
   >([]);
   const [purchasedSubscription, setPurchasedSubscription] =
     useState<AdaptySubscriptionsInfo | null>();
-  const [hasPremium, setHasPremium] = useState(false);
+  // const [hasPremium, setHasPremium] = useState(false);
+  const {hasPremium, setPremium} = usePremiumStore();
+
+  function makePurchase(product: AdaptyProduct) {
+    adapty.purchases
+      .makePurchase(product)
+      .then(() => {
+        showSuccessMessage('Subscription upgraded!');
+        setPremium(true);
+        navigationWithRef('Home', {hasPremium: true});
+      })
+      .catch(() => {
+        showErrorMessage('It has been an error');
+      });
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,22 +65,21 @@ const usePremium = () => {
           setPurchasedSubscription(subscription);
 
           if (subscription?.isActive) {
-            setHasPremium(true);
+            setPremium(true);
           }
         }
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [setPremium]);
 
   return {
     availableSubscriptions,
     purchasedSubscription,
     hasPremium,
     isLoading,
-
-    setHasPremium,
+    makePurchase,
   };
 };
 

@@ -31,6 +31,7 @@ type Props = SpacingProps<Theme> &
     label?: string;
     outline?: boolean;
     loading?: boolean;
+    disabled?: boolean;
   };
 
 const styles = StyleSheet.create({
@@ -39,16 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Button = ({
-  onPress,
-  label,
-  loading = false,
-  variant = 'primary',
-  disabled,
-  ...rest
-}: Props) => {
-  // const props = useRestyle(restyleFunctions, {...rest, variant});
-
+export const Button = ({onPress, label, loading = false, disabled}: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}

@@ -1,17 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
 import usePremium from 'api/usePremium';
+import {usePremiumStore} from 'core/Premium';
 import React, {useState} from 'react';
 import {Platform, SafeAreaView, Linking} from 'react-native';
-import {adapty} from 'react-native-adapty';
 
-import {
-  BaseTheme,
-  Button,
-  showErrorMessage,
-  showSuccessMessage,
-  Text,
-  View,
-} from 'ui';
+import {BaseTheme, Button, Text, View} from 'ui';
 import PlanCard from 'ui/Home/PlanCard';
 import ProfileHeader from 'ui/Profile/ProfileHeader';
 import {ScrollView} from 'ui/ScrollView';
@@ -23,31 +15,14 @@ const cancelIntructionLink = Platform.select({
 });
 
 export const Subscription = () => {
-  const navigation = useNavigation();
-
   const [plan, setPlan] = useState(0); // 0 - none selected, 1 - yearly, 2 - monthly
-  const {
-    hasPremium,
-    purchasedSubscription,
-    availableSubscriptions,
-    setHasPremium,
-  } = usePremium();
+  const {purchasedSubscription, availableSubscriptions, makePurchase} =
+    usePremium();
+
+  const {hasPremium} = usePremiumStore();
 
   const onPurchase = () => {
-    adapty.purchases
-      .makePurchase(availableSubscriptions[plan - 1])
-      .then(value => {
-        console.log('purchase message', value);
-        showSuccessMessage('Subscription upgraded!');
-
-        console.log('premium set');
-        setHasPremium(true);
-        navigation.navigate('Home');
-      })
-      .catch(error => {
-        console.log(error);
-        showErrorMessage('It has been an error');
-      });
+    makePurchase(availableSubscriptions[plan - 1]);
   };
 
   return (

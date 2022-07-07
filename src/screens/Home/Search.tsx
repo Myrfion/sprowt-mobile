@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {BackIcon, BaseTheme, Text, View} from 'ui';
@@ -6,7 +6,8 @@ import MediumCard from 'ui/Home/MediumCard';
 import {SafeAreaView} from 'ui/SafeAreaView';
 import {SearchInput} from 'ui/SearchInput';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {useSearch} from 'api/useSearch';
+import {getPostsList} from 'api/posts';
+import {IPost} from '../../../types';
 
 const styles = StyleSheet.create({
   backButton: {
@@ -33,20 +34,31 @@ const styles = StyleSheet.create({
 });
 
 const Search = () => {
-  const [query, setQuery] = React.useState('');
-  const {data, isLoading, error} = useSearch({text: query});
   const route = useRoute();
-  const text = route?.params?.text;
+
+  const [query, setQuery] = useState('');
+  const [posts, setPosts] = useState<Array<IPost>>([]);
+  const [isPostsLoading, setIsPostsLoading] = useState(false);
 
   const navigation = useNavigation();
 
-  React.useEffect(() => {
-    if (text) {
-      setQuery(text);
+  useEffect(() => {
+    if (route?.params?.text) {
+      setQuery(route?.params?.text);
     }
-  }, [text]);
+  }, [route?.params?.text]);
 
-  console.log('Error: ', error);
+  useEffect(() => {
+    if (query.length > 0) {
+      setIsPostsLoading(true);
+      (async () => {
+        const postsResult = await getPostsList(query);
+        setPosts(postsResult);
+
+        setIsPostsLoading(false);
+      })();
+    }
+  }, [query]);
 
   return (
     <View flex={1} backgroundColor="background">
@@ -62,19 +74,16 @@ const Search = () => {
           </View>
         </View>
         <ScrollView style={styles.scrollView}>
-          {isLoading && <ActivityIndicator />}
-          {data?.length === 0 && !isLoading && query.length > 0 && (
+          {isPostsLoading && <ActivityIndicator />}
+          {posts?.length === 0 && !isPostsLoading && query.length > 0 && (
             <Text mt="xl" variant="subheader" textAlign="center">
               Looks like there is no content that matches your search
             </Text>
           )}
-          {data?.map(post => {
+          {posts.map(post => {
             return (
               <MediumCard
-                isLiked
-                onLike={() => console.log('like')}
-                onPress={() => console.log('press')}
-                key={post.id}
+                key={`medium-card-${post.id}`}
                 rootStyles={styles.mediumCard}
                 {...post}
               />

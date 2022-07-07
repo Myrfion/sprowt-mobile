@@ -11,8 +11,9 @@ import {SocialsList} from 'ui/Auth/SocialsList';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
-import {useProfileCreate} from 'api/useProfile';
+import {Settings} from 'react-native-fbsdk-next';
+import {useProfileCreate} from 'api/profile';
+import EmailManager from 'services/email-service';
 
 export type SignUpFormData = {
   email: string;
@@ -112,9 +113,7 @@ Settings.setAppID('699728804407049');
 export const SignUp = () => {
   const navigation = useNavigation();
 
-  const profileCreate = useProfileCreate({
-    onSuccess: () => console.log('user profile created!'),
-  });
+  const {createProfile} = useProfileCreate();
 
   const {handleSubmit, control} = useForm<SignUpFormData>({
     resolver: yupResolver(schema),
@@ -134,15 +133,21 @@ export const SignUp = () => {
     const {idToken} = await GoogleSignin.signIn();
     const currentUser = await GoogleSignin.getCurrentUser();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    console.log(currentUser?.user.givenName);
 
-    profileCreate.mutate({
-      firstName: currentUser?.user.givenName,
-      lastName: currentUser?.user.familyName,
-      email: currentUser?.user.email,
-    });
+    return auth()
+      .signInWithCredential(googleCredential)
+      .then(async () => {
+        createProfile({
+          firstName: currentUser?.user.givenName,
+          lastName: currentUser?.user.familyName,
+          email: currentUser?.user.email,
+        });
 
-    return auth().signInWithCredential(googleCredential);
+        await EmailManager.sendWelcome({
+          firstName: currentUser?.user.givenName ?? '',
+          email: currentUser?.user.email as string,
+        });
+      });
   }
 
   async function onAppleButtonPress() {
@@ -164,17 +169,23 @@ export const SignUp = () => {
       nonce,
     );
 
-    profileCreate.mutate({
-      firstName: appleAuthRequestResponse.fullName?.givenName ?? '',
-      lastName: appleAuthRequestResponse.fullName?.familyName ?? '',
-      email: appleAuthRequestResponse.email,
-    });
-
     // Sign the user in with the credential
-    return auth().signInWithCredential(appleCredential);
+    auth()
+      .signInWithCredential(appleCredential)
+      .then(async () => {
+        createProfile({
+          firstName: appleAuthRequestResponse.fullName?.givenName ?? '',
+          lastName: appleAuthRequestResponse.fullName?.familyName ?? '',
+          email: appleAuthRequestResponse.email,
+        });
+        await EmailManager.sendWelcome({
+          firstName: appleAuthRequestResponse.fullName?.givenName ?? '',
+          email: appleAuthRequestResponse.email as string,
+        });
+      });
   }
 
-  async function onFacebookButtonPress() {
+  /*async function onFacebookButtonPress() {
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
@@ -199,7 +210,7 @@ export const SignUp = () => {
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(facebookCredential);
-  }
+  }*/
 
   return (
     <View flex={1} backgroundColor="background">
@@ -261,9 +272,9 @@ export const SignUp = () => {
                   console.log('Signed in with Google!'),
                 );
               } else if (social === 1) {
-                onFacebookButtonPress().then(() =>
+                /*onFacebookButtonPress().then(() =>
                   console.log('Signed in with Facebook!'),
-                );
+                );*/
               } else if (social === 2) {
                 onAppleButtonPress().then(() =>
                   console.log('Apple sign-in complete!'),
